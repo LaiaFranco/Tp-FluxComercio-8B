@@ -1,123 +1,163 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/General.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="FlexComercio.Default" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container-fluid py-4 px-5">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
+<div class="container-fluid py-4">
+
+    <!-- Encabezado -->
     <div class="mb-5">
-        <h1 class="fw-bold display-5">Bienvenido, Administrador</h1>
-        <p class="fs-2 text-secondary">Panel de control del sistema</p>
+        <h1 class="fw-bold mb-1">Bienvenido, Administrador</h1>
+        <p class="text-secondary fs-4 mb-0">
+            Panel de control del sistema
+        </p>
     </div>
 
-    <div class="row g-4">
+    <!-- Cards resumen -->
+    <div class="row g-4 mb-5">
 
         <!-- Ventas -->
-        <div class="col-md-6">
-            <div class="card dashboard-card">
-                <div class="card-body p-5">
-                    <div class="icon-box icon-green mb-4">
-                         <i class="bi bi-cart3 text-white fs-1"></i>
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <div class="bg-light rounded-4 d-inline-flex p-3 mb-4">
+                        <i class="bi bi-cart3 fs-2 text-dark"></i>
                     </div>
 
-                    <h2 class="stat-value">$0.00</h2>
-                    <p class="stat-label">Ventas del día</p>
+                    <h1 class="fw-bold">$0.00</h1>
+                    <p class="text-secondary mb-0">Ventas del día</p>
+
                 </div>
             </div>
         </div>
 
         <!-- Productos -->
-        <div class="col-md-6">
-            <div class="card dashboard-card">
-                <div class="card-body p-5">
-                    <div class="icon-box icon-blue mb-4">
-                        <i class="bi bi-box fs-1 text-white"></i>
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <div class="bg-light rounded-4 d-inline-flex p-3 mb-4">
+                        <i class="bi bi-box-seam fs-2 text-dark"></i>
                     </div>
 
-                    <h2 class="stat-value">0</h2>
-                    <p class="stat-label">Productos registrados</p>
+                    <h1 class="fw-bold">0</h1>
+                    <p class="text-secondary mb-0">Productos registrados</p>
+
                 </div>
             </div>
         </div>
 
-        <!-- Bajo stock -->
-        <div class="col-md-6">
-            <div class="card dashboard-card">
-                <div class="card-body p-5">
-                    <div class="icon-box icon-yellow mb-4">
-                        <i class="bi bi-exclamation-triangle fs-1 text-white"></i>
+        <!-- Stock Bajo -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <div class="bg-light rounded-4 d-inline-flex p-3 mb-4">
+                        <i class="bi bi-exclamation-triangle fs-2 text-dark"></i>
                     </div>
 
-                    <h2 class="stat-value">0</h2>
-                    <p class="stat-label">Productos bajo stock</p>
+                    <h1 class="fw-bold">0</h1>
+                    <p class="text-secondary mb-0">Productos bajo stock</p>
+
                 </div>
             </div>
         </div>
 
         <!-- Ganancia -->
-        <div class="col-md-6">
-            <div class="card dashboard-card">
-                <div class="card-body p-5">
-                    <div class="icon-box icon-purple mb-4">
-                        <i class="bi bi-graph-up-arrow fs-1 text-white"></i>
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <div class="bg-light rounded-4 d-inline-flex p-3 mb-4">
+                        <i class="bi bi-graph-up-arrow fs-2 text-dark"></i>
                     </div>
 
-                    <h2 class="stat-value">$0.00</h2>
-                    <p class="stat-label">Ganancia estimada</p>
+                    <h1 class="fw-bold">$0.00</h1>
+                    <p class="text-secondary mb-0">Ganancia estimada</p>
+
                 </div>
             </div>
         </div>
 
     </div>
 
-</div>
-    <div class="card shadow-sm border-0 rounded-4 p-4">
-    
-    <h2 class="fw-bold mb-4">Accesos Rápidos</h2>
+    <!-- Accesos rápidos -->
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
 
-    <div class="row g-4">
+            <h2 class="fw-bold mb-4">Accesos Rápidos</h2>
 
-        <!-- Nueva Venta -->
-        <div class="col-md-4">
-            <div class="card h-100 border-2 rounded-4">
-                <div class="card-body p-4">
-                    <i class="bi bi-cart3 fs-1 text-primary"></i>
+            <div class="row g-4">
 
-                    <h3 class="fw-bold mt-3 mb-2">Nueva Venta</h3>
-                    <p class="text-secondary mb-0">
-                        Registrar una venta
-                    </p>
+                <!-- Nueva Venta -->
+                <div class="col-lg-4">
+                    <div class="card h-100 border rounded-4">
+                        <div class="card-body p-4">
+
+                            <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
+                                <i class="bi bi-cart3 fs-2 text-dark"></i>
+                            </div>
+
+                            <h3 class="h2 fw-semibold">
+                                Nueva Venta
+                            </h3>
+
+                            <p class="text-secondary mb-0">
+                                Registrar una venta
+                            </p>
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Productos -->
-        <div class="col-md-4">
-            <div class="card h-100 border-2 rounded-4">
-                <div class="card-body p-4">
-                    <i class="bi bi-box-seam fs-1 text-primary"></i>
+                <!-- Productos -->
+                <div class="col-lg-4">
+                    <div class="card h-100 border rounded-4">
+                        <div class="card-body p-4">
 
-                    <h3 class="fw-bold mt-3 mb-2">Productos</h3>
-                    <p class="text-secondary mb-0">
-                        Gestionar productos
-                    </p>
+                            <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
+                                <i class="bi bi-box-seam fs-2 text-dark"></i>
+                            </div>
+
+                            <h3 class="h2 fw-semibold">
+                                Productos
+                            </h3>
+
+                            <p class="text-secondary mb-0">
+                                Gestionar productos
+                            </p>
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Compras -->
-        <div class="col-md-4">
-            <div class="card h-100 border-2 rounded-4">
-                <div class="card-body p-4">
-                    <i class="bi bi-graph-up-arrow fs-1 text-primary"></i>
+                <!-- Compras -->
+                <div class="col-lg-4">
+                    <div class="card h-100 border rounded-4">
+                        <div class="card-body p-4">
 
-                    <h3 class="fw-bold mt-3 mb-2">Compras</h3>
-                    <p class="text-secondary mb-0">
-                        Registrar compra
-                    </p>
+                            <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
+                                <i class="bi bi-graph-up-arrow fs-2 text-dark"></i>
+                            </div>
+
+                            <h3 class="h2 fw-semibold">
+                                Compras
+                            </h3>
+
+                            <p class="text-secondary mb-0">
+                                Registrar compra
+                            </p>
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
+            </div>
+
+        </div>
     </div>
 
 </div>

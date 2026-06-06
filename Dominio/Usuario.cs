@@ -10,6 +10,7 @@ namespace Dominio
 {
     internal class Usuario
     {
+        int id { get; set;}
         string nombre { get; set; }
         string email { get; set; }
         string password { get; set; }

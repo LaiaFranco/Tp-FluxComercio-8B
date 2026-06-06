@@ -24,7 +24,7 @@
             <div class="d-flex align-items-center">
 
                 <div class="me-3">
-                    <i class="bi bi-cart3 fs-1"></i>
+                    <img src="logoFLUX.png" alt="Logo" class="logo-sidebar me-3" style =" width: 120px;height: 120px;object-fit: contain;">
                 </div>
 
                 <div>
@@ -75,7 +75,7 @@
                     <a id="lnkFlux" runat="server"
                         class="nav-link px-4 py-3"
                         href="#">
-                        Flux
+                        FLUX
                     </a>
                 </li>
 

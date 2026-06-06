@@ -11,7 +11,6 @@ namespace Dominio
     {
         int id { get; set; }
         string nombre { get; set; }
-
         string descripcion { get; set; }
         bool activo { get; set; }
 

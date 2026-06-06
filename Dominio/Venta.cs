@@ -15,5 +15,6 @@ namespace Dominio
         int numFactura { get; set; }
         Usuario usuario { get; set; }
         Cliente cliente { get; set; }
+        Imagen imagen { get; set; }
     }
 }

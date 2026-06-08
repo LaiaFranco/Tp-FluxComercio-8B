@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    internal class Usuario
+    public class Usuario
     {
-        int id { get; set;}
-        string nombre { get; set; }
-        string email { get; set; }
-        string password { get; set; }
-        Rol rol { get; set; }
-        Imagen fotoPerfil { get; set; }
-        bool activo { get; set; }
+        public int Id { get; set;}
+
+        public string Dni {  get; set;}    
+        public string Nombre { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public Rol Rol { get; set; }
+        public Imagen FotoPerfil { get; set; }
+        public bool Activo { get; set; }
     }
 }
 

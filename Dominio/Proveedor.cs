@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    internal class Proveedor
+    public class Proveedor
     {
-        int id { get; set; }
-        string cuil { get; set; }
-        string nombre { get; set; }
-        string email { get; set; }
-        string telefono { get; set; }
-        string direccion { get; set; }
-        bool activo { get; set; }
+        public int id { get; set; }
+        public string cuil { get; set; }
+        public string nombre { get; set; }
+        public string email { get; set; }
+        public string telefono { get; set; }
+        public string direccion { get; set; }
+        public bool activo { get; set; }
     }
 }

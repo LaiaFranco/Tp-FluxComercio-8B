@@ -14,3 +14,8 @@ TestResults/
 appsettings.Development.json
 web.Debug.config
 web.Release.config
+
+# Archivos compilados
+bin/
+obj/
+.vs/

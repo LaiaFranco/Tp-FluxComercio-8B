@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    public class DetalleMovimiento
+    abstract class DetalleMovimiento
     {
-       public int id { get; set; }
-       public Producto producto { get; set; }
-       public float cantidad { get; set; }
-       public float precioUnitario { get; set; }
-       public float subtotal { get; set; }
+        int id { get; set; }
+        Producto producto { get; set; }
+        float cantidad { get; set; }
+        float precioUnitario { get; set; }
+        float subtotal { get; set; }
     }
 }

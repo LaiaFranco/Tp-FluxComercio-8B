@@ -11,7 +11,7 @@ namespace Dominio
        public int Id { get; set; }
        public DetalleVenta DetalleVenta { get; set; }
        public DateTime Fecha { get; set; }
-       public float Total { get; set; }
+       public decimal Total { get; set; }
        public int NumFactura { get; set; }
        public Usuario Usuario { get; set; }
        public Cliente Cliente { get; set; }

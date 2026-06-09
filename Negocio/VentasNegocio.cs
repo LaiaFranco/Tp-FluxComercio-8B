@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Dominio;
 using negocio;
-using Negocio;
 
 namespace Negocio
 {
@@ -20,8 +19,7 @@ namespace Negocio
             try
             {
                
-
-                Datos.setearProcedimiento("storedVentas");
+                Datos.setearProcedimiento("storedListarVentas");
                 Datos.ejecutarLectura();
 
                 while (Datos.Lector.Read())
@@ -103,9 +101,8 @@ namespace Negocio
 
                 Datos.setearProcedimiento("storedActualizarVenta");
                 Datos.setearParametro("@idVenta", id);
-                Datos.setearParametro("@activo", activo);  
+                Datos.setearParametro("@activo", false);   
                 Datos.ejecutarAccion();
-
 
             }
             catch(Exception ex)

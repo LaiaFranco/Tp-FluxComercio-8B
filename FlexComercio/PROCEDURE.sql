@@ -1,63 +1,105 @@
-use FLUXCOMMERCE 
-Go
+USE FLUXCOMMERCE;
+GO
 
-CREATE PROCEDURE storedVentas
+CREATE OR ALTER PROCEDURE storedVentas
     @Id_Cliente INT,
     @Id_Usuario INT,
-    @Total DECIMAL(1,1) = 0  
+    @Total DECIMAL(10,2) = 0
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Validar que el cliente exista
-    IF NOT EXISTS (SELECT 1 FROM Cliente WHERE Id_Cliente = @Id_Cliente)
-    BEGIN
-        RAISERROR('El cliente con ID %d no existe.', 16, 1, @Id_Cliente);
-        RETURN;
-    END
-
-    -- Validar que el usuario exista
     IF NOT EXISTS (SELECT 1 FROM Usuario WHERE Id_Usuario = @Id_Usuario)
     BEGIN
         RAISERROR('El usuario con ID %d no existe.', 16, 1, @Id_Usuario);
         RETURN;
     END
 
-    -- Validar que el total no exceda el rango de DECIMAL(1,1)
-    IF @Total < -9.9 OR @Total > 9.9
+    IF @Total < -99999999.99 OR @Total > 99999999.99
     BEGIN
-        RAISERROR('El total debe estar entre -9.9 y 9.9 (DECIMAL(1,1)).', 16, 1);
+        RAISERROR('El total está fuera del rango permitido para DECIMAL(10,2).', 16, 1);
         RETURN;
     END
 
-    -- Insertar la venta (Fecha usa DEFAULT, Numero_Factura e Id_venta son identity)
     INSERT INTO Venta (Id_Cliente, Id_Usuario, Total)
     VALUES (@Id_Cliente, @Id_Usuario, @Total);
 
-    -- Retornar el ID de venta generado y el número de factura
     SELECT 
         Id_venta, 
-        Numero_Factura 
+        Fecha,
+        Numero_Factura,
+        Total
     FROM Venta 
     WHERE Id_venta = SCOPE_IDENTITY();
 END
 GO
 
--- Actualizar
-CREATE PROCEDURE storedActualizarVenta
+USE FLUXCOMMERCE;
+GO
+
+CREATE OR ALTER PROCEDURE storedActualizarVenta
     @idVenta INT,
     @idCliente INT = NULL,
     @idUsuario INT = NULL,
-    @total DECIMAL(1,1) = NULL,
-    @activo BIT = NULL
+    @total DECIMAL(10,2) = NULL
 AS
 BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM Venta WHERE Id_venta = @idVenta)
+    BEGIN
+        RAISERROR('La venta con ID %d no existe.', 16, 1, @idVenta);
+        RETURN;
+    END
+
+    IF @idUsuario IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuario WHERE Id_Usuario = @idUsuario)
+    BEGIN
+        RAISERROR('El usuario con ID %d no existe.', 16, 1, @idUsuario);
+        RETURN;
+    END
+
     UPDATE Venta SET
         Id_Cliente = ISNULL(@idCliente, Id_Cliente),
         Id_Usuario = ISNULL(@idUsuario, Id_Usuario),
-        Total = ISNULL(@total, Total),
-        Activo = ISNULL(@activo, Activo)
+        Total = ISNULL(@total, Total)
+    WHERE Id_venta = @idVenta;
+
+    SELECT 
+        Id_venta, 
+        Fecha, 
+        Id_Cliente, 
+        Id_Usuario, 
+        Total, 
+        Numero_Factura
+    FROM Venta 
     WHERE Id_venta = @idVenta;
 END
+GO
 
---Actualizar
+USE FLUXCOMMERCE;
+GO
+
+CREATE OR ALTER PROCEDURE storedListarVentas
+AS
+BEGIN
+    SELECT 
+        V.Id_venta,
+        V.Fecha,
+        V.Id_Cliente,
+        V.Id_Usuario,
+        V.Total,
+        V.Numero_Factura,
+        U.Nombre AS UsuarioNombre,
+        U.Dni AS UsuarioDni,
+        U.Activo AS UsuarioActivo,
+        C.Nombre AS ClienteNombre,
+        C.Apellido AS ClienteApellido,
+        C.Dni AS ClienteDni,
+        C.Email AS ClienteEmail,
+        C.Telefono AS ClienteTelefono
+    FROM Venta V
+    INNER JOIN Usuario U ON V.Id_Usuario = U.Id_usuario
+    INNER JOIN Cliente C ON V.Id_Cliente = C.Id_cliente
+    ORDER BY V.Fecha DESC;
+END
+GO

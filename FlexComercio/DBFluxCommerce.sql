@@ -133,4 +133,5 @@ INSERT INTO Venta (Id_Cliente, Id_Usuario, Total) VALUES (@idCliente3, @idUsuari
 INSERT INTO Venta (Id_Cliente, Id_Usuario, Total) VALUES (@idCliente1, @idUsuario, 45.20);
 GO
 
-SELECT * FROM Venta;
+SELECT * FROM Venta;  
+--v1

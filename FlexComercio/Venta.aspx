@@ -10,11 +10,9 @@
             <h1 class="fw-bold mb-0">Ventas</h1>
             <p class="text-secondary fs-4 mb-0">Punto de venta</p>
         </div>
-
-        <button class="btn btn-dark btn-lg px-4 py-3 rounded-4">
-            <i class="bi bi-plus-lg me-2"></i>
-            Nueva Venta
-        </button>
+       <asp:Button ID="btnPuntoVenta" runat="server" Text="Agrear venta" CssClass="btn btn-dark btn-lg px-4 py-3 rounded-4" />
+      
+      
     </div>
 
     <!-- Contenedor principal -->

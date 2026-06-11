@@ -8,14 +8,14 @@ namespace Dominio
 {
     public class Cliente
     {
-        int id { get; set; }
-        string dni { get; set; }
-        string nombre { get; set; }
-        string apellido { get; set; }
-        string mail { get; set; }
-        string telefono { get; set; }
-        string direccion { get; set; }
-        Imagen imagen { get; set; }
-        bool activo { get; set; }
+        public int Id { get; set; }
+        public string Dni { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public string Email { get; set; }
+        public string Telefono { get; set; }
+        public string Direccion { get; set; }
+        public Imagen Imagen { get; set; }
+        public bool Activo { get; set; }
     }
 }

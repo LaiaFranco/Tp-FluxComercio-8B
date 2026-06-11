@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    internal class Producto
+    public class Producto
     {
-        int id { get; set; }
-        string nombre { get; set; }
-        Marca marca { get; set; }
-        Categoria categoria { get; set; }
-        string descripcion { get; set; }
-        float stocmkActual { get; set; }
-        float stockMinimo { get; set; }
-        float porcentajeGanancia { get; set; }
-        Imagen imagen { get; set; }
-        Proveedor proveedor { get; set; }
-        bool activo { get; set; }
+       public int id { get; set; }
+        public string nombre { get; set; }
+        public Marca marca { get; set; }
+        public Categoria categoria { get; set; }
+        public string descripcion { get; set; }
+        public float stocmkActual { get; set; }
+        public float stockMinimo { get; set; }
+        public float porcentajeGanancia { get; set; }
+        public Imagen imagen { get; set; }
+        public Proveedor proveedor { get; set; }
+        public bool activo { get; set; }
     }
 }
 

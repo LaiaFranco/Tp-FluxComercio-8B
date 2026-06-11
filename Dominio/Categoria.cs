@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    internal class Categoria
+    public class Categoria
     {
-        int id { get; set; }
-        string nombre { get; set; }
-        string descripcion { get; set; }
-        bool activo { get; set; }
+        public int id { get; set; }
+        public string nombre { get; set; }
+        public string descripcion { get; set; }
+        public bool activo { get; set; }
 
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Configuration;
 
 namespace negocio
 {
@@ -13,6 +14,7 @@ namespace negocio
         private SqlConnection conexion;
         private SqlCommand comando;
         private SqlDataReader lector;
+
         public SqlDataReader Lector
         {
             get { return lector; }
@@ -20,27 +22,26 @@ namespace negocio
 
         public AccesoDatos()
         {
-            conexion = new SqlConnection(ConfigurationManager.AppSettings["cadenaConexion"]);
-            //conexion = new SqlConnection("server=.\\SQLEXPRESS; database=POKEDEX_DB; integrated security=true");
+            conexion = new SqlConnection("server=.\\SQLEXPRESS; database=COMERCIO_DB; integrated security=true");
             comando = new SqlCommand();
         }
 
         public void setearConsulta(string consulta)
         {
-            comando.CommandType = System.Data.CommandType.Text;
+            comando.CommandType = CommandType.Text;
             comando.CommandText = consulta;
         }
 
-        public void setearProcedimiento(string sp)
+        public void setearProcedimiento(string procedimiento)
         {
-            comando.CommandType = System.Data.CommandType.StoredProcedure;
-            comando.CommandText = sp;
-
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.CommandText = procedimiento;
         }
 
         public void ejecutarLectura()
         {
             comando.Connection = conexion;
+
             try
             {
                 conexion.Open();
@@ -55,6 +56,7 @@ namespace negocio
         public void ejecutarAccion()
         {
             comando.Connection = conexion;
+
             try
             {
                 conexion.Open();
@@ -66,13 +68,14 @@ namespace negocio
             }
         }
 
-        public int ejecutarAccionScalar()
+        public object ejecutarAccionScalar()
         {
             comando.Connection = conexion;
+
             try
             {
                 conexion.Open();
-                return int.Parse(comando.ExecuteScalar().ToString());
+                return comando.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -89,8 +92,8 @@ namespace negocio
         {
             if (lector != null)
                 lector.Close();
+
             conexion.Close();
         }
-
     }
 }

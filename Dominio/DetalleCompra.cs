@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    internal class DetalleCompra : DetalleMovimiento
+    public class DetalleCompra : DetalleMovimiento
     {
     }
 }

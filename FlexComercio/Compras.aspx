@@ -28,9 +28,11 @@
             AutoGenerateColumns="false"
             DataKeyNames="id">
             <Columns>
-                <asp:BoundField HeaderText="ID Detalle" DataField="id" />
-                <asp:BoundField HeaderText="ID Compra" DataField="compra.id" />
-                <asp:BoundField HeaderText="ID Producto" DataField="producto.id" />
+                <asp:TemplateField HeaderText="ID Producto">
+                    <ItemTemplate>
+                        <%# Eval("producto.id") %>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
                 <asp:BoundField HeaderText="Precio Unitario" DataField="precioUnitario" />
                 <asp:BoundField HeaderText="Subtotal" DataField="subtotal" />

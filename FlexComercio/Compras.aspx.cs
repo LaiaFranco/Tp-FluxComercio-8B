@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Negocio;
 
 namespace FlexComercio
 {
@@ -11,7 +12,14 @@ namespace FlexComercio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                DetalleCompraNegocio negocio = new DetalleCompraNegocio();
 
+                Session.Add("listaCompraDetalles", negocio.Listar());
+                dgvCompraDetalles.DataSource = Session["listaCompraDetalles"];
+                dgvCompraDetalles.DataBind();
+            }
         }
     }
 }

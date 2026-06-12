@@ -21,21 +21,23 @@
     </div>
 
     <!-- Card principal -->
-    <div class="card border-0 shadow-sm rounded-4">
+     <div class="card-body">
 
-        <div class="card-body d-flex flex-column justify-content-center align-items-center"
-             style="height: 300px;">
+        <asp:GridView ID="dgvCompraDetalles" runat="server"
+            CssClass="table"
+            AutoGenerateColumns="false"
+            DataKeyNames="id">
+            <Columns>
+                <asp:BoundField HeaderText="ID Detalle" DataField="id" />
+                <asp:BoundField HeaderText="ID Compra" DataField="compra.id" />
+                <asp:BoundField HeaderText="ID Producto" DataField="producto.id" />
+                <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
+                <asp:BoundField HeaderText="Precio Unitario" DataField="precioUnitario" />
+                <asp:BoundField HeaderText="Subtotal" DataField="subtotal" />
+            </Columns>
+      </asp:GridView>
 
-            <i class="bi bi-bag text-secondary"
-               style="font-size: 5rem; opacity: .25;"></i>
-
-            <p class="text-secondary fs-3 mt-3 mb-0">
-                No hay compras registradas
-            </p>
-
-        </div>
-
-    </div>
+     </div>
 
 </div>
 </asp:Content>

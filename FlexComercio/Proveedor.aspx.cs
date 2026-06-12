@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Negocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,14 @@ namespace FlexComercio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                ProveedorNegocio negocio = new ProveedorNegocio();
 
+                Session.Add("listaProveedores", negocio.Listar());
+                dgvProveedores.DataSource = Session["listaProveedores"];
+                dgvProveedores.DataBind();
+            }
         }
     }
 }

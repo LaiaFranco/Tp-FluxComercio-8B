@@ -34,17 +34,19 @@
         </div>
 
         <!-- Estado vacío -->
-        <div class="card-body d-flex flex-column justify-content-center align-items-center"
-             style="height: 300px;">
-
-            <i class="bi bi-truck text-secondary"
-               style="font-size: 5rem; opacity: .4;"></i>
-
-            <p class="text-secondary fs-3 mt-3 mb-0">
-                No hay proveedores registrados
-            </p>
-
-        </div>
+        <asp:GridView ID="dgvProveedores" runat="server"
+            CssClass="table"
+            AutoGenerateColumns="false"
+            DataKeyNames="id">
+            <Columns>
+                <asp:BoundField HeaderText="CUIL" DataField="cuil" />
+                <asp:BoundField HeaderText="Nombre" DataField="nombre" />
+                <asp:BoundField HeaderText="Email" DataField="email" />
+                <asp:BoundField HeaderText="Teléfono" DataField="telefono" />
+                <asp:BoundField HeaderText="Dirección" DataField="direccion" />
+                <asp:CheckBoxField HeaderText="Activo" DataField="activo" />
+            </Columns>
+        </asp:GridView>
 
     </div>
 

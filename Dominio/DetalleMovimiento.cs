@@ -8,11 +8,11 @@ namespace Dominio
 {
     public class DetalleMovimiento
     {
-       public int id { get; set; }
-       public List<Producto> listaProducto { get; set; }
-       public float cantidad { get; set; }
-       public float precioUnitario { get; set; }
-       public float subtotal { get; set; }
+       public int Id { get; set; }
+       public List<Producto> ListaProducto { get; set; }
+       public float Cantidad { get; set; }
+       public float PrecioUnitario { get; set; }
+       public float Subtotal { get; set; }
 
 
     }

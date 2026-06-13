@@ -24,13 +24,13 @@ namespace Negocio
                 {
                     Proveedor aux = new Proveedor();
 
-                    aux.id = (int)datos.Lector["id_proveedor"];
-                    aux.cuil = (string)datos.Lector["cuil"];
-                    aux.nombre = (string)datos.Lector["nombre"];
-                    aux.email = (string)datos.Lector["email"];
-                    aux.telefono = (string)datos.Lector["telefono"];
-                    aux.direccion = (string)datos.Lector["direccion"];
-                    aux.activo = (bool)datos.Lector["activo"];
+                    aux.Id = (int)datos.Lector["id_proveedor"];
+                    aux.Cuil = (string)datos.Lector["cuil"];
+                    aux.Nombre = (string)datos.Lector["nombre"];
+                    aux.Email = (string)datos.Lector["email"];
+                    aux.Telefono = (string)datos.Lector["telefono"];
+                    aux.Direccion = (string)datos.Lector["direccion"];
+                    aux.Activo = (bool)datos.Lector["activo"];
 
                     lista.Add(aux);
                 }

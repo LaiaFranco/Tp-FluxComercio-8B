@@ -9,8 +9,8 @@ namespace Dominio
 {
     public class Imagen
     {
-        int id { get; set; }
+        int Id { get; set; }
         string Url { get; set; }
-        bool activo { get; set; }
+        bool Activo { get; set; }
     }
 }

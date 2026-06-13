@@ -17,7 +17,7 @@ namespace Negocio
 
             try
             {
-                datos.setearProcedimiento(" storedListarProveedores");
+                datos.setearProcedimiento("storedListarProveedores");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -39,7 +39,7 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                throw ex;
+                    throw ex;
             }
             finally
             {

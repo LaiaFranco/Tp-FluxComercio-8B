@@ -13,7 +13,5 @@ namespace Dominio
        public float cantidad { get; set; }
        public float precioUnitario { get; set; }
        public float subtotal { get; set; }
-
-
     }
 }

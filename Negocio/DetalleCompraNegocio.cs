@@ -26,8 +26,9 @@ namespace Negocio
 
                     aux.id = (int)datos.Lector["id_detalle"];
 
-                    aux.producto = new Producto();
+                   /*aux.producto = new Producto();
                     aux.producto.id = (int)datos.Lector["id_producto"];
+                    aux.listaProducto.Add(aux.producto);*/
 
                     aux.cantidad = float.Parse(datos.Lector["cantidad"].ToString());
                     aux.precioUnitario = float.Parse(datos.Lector["precio_unitario"].ToString());

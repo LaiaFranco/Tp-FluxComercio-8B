@@ -98,18 +98,15 @@ namespace Negocio
 
             try
             {
-
-                Datos.setearProcedimiento("storedActualizarVenta");
+                Datos.setearProcedimiento("storedModificarVenta");
                 Datos.setearParametro("@idVenta", id);
                 Datos.setearParametro("@activo", false);   
                 Datos.ejecutarAccion();
-
             }
             catch(Exception ex)
             {
                 throw ex;
             }
-        
         }
 
         public void Modificar(Venta Venta) {
@@ -122,7 +119,7 @@ namespace Negocio
                 Datos.setearParametro("@id", Venta.Id);
                 Datos.setearParametro("@idCliente", Venta.Cliente.Id);
                 Datos.setearParametro("@idUsuario", Venta.Usuario.Id);
-                Datos.setearParametro("@total", Venta.Id);
+                Datos.setearParametro("@total", Venta.Total);
                 Datos.ejecutarAccion();
 
             }

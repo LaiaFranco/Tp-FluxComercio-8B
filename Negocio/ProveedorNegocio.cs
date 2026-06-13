@@ -17,7 +17,7 @@ namespace Negocio
 
             try
             {
-                datos.setearProcedimiento("storedListarProveedores");
+                datos.setearProcedimiento(" storedListarProveedores");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())

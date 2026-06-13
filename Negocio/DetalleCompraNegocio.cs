@@ -25,10 +25,7 @@ namespace Negocio
                     DetalleCompra aux = new DetalleCompra();
 
                     aux.id = (int)datos.Lector["id_detalle"];
-
-                    aux.compra = new Compra();
-                    aux.compra.id = (int)datos.Lector["id_compra"];
-
+                
                     aux.producto = new Producto();
                     aux.producto.id = (int)datos.Lector["id_producto"];
 

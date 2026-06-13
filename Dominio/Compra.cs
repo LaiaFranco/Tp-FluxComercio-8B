@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    internal class Compra
+    public class  Compra
     {
-        int id { get; set; }
-        Proveedor proveedor { get; set; }
-        DateTime fecha { get; set; }
-        float total { get; set; }
-        Usuario usuario { get; set; }
-        DetalleCompra detalleCompra { get; set; }
+        public int id { get; set; }
+        public Proveedor proveedor { get; set; }
+        public DateTime fecha { get; set; }
+        public float total { get; set; }
+        public Usuario usuario { get; set; }
+        public DetalleCompra detalleCompra { get; set; }
     }
 }

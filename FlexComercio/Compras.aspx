@@ -28,17 +28,23 @@
             AutoGenerateColumns="false"
             DataKeyNames="id">
             <Columns>
-
-<%-- 
-<asp:TemplateField HeaderText="ID Producto">
-    <ItemTemplate>
-        <%# Eval("Producto.id") %>
-    </ItemTemplate>
-</asp:TemplateField>
---%>
-                <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
-                <asp:BoundField HeaderText="Precio Unitario" DataField="precioUnitario" />
-                <asp:BoundField HeaderText="Subtotal" DataField="subtotal" />
+                <asp:BoundField HeaderText ="FECHA" DataField  ="Fecha" />
+                <asp:BoundField HeaderText="ID COMPRA" DataField="Id" />
+                <asp:TemplateField HeaderText="ID PROVEEDOR">
+                    <ItemTemplate>
+                        <%# Eval("Proveedor.Id")%>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="ID USUARIO">
+                    <ItemTemplate>
+                        <%# Eval("Usuario.Id") %>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:ButtonField 
+                    HeaderText="DETALLES"
+                    Text="Ver"
+                    CommandName="VerDetalle"
+                    ButtonType="Button" />
             </Columns>
       </asp:GridView>
 

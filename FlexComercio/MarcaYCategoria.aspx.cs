@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Negocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,24 @@ namespace FlexComercio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                
+                MarcaNegocio negocioMarca = new MarcaNegocio();
 
+                Session.Add("listaMarcas", negocioMarca.Listar());
+                dgvMarcas.DataSource = Session["listaMarcas"];
+                dgvMarcas.DataBind();
+
+               
+                CategoriaNegocio negocioCategoria = new CategoriaNegocio();
+
+                Session.Add("listaCategorias", negocioCategoria.Listar());
+                dgvCategorias.DataSource = Session["listaCategorias"];
+                dgvCategorias.DataBind();
+            }
         }
+
+    
     }
 }

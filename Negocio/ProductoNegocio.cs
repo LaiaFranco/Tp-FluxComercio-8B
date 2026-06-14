@@ -25,7 +25,7 @@ namespace Negocio
                 {
                     Producto Producto = new Producto();
 
-                    Producto.Id = (int)Datos.Lector["id_producto"];
+                    /*Producto.Id = (int)Datos.Lector["id_producto"];
                     Producto.Nombre = (string)Datos.Lector["nombre"];
                     Producto.Descripcion = (string)Datos.Lector["descripcion"];
                     Producto.StocmkActual = Convert.ToSingle(Datos.Lector["stock_actual"]);
@@ -64,7 +64,7 @@ namespace Negocio
                     Proveedor.Nombre = (string)Datos.Lector["nombre_proveedor"];
                     Proveedor.Cuil = (string)Datos.Lector["cuil"]; 
 
-                    Producto.Proveedor = Proveedor;
+                    Producto.Proveedor = Proveedor;*/
 
                     Productos.Add(Producto);
                 }

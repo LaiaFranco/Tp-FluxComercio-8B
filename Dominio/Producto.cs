@@ -8,17 +8,17 @@ namespace Dominio
 {
     public class Producto
     {
-       public int id { get; set; }
-        public string nombre { get; set; }
-        public Marca marca { get; set; }
-        public Categoria categoria { get; set; }
-        public string descripcion { get; set; }
-        public float stocmkActual { get; set; }
-        public float stockMinimo { get; set; }
-        public float porcentajeGanancia { get; set; }
-        public Imagen imagen { get; set; }
-        public Proveedor proveedor { get; set; }
-        public bool activo { get; set; }
+       public int Id { get; set; }
+        public string Nombre { get; set; }
+        public Marca Marca { get; set; }
+        public Categoria Categoria { get; set; }
+        public string Descripcion { get; set; }
+        public float StocmkActual { get; set; }
+        public float StockMinimo { get; set; }
+        public float PorcentajeGanancia { get; set; }
+        public Imagen Imagen { get; set; }
+        public Proveedor Proveedor { get; set; }
+        public bool Activo { get; set; }
     }
 }
 

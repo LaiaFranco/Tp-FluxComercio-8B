@@ -24,15 +24,14 @@ namespace Negocio
                 {
                     DetalleCompra aux = new DetalleCompra();
 
-                    aux.id = (int)datos.Lector["id_detalle"];
+                    aux.Id = (int)datos.Lector["id_detalle"];
 
-                   /*aux.producto = new Producto();
-                    aux.producto.id = (int)datos.Lector["id_producto"];
-                    aux.listaProducto.Add(aux.producto);*/
+                   /* aux.producto = new Producto();
+                    aux.producto.id = (int)datos.Lector["id_producto"];*/
 
-                    aux.cantidad = float.Parse(datos.Lector["cantidad"].ToString());
-                    aux.precioUnitario = float.Parse(datos.Lector["precio_unitario"].ToString());
-                    aux.subtotal = float.Parse(datos.Lector["subtotal"].ToString());
+                    aux.Cantidad = float.Parse(datos.Lector["cantidad"].ToString());
+                    aux.PrecioUnitario = float.Parse(datos.Lector["precio_unitario"].ToString());
+                    aux.Subtotal = float.Parse(datos.Lector["subtotal"].ToString());
 
                     lista.Add(aux);
                 }

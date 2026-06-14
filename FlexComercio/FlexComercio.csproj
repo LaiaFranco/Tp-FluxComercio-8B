@@ -72,12 +72,10 @@
   <ItemGroup>
     <Content Include="Cliente.aspx" />
     <Content Include="Compras.aspx" />
-    <Content Include="DBFluxCommerce.sql" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="logoFLUX.png" />
     <Content Include="MarcaYCategoria.aspx" />
-    <Content Include="PROCEDURE.sql" />
     <Content Include="Producto.aspx" />
     <Content Include="Proveedor.aspx" />
     <Content Include="Reporte.aspx" />

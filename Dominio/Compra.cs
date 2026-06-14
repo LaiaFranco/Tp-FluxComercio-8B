@@ -8,11 +8,11 @@ namespace Dominio
 {
     public class Compra
     {
-        int id { get; set; }
-        Proveedor proveedor { get; set; }
-        DateTime fecha { get; set; }
-        float total { get; set; }
-        Usuario usuario { get; set; }
-        DetalleCompra detalleCompra { get; set; }
+        public int Id { get; set; }
+        public Proveedor Proveedor { get; set; }
+        public DateTime Fecha { get; set; }
+        public float Total { get; set; }
+        public Usuario Usuario { get; set; }
+        public DetalleCompra DetalleCompra { get; set; }
     }
 }

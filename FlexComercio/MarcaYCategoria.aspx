@@ -39,7 +39,8 @@
                 ID="btnNuevaMarca"
                 runat="server"
                 Text="Nueva Marca"
-                CssClass="btn btn-dark rounded-4 px-4 py-2" />
+                CssClass="btn btn-dark rounded-4 px-4 py-2"
+                OnClick="btnNuevaMarca_Click"/>
 
         </div>
 

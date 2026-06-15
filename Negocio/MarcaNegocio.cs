@@ -46,7 +46,7 @@ namespace Negocio
             }
         }
 
-        public void Agregar(Marca Marca)
+        public bool Agregar(Marca Marca)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -59,6 +59,7 @@ namespace Negocio
                 Datos.setearParametro("@activo", Marca.Activo);
 
                 Datos.ejecutarAccion();
+                return true;
             }
             catch (Exception ex)
             {

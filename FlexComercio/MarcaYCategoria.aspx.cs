@@ -57,6 +57,11 @@ namespace FlexComercio
             Marca marca = listaMarca[indice];
             Session["marcaSeleccionada"] = marca;
             Response.Redirect("ModificarMarca.aspx"); 
-        } 
+        }
+
+        protected void btnNuevaMarca_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AgregarMarca.aspx");
+        }
     }
 }

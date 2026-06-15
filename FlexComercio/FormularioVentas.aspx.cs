@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace FlexComercio
 {
-    public partial class Venta : System.Web.UI.Page
+    public partial class FormularioVentas : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

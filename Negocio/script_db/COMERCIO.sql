@@ -245,3 +245,14 @@ GO
 ALTER TABLE [dbo].[IMAGENES] WITH CHECK ADD CONSTRAINT [FK_IMAGENES_PRODUCTOS] FOREIGN KEY([id_producto])
 REFERENCES [dbo].[PRODUCTOS] ([id_producto])
 GO
+
+CREATE TABLE [dbo].[imagenes] (
+    id_imagen INT IDENTITY(1,1) NOT NULL,
+    url VARCHAR(500) NOT NULL,
+    orden INT DEFAULT 0,
+    activo BIT DEFAULT 1,
+    tipo_entidad VARCHAR(20) NOT NULL,
+    id_entidad INT NOT NULL,
+    CONSTRAINT PK_imagenes PRIMARY KEY (id_imagen)
+);
+GO

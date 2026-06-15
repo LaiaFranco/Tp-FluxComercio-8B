@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,8 +14,9 @@ namespace Dominio
         public Marca Marca { get; set; }
         public Categoria Categoria { get; set; }
         public string Descripcion { get; set; }
-        public float StocmkActual { get; set; }
+        public float StockActual { get; set; }
         public float StockMinimo { get; set; }
+        public float Precio { get;  set; }
         public float PorcentajeGanancia { get; set; }
         public Imagen Imagen { get; set; }
         public Proveedor Proveedor { get; set; }

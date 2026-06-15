@@ -111,8 +111,9 @@
                                             runat="server"
                                             Text="Modificar"
                                             CssClass="btn btn-outline-warning rounded-pill" 
+                                            CommandArgument='<%# Container.DataItemIndex %>'
+                                            OnClick ="btnModificarMarca_Click"
                                             />
-
                                     </div>
 
                                 </div>

@@ -42,7 +42,41 @@ namespace FlexComercio
             int id = marca.Id;
             bool activo = marca.Activo;
 
-            negocio.Eliminar(id, activo); 
+            bool exito = negocio.Eliminar(id, activo);
+            if (exito)
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'La marca se elimino ',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location = 'MarcaYCategoria.aspx';
+                    });
+                ";
+                ClientScript.RegisterStartupScript(this.GetType(), "SweetAlert", script, true);
+
+            }
+            else
+            {
+                string script = @"
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo eliminar la marca',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                ";
+
+                ClientScript.RegisterStartupScript(
+                       this.GetType(),
+                       "SweetAlertError",
+                       script,
+                       true
+                );
+            }
+
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)

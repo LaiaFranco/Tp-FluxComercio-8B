@@ -48,8 +48,9 @@
                             <asp:Button
                                 ID="btnGuardar"
                                 runat="server"
-                                Text="Guardar Cambios"
+                                Text="Guardar"
                                 CssClass="btn btn-success rounded-pill px-4"
+                                OnClick ="btnGuardar_Click"
                                  />
 
                             <asp:Button
@@ -70,5 +71,6 @@
         </div>
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </asp:Content>

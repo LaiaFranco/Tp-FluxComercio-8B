@@ -5,7 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Dominio; 
+using Dominio;
+using Microsoft.Win32;
 
 namespace FlexComercio
 {
@@ -46,5 +47,16 @@ namespace FlexComercio
             Session["marcaSeleccionada"] = marca;
             Response.Redirect("EliminarMarca.aspx");
         }
+
+        protected void btnModificarMarca_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int indice = int.Parse(btn.CommandArgument);
+            List<Marca> listaMarca = (List<Marca>)Session["listaMarcas"];
+
+            Marca marca = listaMarca[indice];
+            Session["marcaSeleccionada"] = marca;
+            Response.Redirect("ModificarMarca.aspx"); 
+        } 
     }
 }

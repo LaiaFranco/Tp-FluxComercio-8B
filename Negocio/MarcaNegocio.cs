@@ -70,7 +70,7 @@ namespace Negocio
             }
         }
 
-        public void Eliminar(int id, bool activo = false)
+        public bool Eliminar(int id, bool activo = false)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -81,6 +81,7 @@ namespace Negocio
                 Datos.setearParametro("@activo", activo);
 
                 Datos.ejecutarAccion();
+                return true; 
             }
             catch (Exception ex)
             {
@@ -92,7 +93,7 @@ namespace Negocio
             }
         }
 
-        public void Modificar(Marca marca)
+        public bool Modificar(Marca marca)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -106,6 +107,7 @@ namespace Negocio
                 Datos.setearParametro("@activo", marca.Activo);
 
                 Datos.ejecutarAccion();
+                return true; 
             }
             catch (Exception ex)
             {

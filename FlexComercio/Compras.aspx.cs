@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Dominio;
 using Negocio;
 
 namespace FlexComercio
@@ -17,10 +16,16 @@ namespace FlexComercio
             {
                 CompraNegocio negocio = new CompraNegocio();
 
-                Session.Add("listaCompra", negocio.Listar());
-                dgvCompraDetalles.DataSource = Session["listaCompra"];
-                dgvCompraDetalles.DataBind();
+                Session.Add("listaCompras", negocio.Listar());
+                dgvCompras.DataSource = Session["listaCompras"];
+                dgvCompras.DataBind();
             }
+        }
+
+        protected void dgvCompras_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string id = dgvCompras.SelectedDataKey.Value.ToString();
+            Response.Redirect("CompraDetalle.aspx?id=" + id);
         }
     }
 }

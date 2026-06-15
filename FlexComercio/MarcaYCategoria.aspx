@@ -50,7 +50,7 @@
                 runat="server"
                 AutoGenerateColumns="false"
                 CssClass="table border-0"
-                DataKeyNames="Id">
+                DataKeyNames="Id" OnSelectedIndexChanged="dgvMarcas_SelectedIndexChanged">
 
                 <Columns>
 
@@ -101,13 +101,17 @@
                                             ID="btnEliminarMarca"
                                             runat="server"
                                             Text="Eliminar"
-                                            CssClass="btn btn-outline-danger rounded-pill me-2" />
+                                            CssClass="btn btn-outline-danger rounded-pill me-2"
+                                            CommandArgument='<%# Container.DataItemIndex %>'
+                                            OnClick="btnEliminarMarca_Click"
+                                            />
 
                                         <asp:Button
                                             ID="btnModificarMarca"
                                             runat="server"
                                             Text="Modificar"
-                                            CssClass="btn btn-outline-warning rounded-pill" />
+                                            CssClass="btn btn-outline-warning rounded-pill" 
+                                            />
 
                                     </div>
 
@@ -212,7 +216,7 @@
                                             ID="btnEliminarCategoria"
                                             runat="server"
                                             Text="Eliminar"
-                                            CssClass="btn btn-outline-danger rounded-pill me-2" />
+                                            CssClass="btn btn-outline-danger rounded-pill me-2"/>
 
                                         <asp:Button
                                             ID="btnModificarCategoria"

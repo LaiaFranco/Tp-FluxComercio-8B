@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Dominio; 
 
 namespace FlexComercio
 {
@@ -30,6 +31,20 @@ namespace FlexComercio
             }
         }
 
-    
+        protected void dgvMarcas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnEliminarMarca_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int indice = int.Parse(btn.CommandArgument);
+            List<Marca> listaMarca = (List<Marca>)Session["listaMarcas"];
+
+            Marca marca = listaMarca[indice];
+            Session["marcaSeleccionada"] = marca;
+            Response.Redirect("EliminarMarca.aspx");
+        }
     }
 }

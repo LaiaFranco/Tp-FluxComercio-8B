@@ -1,9 +1,9 @@
-﻿using Dominio; 
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dominio;
 using negocio;
 
 
@@ -13,55 +13,48 @@ namespace Negocio
     {
         public List<Compra> Listar()
         {
-            AccesoDatos Datos = new AccesoDatos();
-            List<Compra> Compras = new List<Compra>();
+            List<Compra> lista = new List<Compra>();
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                Datos.setearProcedimiento("storedListarCompras");
-                Datos.ejecutarLectura();
+                datos.setearProcedimiento("storedListarCompras");
+                datos.ejecutarLectura();
 
-                while (Datos.Lector.Read())
+                while (datos.Lector.Read())
                 {
-                    Compra Compra = new Compra();
+                    Compra aux = new Compra();
 
-                    /*Compra.Id = (int)Datos.Lector["id_compra"];
-                    Compra.Total = (float)Datos.Lector["total"];
-                    Compra.Fecha = (DateTime)Datos.Lector["fecha"];
+                    aux.Id = (int)datos.Lector["id_compra"];
+                    aux.Fecha = (DateTime)datos.Lector["fecha"];
+                    aux.Total = (decimal)datos.Lector["total"];
 
+                    aux.Proveedor = new Proveedor();
+                    aux.Proveedor.Id = (int)datos.Lector["id_proveedor"];
+                    aux.Proveedor.Cuil = (string)datos.Lector["cuil"];
+                    aux.Proveedor.Nombre = (string)datos.Lector["nombre_proveedor"];
 
-                    Proveedor Proveedor = new Proveedor();
-                    Proveedor.Id = (int)Datos.Lector["id_proveedor"];
-                    Proveedor.Cuil = (string)Datos.Lector["cuil"];
-                    Proveedor.Nombre = (string)Datos.Lector["nombre_proveedor"];
-                    Proveedor.Activo = (bool)Datos.Lector["activo"];
+                    aux.Usuario = new Usuario();
+                    aux.Usuario.Id = (int)datos.Lector["id_usuario"];
+                    aux.Usuario.Nombre = (string)datos.Lector["nombre_usuario"];
 
-                    Usuario Usuario = new Usuario();
-                    Usuario.Id = (int)Datos.Lector["id_usuario"];
-                    Usuario.Rol = (Rol)Datos.Lector["rol_usuario"];
+                    aux.Usuario.Rol = new Rol();
+                    aux.Usuario.Rol.Id = (int)datos.Lector["id_rol"];
+                    aux.Usuario.Rol.Nombre = (string)datos.Lector["nombre_rol"];
 
-                    DetalleCompra DetalleCompra = new DetalleCompra();
-                    DetalleCompra.Id = (int)Datos.Lector["id_detalleCompra"];
-
-
-                    Compra.Usuario = Usuario;
-                    Compra.Proveedor = Proveedor;*/
-
-                    Compras.Add(Compra); 
+                    lista.Add(aux);
                 }
-                
-                return Compras;     
+
+                return lista;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally
             {
-                Datos.cerrarConexion(); 
+                datos.cerrarConexion();
             }
         }
-
     }
 }

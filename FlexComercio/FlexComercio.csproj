@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cliente.aspx" />
+    <Content Include="CompraDetalle.aspx" />
     <Content Include="Compras.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -89,6 +90,13 @@
     </Compile>
     <Compile Include="Cliente.aspx.designer.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CompraDetalle.aspx.cs">
+      <DependentUpon>CompraDetalle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CompraDetalle.aspx.designer.cs">
+      <DependentUpon>CompraDetalle.aspx</DependentUpon>
     </Compile>
     <Compile Include="Compras.aspx.cs">
       <DependentUpon>Compras.aspx</DependentUpon>

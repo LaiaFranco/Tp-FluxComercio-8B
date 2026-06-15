@@ -10,7 +10,8 @@ namespace Dominio
     {
        public int Id { get; set; }
        public List<Producto> ListaProducto { get; set; }
-       public float Cantidad { get; set; }
+        public Producto producto { get; set; }
+        public float Cantidad { get; set; }
        public float PrecioUnitario { get; set; }
        public float Subtotal { get; set; }
 

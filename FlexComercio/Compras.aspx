@@ -23,30 +23,22 @@
     <!-- Card principal -->
      <div class="card-body">
 
-        <asp:GridView ID="dgvCompraDetalles" runat="server"
+        <asp:GridView ID="dgvCompras" runat="server"
             CssClass="table"
             AutoGenerateColumns="false"
-            DataKeyNames="id">
+            DataKeyNames="id"
+            OnSelectedIndexChanged="dgvCompras_SelectedIndexChanged">
             <Columns>
-                <asp:BoundField HeaderText ="FECHA" DataField  ="Fecha" />
-                <asp:BoundField HeaderText="ID COMPRA" DataField="Id" />
-                <asp:TemplateField HeaderText="ID PROVEEDOR">
-                    <ItemTemplate>
-                        <%# Eval("Proveedor.Id")%>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="ID USUARIO">
-                    <ItemTemplate>
-                        <%# Eval("Usuario.Id") %>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:ButtonField 
-                    HeaderText="DETALLES"
-                    Text="Ver"
-                    CommandName="VerDetalle"
-                    ButtonType="Button" />
+                <asp:BoundField HeaderText="FECHA" DataField="fecha" DataFormatString="{0:dd/MM/yyyy}" />
+                <asp:BoundField HeaderText="IDCOMPRA" DataField="id" />
+                <asp:BoundField HeaderText="TOTAL COMPRA" DataField="total" />
+                <asp:BoundField HeaderText="USUARIO" DataField="usuario.Nombre" />
+                <asp:BoundField HeaderText="ROL" DataField="usuario.Rol.nombre" />
+                <asp:BoundField HeaderText="CUIL PROVEEDOR" DataField="proveedor.cuil" />
+                <asp:BoundField HeaderText="NOMBRE PROVEEDOR" DataField="proveedor.nombre" />
+                <asp:CommandField HeaderText="VER MAS" ShowSelectButton="true" SelectText="Detalle" />
             </Columns>
-      </asp:GridView>
+        </asp:GridView>
 
      </div>
 

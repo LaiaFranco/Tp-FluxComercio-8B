@@ -63,5 +63,20 @@ namespace FlexComercio
         {
             Response.Redirect("AgregarMarca.aspx");
         }
+
+        protected void btnNuevaCategoria_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AgregarCategoria.aspx"); 
+        }
+
+        protected void btnEliminarCategoria_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnModificarCategoria_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

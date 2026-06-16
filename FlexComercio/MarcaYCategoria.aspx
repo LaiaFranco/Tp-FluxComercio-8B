@@ -156,7 +156,8 @@
                 ID="btnNuevaCategoria"
                 runat="server"
                 Text="Nueva Categoría"
-                CssClass="btn btn-dark rounded-4 px-4 py-2" />
+                CssClass="btn btn-dark rounded-4 px-4 py-2"
+                OnClick="btnNuevaCategoria_Click"/>
 
         </div>
 
@@ -218,13 +219,18 @@
                                             ID="btnEliminarCategoria"
                                             runat="server"
                                             Text="Eliminar"
-                                            CssClass="btn btn-outline-danger rounded-pill me-2"/>
+                                            CssClass="btn btn-outline-danger rounded-pill me-2"
+                                            CommandArgument='<%# Container.DataItemIndex %>'
+                                            OnClick="btnEliminarCategoria_Click"
+                                            />
 
                                         <asp:Button
                                             ID="btnModificarCategoria"
                                             runat="server"
                                             Text="Modificar"
-                                            CssClass="btn btn-outline-warning rounded-pill" />
+                                            CssClass="btn btn-outline-warning rounded-pill" 
+                                            CommandArgument='<%# Container.DataItemIndex %>'
+                                            OnClick="btnModificarCategoria_Click"/>
 
                                     </div>
 

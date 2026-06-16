@@ -48,7 +48,7 @@ namespace Negocio
         }
 
 
-        public void Agregar(Categoria Categoria)
+        public bool Agregar(Categoria Categoria)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -61,7 +61,8 @@ namespace Negocio
                 Datos.setearParametro("@descripcion",Categoria.Descripcion);
                 Datos.setearParametro("@activo",Categoria.Activo);
 
-                Datos.ejecutarAccion(); 
+                Datos.ejecutarAccion();
+                return true; 
 
             }
             catch (Exception ex)

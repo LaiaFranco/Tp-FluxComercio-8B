@@ -1,44 +1,42 @@
 ﻿using Dominio;
-using Negocio;
+using Negocio; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace FlexComercio
 {
-    public partial class ModificarMarca : System.Web.UI.Page
+    public partial class AgregarCategoria : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
 
-                Marca marca = new Marca();
-                marca = (Marca)Session["marcaSeleccionada"];
-                txtNombre.Text = marca.Nombre;
-                txtDescripcion.Text = marca.Descripcion;
             }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            Marca marca = new Marca();
-            MarcaNegocio negocio = new MarcaNegocio(); 
+            Categoria categoria = new Categoria();
+            CategoriaNegocio negocio = new CategoriaNegocio();
 
-            marca = (Marca)Session["marcaSeleccionada"];
-            marca.Nombre = txtNombre.Text;
-            marca.Descripcion = txtDescripcion.Text;
+            categoria.Nombre = txtNombre.Text;
+            categoria.Descripcion = txtDescripcion.Text;
+            string opcion = ddlEstado.SelectedValue;
+            bool op = opcion == "Activo";
 
-            bool exito = negocio.Modificar(marca); 
-            if (exito)
+            bool ok = negocio.Agregar(categoria);
+            if (ok)
             {
                 string script = @"
                     Swal.fire({
                         title: 'Éxito',
-                        text: 'La marca se modificó correctamente',
+                        text: 'La categoria se agrego correctamente',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
@@ -46,26 +44,27 @@ namespace FlexComercio
                     });
                 ";
                 ClientScript.RegisterStartupScript(this.GetType(), "SweetAlert", script, true);
-
             }
             else
             {
                 string script = @"
                 Swal.fire({
                     title: 'Error',
-                    text: 'No se pudo modificar la marca',
+                    text: 'No se pudo agregar la categoria',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
                 ";
 
-                 ClientScript.RegisterStartupScript(
-                        this.GetType(),
-                        "SweetAlertError",
-                        script,
-                        true
-                 );
+                ClientScript.RegisterStartupScript(
+                       this.GetType(),
+                       "SweetAlertError",
+                       script,
+                       true
+                );
             }
+
+
         }
     }
 }

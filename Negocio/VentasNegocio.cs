@@ -34,12 +34,7 @@ namespace Negocio
                     venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"].ToString();
                     venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"].ToString();
                     
-                    // Usuario
-                    venta.Usuario = new Usuario();
-                    venta.Usuario.Id = (int)datos.Lector["id_usuario"];
-                    venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"];
-                    venta.Usuario.Activo = (bool)datos.Lector["activo"];
-
+             
 
 
                     ventas.Add(venta);

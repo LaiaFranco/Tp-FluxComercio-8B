@@ -16,7 +16,7 @@ namespace Dominio
         public string Descripcion { get; set; }
         public float StockActual { get; set; }
         public float StockMinimo { get; set; }
-        public float Precio { get;  set; }
+        public decimal Precio { get;  set; }
         public float PorcentajeGanancia { get; set; }
         public Imagen Imagen { get; set; }
         public Proveedor Proveedor { get; set; }

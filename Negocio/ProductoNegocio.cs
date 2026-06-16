@@ -25,6 +25,30 @@ namespace Negocio
                 {
                     Producto Producto = new Producto();
 
+                    Producto.Id = (int)Datos.Lector["id_producto"];
+                    Producto.Nombre = (string)Datos.Lector["nombre"];
+                    Producto.Descripcion = (string)Datos.Lector["descripcion"];
+                    Producto.StockActual = Convert.ToSingle(Datos.Lector["stock_actual"]);
+                    Producto.StockMinimo = Convert.ToSingle(Datos.Lector["stock_minimo"]);
+                    Producto.PorcentajeGanancia = Convert.ToSingle(Datos.Lector["porcentaje_ganancia"]);
+                    Producto.Precio = (decimal)Datos.Lector["precio"];
+                    Producto.Activo = (bool)Datos.Lector["activo"];
+
+
+                    Marca Marca = new Marca();
+
+                    Marca.Id = (int)Datos.Lector["id_marca"];
+                    Marca.Nombre = (string)Datos.Lector["nombre_marca"];
+
+                    Producto.Marca = Marca;
+
+                    Categoria Categoria = new Categoria();
+
+                    Categoria.Id = (int)Datos.Lector["id_categoria"];
+                    Categoria.Nombre = (string)Datos.Lector["nombre_categoria"];
+
+                    Producto.Categoria = Categoria;
+
                     /*Producto.Id = (int)Datos.Lector["id_producto"];
                     Producto.Nombre = (string)Datos.Lector["nombre"];
                     Producto.Descripcion = (string)Datos.Lector["descripcion"];
@@ -73,7 +97,7 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                throw ex;
+                    throw ex;
             }
             finally
             {

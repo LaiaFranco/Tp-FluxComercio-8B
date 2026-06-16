@@ -95,7 +95,7 @@ namespace Negocio
                     Producto producto = new Producto();
                     producto.Id = (int)datos.Lector["id_producto"];
                     producto.Nombre = (string)datos.Lector["nombre_producto"];
-                    producto.Precio = (float)datos.Lector["precio_actual"];
+                    producto.Precio = (decimal)datos.Lector["precio_actual"];
                     producto.StockActual = (int)datos.Lector["stock_actual"];
 
                     // Categoría

@@ -8,13 +8,17 @@ namespace Dominio
 {
     public class Venta
     {
-       public int Id { get; set; }
-       public DetalleVenta DetalleVenta { get; set; }
-       public DateTime Fecha { get; set; }
-       public decimal Total { get; set; }
-       public int NumFactura { get; set; }
-       public Usuario Usuario { get; set; }
-       public Cliente Cliente { get; set; }
-        public Imagen Imagen { get; set; }
+        public int Id { get; set; }
+        public DateTime Fecha { get; set; }
+        public decimal Total { get; set; } = 0;
+        public string NumFactura { get; set; }
+        public Cliente Cliente
+        {
+            get; set;
+
+        }
+
+        public Usuario Usuario { get; set; }
+        public List<DetalleVenta> Detalle { get; set; }
     }
 }

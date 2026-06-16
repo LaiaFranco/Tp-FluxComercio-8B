@@ -11,7 +11,7 @@ namespace FlexComercio
 {
 
 
-    public partial class Venta
+    public partial class Ventas
     {
 
         /// <summary>

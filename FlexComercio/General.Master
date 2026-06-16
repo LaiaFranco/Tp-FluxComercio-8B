@@ -91,7 +91,7 @@
                 <li class="nav-item">
                    <a id="lnkVentas" runat="server"
                         class="nav-link px-4 py-3"
-                        href="Venta.aspx">
+                        href="Ventas.aspx">
 
                        <i class="bi bi-cart me-2"></i>
                         Ventas

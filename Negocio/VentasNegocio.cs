@@ -33,7 +33,14 @@ namespace Negocio
                     venta.Cliente = new Cliente();
                     venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"].ToString();
                     venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"].ToString();
-                    venta.Cliente.Dni = (string)datos.Lector["dni"].ToString();
+                    
+                    // Usuario
+                    venta.Usuario = new Usuario();
+                    venta.Usuario.Id = (int)datos.Lector["id_usuario"];
+                    venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"];
+                    venta.Usuario.Activo = (bool)datos.Lector["activo"];
+
+
 
                     ventas.Add(venta);
                 }
@@ -57,7 +64,7 @@ namespace Negocio
 
             try
             {
-               
+
                 string consulta = @"
             SELECT 
                 d.id_detalle,
@@ -75,7 +82,7 @@ namespace Negocio
             INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto
             INNER JOIN CATEGORIAS c ON p.id_categoria = c.id_categoria
             LEFT JOIN IMAGENES i ON p.id_producto = i.id_producto AND i.es_principal = 1
-            WHERE d.id_venta = @idVenta";
+            WHERE d.id_venta = @idVenta";   
 
                 datos.setearConsulta(consulta);
                 datos.setearParametro("@idVenta", id);
@@ -131,20 +138,24 @@ namespace Negocio
             {
 
                 string consulta = @"
-                            SELECT 
-                                v.id_venta,
-                                v.fecha,
-                                v.id_cliente,
-                                v.total,
-                                v.numero_factura,
-                                c.nombre AS nombre_cliente,
-                                c.apellido AS apellido_cliente
-                            FROM VENTAS v
-                            INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
-                            WHERE v.id_venta = @idVenta";
+                    SELECT 
+                        v.id_venta,
+                        v.fecha,
+                        v.id_cliente,
+                        v.total,
+                        v.numero_factura,
+                        v.id_usuario,
+                        c.nombre AS nombre_cliente,
+                        c.apellido AS apellido_cliente,
+                        u.nombre AS nombre_usuario,
+                        u.activo AS activo_usuario
+                    FROM VENTAS v
+                    INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
+                    LEFT JOIN USUARIOS u ON v.id_usuario = u.id_usuario
+                    WHERE v.id_venta = @idVenta";
 
                 datos.setearConsulta(consulta);
-                datos.setearParametro("@idVentas", id);
+                datos.setearParametro("@idVenta", id);
                 datos.ejecutarLectura();
 
                
@@ -156,6 +167,7 @@ namespace Negocio
                     venta.Fecha = (DateTime)datos.Lector["fecha"];
                     venta.NumFactura = datos.Lector["numero_factura"].ToString();
                     venta.Total = (decimal)datos.Lector["total"];
+                    
 
                     // Cliente
 
@@ -163,6 +175,12 @@ namespace Negocio
                     venta.Cliente.Id = (int)datos.Lector["id_cliente"];
                     venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"];
                     venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"];
+
+                    //Usuaurio
+                    venta.Usuario = new Usuario();
+                    venta.Usuario.Id = (int)datos.Lector["id_usuario"];
+                    venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"];
+                    venta.Usuario.Activo = (bool)datos.Lector["activo_usuario"];
 
                     return venta;
 
@@ -191,6 +209,8 @@ namespace Negocio
                 datos.setearProcedimiento("storedAltaVentaConUnDetalle");
                 datos.setearParametro("@id_cliente", nuevaVenta.Cliente.Id);
                 datos.setearParametro("@fecha", nuevaVenta.Fecha);
+                datos.setearParametro("@usuario",nuevaVenta.Usuario.Id);
+            
 
                 string jsonDetalles = JsonConvert.SerializeObject(nuevaVenta.Detalle);
 

@@ -13,7 +13,7 @@ namespace FlexComercio
     public partial class Ventas : System.Web.UI.Page
     {
         private VentasNegocio VentaNegocio = new VentasNegocio();
-
+        
         public List<Venta> ListaVentas { get; set; }
         
         protected void Page_Load(object sender, EventArgs e)
@@ -30,7 +30,7 @@ namespace FlexComercio
 
         protected void btnPuntoVenta_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("FormularioVentas.aspx");
         }
     }
 }

@@ -29,11 +29,11 @@
                     <!-- Columna de datos de la venta -->
                     <div class="col-md-7 col-9">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold mb-1">Venta N° <%= venta.Id %></h5>
+                            <h5 class="card-title fw-bold mb-1">Factura N° <%= venta.NumFactura%></h5>
                             <p class="card-text mb-1">
                                 <strong>Fecha:</strong> <%= venta.Fecha.ToShortDateString() %> &nbsp;|&nbsp;
                                 <strong>Total:</strong> $<%= venta.Total.ToString("N2") %> &nbsp;|&nbsp;
-                                <strong>Factura:</strong> <%= venta.NumFactura %>
+                               
                             </p>
                             <p class="card-text">
                                 <strong>Cliente:</strong> 
@@ -68,4 +68,5 @@
             </div>
         </div>
     </div>
+
 </asp:Content>

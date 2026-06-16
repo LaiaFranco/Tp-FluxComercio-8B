@@ -18,6 +18,7 @@ namespace Dominio
 
         }
 
+        public Usuario Usuario { get; set; }
         public List<DetalleVenta> Detalle { get; set; }
     }
 }

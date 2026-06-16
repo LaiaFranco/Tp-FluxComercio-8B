@@ -93,7 +93,7 @@ namespace Negocio
                 Datos.setearParametro("@id_marca", Producto.Marca.Id);
                 Datos.setearParametro("@id_categoria", Producto.Categoria.Id);
                 Datos.setearParametro("@descripcion", Producto.Descripcion);
-                Datos.setearParametro("@stock_actual", Producto.StocmkActual);
+                Datos.setearParametro("@stock_actual", Producto.StockActual);
                 Datos.setearParametro("@stock_minimo", Producto.StockMinimo);
                 Datos.setearParametro("@porcentaje_ganancia", Producto.PorcentajeGanancia);
                 Datos.setearParametro("@id_imagen", Producto.Imagen.Id);
@@ -148,7 +148,7 @@ namespace Negocio
                 Datos.setearParametro("@id_marca", Producto.Marca.Id);
                 Datos.setearParametro("@id_categoria", Producto.Categoria.Id);
                 Datos.setearParametro("@descripcion", Producto.Descripcion);
-                Datos.setearParametro("@stock_actual", Producto.StocmkActual);
+                Datos.setearParametro("@stock_actual", Producto.StockActual);
                 Datos.setearParametro("@stock_minimo", Producto.StockMinimo);
                 Datos.setearParametro("@porcentaje_ganancia", Producto.PorcentajeGanancia);
                 Datos.setearParametro("@id_imagen", Producto.Imagen.Id);

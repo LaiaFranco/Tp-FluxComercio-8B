@@ -78,7 +78,8 @@
                     <!-- Botones -->
                     <div class="d-flex justify-content-end mt-4 gap-2">
                         <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" CssClass="btn btn-outline-secondary" />
-                        <asp:Button ID="btnRegistrar" runat="server" Text="Registrar Venta" CssClass="btn btn-success" />
+                        <asp:Button ID="btnRegistrar" runat="server" Text="Registrar Venta" CssClass="btn btn-success"
+                            OnClick="btnRegistrar_Click"/>
                     </div>
                 </div>
             </div>

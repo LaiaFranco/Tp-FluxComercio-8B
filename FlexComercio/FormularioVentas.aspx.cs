@@ -3,6 +3,7 @@ using Negocio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -18,6 +19,7 @@ namespace FlexComercio
     {
         private ClienteNegocio ClienteDatos = new ClienteNegocio();
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
+        private VentasNegocio VentasDatos = new VentasNegocio();
 
         public List<DetalleVenta> ListaDetalles
         {
@@ -94,6 +96,7 @@ namespace FlexComercio
             }
 
             Dominio.Producto producto = productos.FirstOrDefault(p => p.Id == id);
+            producto.Id = id;
             if (producto == null) return;
 
             float precioUnitario = (float)producto.Precio;
@@ -101,6 +104,7 @@ namespace FlexComercio
 
             DetalleVenta detalle = new DetalleVenta
             {
+                                                                                                                                                    
                 Producto = producto,
                 Cantidad = cantidad,
                 PrecioUnitario = precioUnitario,
@@ -146,6 +150,47 @@ namespace FlexComercio
                 string script = "$('#modalProductos').modal('hide');";
                 ScriptManager.RegisterStartupScript(this, GetType(), "CerrarModal", script, true);
             }
+        }
+
+        protected void btnRegistrar_Click(object sender, EventArgs e)
+        {
+            Dominio.Venta NuevaVeta = new Venta();
+
+          
+
+            if (string.IsNullOrEmpty(ddlCliente.SelectedValue))
+            {
+                
+                return;
+            }
+
+
+            DateTime fecha;
+            if (!DateTime.TryParse(txtFecha.Text, out fecha))
+            {
+               
+                return;
+            }
+
+           
+            if (ListaDetalles == null || ListaDetalles.Count == 0)
+            {
+               
+                return;
+            }
+
+            NuevaVeta.Cliente = new Dominio.Cliente();
+            NuevaVeta.Usuario = new Dominio.Usuario();
+
+            NuevaVeta.Cliente.Id = int.Parse(ddlCliente.SelectedValue);
+            NuevaVeta.Detalle = ListaDetalles;
+            NuevaVeta.Usuario.Id = 1;
+            NuevaVeta.Fecha = Convert.ToDateTime(txtFecha.Text);
+
+           
+            VentasDatos.Agregar(NuevaVeta);
+
+
         }
     }
 }

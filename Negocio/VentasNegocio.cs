@@ -204,12 +204,12 @@ namespace Negocio
                 datos.setearProcedimiento("storedAltaVentaConUnDetalle");
                 datos.setearParametro("@id_cliente", nuevaVenta.Cliente.Id);
                 datos.setearParametro("@fecha", nuevaVenta.Fecha);
-                datos.setearParametro("@usuario",nuevaVenta.Usuario.Id);
-            
+                datos.setearParametro("@id_usuario ", nuevaVenta.Usuario.Id);
+                
 
                 string jsonDetalles = JsonConvert.SerializeObject(nuevaVenta.Detalle);
 
-                datos.setearParametro("@DetallesJSO", jsonDetalles);
+                datos.setearParametro("@DetallesJSON", jsonDetalles);
 
 
                 datos.ejecutarEscalar();

@@ -47,9 +47,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -78,7 +75,6 @@
     <Content Include="CompraDetalle.aspx" />
     <Content Include="Compras.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="FormularioVentas.aspx" />
     <Content Include="EliminarMarca.aspx" />
     <Content Include="Global.asax" />
     <Content Include="logoFLUX.png" />
@@ -88,7 +84,6 @@
     <Content Include="Proveedor.aspx" />
     <Content Include="Reporte.aspx" />
     <Content Include="Ventas.aspx" />
-    <Content Include="ViewVentasDetalle.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -126,13 +121,6 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="FormularioVentas.aspx.cs">
-      <DependentUpon>FormularioVentas.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="FormularioVentas.aspx.designer.cs">
-      <DependentUpon>FormularioVentas.aspx</DependentUpon>
     </Compile>
     <Compile Include="EliminarMarca.aspx.cs">
       <DependentUpon>EliminarMarca.aspx</DependentUpon>
@@ -189,17 +177,9 @@
     </Compile>
     <Compile Include="Ventas.aspx.cs">
       <DependentUpon>Ventas.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Ventas.aspx.designer.cs">
       <DependentUpon>Ventas.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ViewVentasDetalle.aspx.cs">
-      <DependentUpon>ViewVentasDetalle.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ViewVentasDetalle.aspx.designer.cs">
-      <DependentUpon>ViewVentasDetalle.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

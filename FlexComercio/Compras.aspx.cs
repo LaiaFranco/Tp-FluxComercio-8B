@@ -14,12 +14,18 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
-                DetalleCompraNegocio negocio = new DetalleCompraNegocio();
+                CompraNegocio negocio = new CompraNegocio();
 
-                Session.Add("listaCompraDetalles", negocio.Listar());
-                dgvCompraDetalles.DataSource = Session["listaCompraDetalles"];
-                dgvCompraDetalles.DataBind();
+                Session.Add("listaCompras", negocio.Listar());
+                dgvCompras.DataSource = Session["listaCompras"];
+                dgvCompras.DataBind();
             }
+        }
+
+        protected void dgvCompras_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string id = dgvCompras.SelectedDataKey.Value.ToString();
+            Response.Redirect("CompraDetalle.aspx?id=" + id);
         }
     }
 }

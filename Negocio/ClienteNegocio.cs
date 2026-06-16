@@ -25,7 +25,7 @@ namespace Negocio
                     Cliente Cliente = new Cliente();
 
                     Cliente.Id = (int)Datos.Lector["id_cliente"];
-                 //   Cliente.Dni = (string)Datos.Lector["dni"];
+                    Cliente.Dni = (string)Datos.Lector["dni"];
                     Cliente.Nombre = (string)Datos.Lector["nombre"];
                     Cliente.Apellido = (string)Datos.Lector["apellido"];
                     Cliente.Email = (string)Datos.Lector["email"];
@@ -35,7 +35,6 @@ namespace Negocio
 
                     Clientes.Add(Cliente);
                 }
-
                 return Clientes;
 
             }
@@ -95,7 +94,7 @@ namespace Negocio
             }
             finally
             {
-                Datos.cerrarConexion();
+                Datos.cerrarConexion(); 
             }
         }
         public void Modificar(Cliente cliente)
@@ -118,7 +117,7 @@ namespace Negocio
             }
             finally
             {
-                Datos.cerrarConexion();
+                Datos.cerrarConexion(); 
 
             }
         }

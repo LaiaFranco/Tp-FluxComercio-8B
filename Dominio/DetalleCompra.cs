@@ -8,6 +8,6 @@ namespace Dominio
 {
     public class DetalleCompra : DetalleMovimiento
     {
-
+        public Compra compra { get; set; }
     }
 }

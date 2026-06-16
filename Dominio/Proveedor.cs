@@ -16,7 +16,7 @@ namespace Dominio
         public string Direccion { get; set; }
         public bool Activo { get; set; }
 
-        public List<Producto> ListProducto { get; set; } 
+        public List<Producto> ListProducto { get; set; }
 
     }
 }

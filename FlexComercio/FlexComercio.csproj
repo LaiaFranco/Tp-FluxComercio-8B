@@ -73,13 +73,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AgregarMarca.aspx" />
     <Content Include="Cliente.aspx" />
+    <Content Include="CompraDetalle.aspx" />
     <Content Include="Compras.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="FormularioVentas.aspx" />
+    <Content Include="EliminarMarca.aspx" />
     <Content Include="Global.asax" />
     <Content Include="logoFLUX.png" />
     <Content Include="MarcaYCategoria.aspx" />
+    <Content Include="ModificarMarca.aspx" />
     <Content Include="Producto.aspx" />
     <Content Include="Proveedor.aspx" />
     <Content Include="Reporte.aspx" />
@@ -88,12 +92,26 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgregarMarca.aspx.cs">
+      <DependentUpon>AgregarMarca.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AgregarMarca.aspx.designer.cs">
+      <DependentUpon>AgregarMarca.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Cliente.aspx.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Cliente.aspx.designer.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CompraDetalle.aspx.cs">
+      <DependentUpon>CompraDetalle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CompraDetalle.aspx.designer.cs">
+      <DependentUpon>CompraDetalle.aspx</DependentUpon>
     </Compile>
     <Compile Include="Compras.aspx.cs">
       <DependentUpon>Compras.aspx</DependentUpon>
@@ -116,6 +134,13 @@
     <Compile Include="FormularioVentas.aspx.designer.cs">
       <DependentUpon>FormularioVentas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EliminarMarca.aspx.cs">
+      <DependentUpon>EliminarMarca.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EliminarMarca.aspx.designer.cs">
+      <DependentUpon>EliminarMarca.aspx</DependentUpon>
+    </Compile>
     <Compile Include="General.Master.cs">
       <DependentUpon>General.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -132,6 +157,13 @@
     </Compile>
     <Compile Include="MarcaYCategoria.aspx.designer.cs">
       <DependentUpon>MarcaYCategoria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ModificarMarca.aspx.cs">
+      <DependentUpon>ModificarMarca.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ModificarMarca.aspx.designer.cs">
+      <DependentUpon>ModificarMarca.aspx</DependentUpon>
     </Compile>
     <Compile Include="Producto.aspx.cs">
       <DependentUpon>Producto.aspx</DependentUpon>

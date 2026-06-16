@@ -35,15 +35,104 @@
         </div>
 
         <!-- Estado vacío -->
-        <div class="card-body d-flex flex-column justify-content-center align-items-center"
-             style="height: 300px;">
+        <div class="p-4">
 
-            <i class="bi bi-box-seam text-secondary"
-               style="font-size: 5rem; opacity: .35;"></i>
+            <asp:GridView ID="dgvProductos"
+                runat="server"
+                AutoGenerateColumns="false"
+                CssClass="table border-0"
+                DataKeyNames="Id">
 
-            <p class="text-secondary fs-3 mt-3 mb-0">
-                No hay productos registrados
-            </p>
+                <Columns>
+
+                    <asp:TemplateField>
+
+                        <ItemTemplate>
+
+                            <div class="card shadow-sm border-0 rounded-4 mb-3 p-3">
+
+                                <div class="row align-items-center">
+
+                                    <!-- IMAGEN -->
+                                    <div class="col-md-2 text-center">
+
+                                        <div class="bg-light rounded-4 p-3">
+
+                                            <img src='<%# Eval("Imagen.Url") %>'
+                                                 class="img-fluid rounded-3"
+                                                 style="max-height:120px;" />
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- DATOS -->
+                                    <div class="col-md-7">
+
+                                        <h3 class="fw-bold mb-2">
+                                            <%# Eval("Nombre") %>
+                                        </h3>
+
+                                        <p class="mb-1">
+                                            <strong>Marca:</strong>
+                                            <%# Eval("Marca.Nombre") %>
+                                        </p>
+
+                                        <p class="mb-1">
+                                            <strong>Categoría:</strong>
+                                            <%# Eval("Categoria.Nombre") %>
+                                        </p>
+
+                                        <p class="mb-1">
+                                            <strong>Stock:</strong>
+                                            <%# Eval("StocmkActual") %>
+                                        </p>
+
+                                        <p class="mb-1">
+                                            <strong>Stock mínimo:</strong>
+                                            <%# Eval("StockMinimo") %>
+                                        </p>
+
+                                        <p class="mb-1">
+                                            <strong>Ganancia:</strong>
+                                            <%# Eval("PorcentajeGanancia") %>%
+                                        </p>
+
+                                        <p class="mb-0">
+                                            <strong>Proveedor:</strong>
+                                            <%# Eval("Proveedor.Nombre") %>
+                                        </p>
+
+                                    </div>
+
+                                    <!-- BOTONES -->
+                                    <div class="col-md-3 text-end">
+
+                                        <asp:Button
+                                            ID="btnEliminar"
+                                            runat="server"
+                                            Text="Eliminar"
+                                            CssClass="btn btn-outline-danger rounded-pill me-2" />
+
+                                        <asp:Button
+                                            ID="btnModificar"
+                                            runat="server"
+                                            Text="Modificar"
+                                            CssClass="btn btn-outline-warning rounded-pill" />
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </ItemTemplate>
+
+                    </asp:TemplateField>
+
+                </Columns>
+
+            </asp:GridView>
 
         </div>
 

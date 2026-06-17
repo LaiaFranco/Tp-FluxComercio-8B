@@ -13,11 +13,29 @@ namespace FlexComercio
     {
 
         private ClienteNegocio ClienteDatos = new ClienteNegocio();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                string clienteId = Request.QueryString["cliente"];
+                if (!string.IsNullOrEmpty(clienteId) && int.TryParse(clienteId, out int id))
+                {
+                    Dominio.Cliente cliente = ClienteDatos.GetCliente(id);
+                    if (cliente != null)
+                    {
+                        txtDNI.Text = cliente.Dni;
+                        txtNombre.Text = cliente.Nombre;
+                        txtApellido.Text = cliente.Apellido;
+                        txtEmail.Text = cliente.Email;
+                        txtTelefono.Text = cliente.Telefono;
+                        txtDireccion.Text = cliente.Direccion;
+                        ViewState["ClienteId"] = id;
+                        btnGuardar.Text = "Actualizar Cliente";
+                    }
+                }
+            }
         }
-
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -27,7 +45,6 @@ namespace FlexComercio
             string dni = txtDNI.Text.Trim();
             string nombre = txtNombre.Text.Trim();
 
-            // Validaciones extra (por si el cliente desactiva JavaScript)
             if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{7,8}$"))
             {
                 lblMensaje.Text = "DNI inválido (debe tener 7 u 8 dígitos).";
@@ -44,29 +61,31 @@ namespace FlexComercio
                 return;
             }
 
+            Dominio.Cliente cliente = new Dominio.Cliente();
+            cliente.Dni = txtDNI.Text.Trim();
+            cliente.Nombre = txtNombre.Text.Trim();
+            cliente.Apellido = txtApellido.Text.Trim();
+            cliente.Email = txtEmail.Text.Trim();
+            cliente.Telefono = txtTelefono.Text.Trim();
+            cliente.Direccion = txtDireccion.Text.Trim();
+            cliente.Activo = true;
 
-            Dominio.Cliente NuevoCliente = new Dominio.Cliente();
+            if (ViewState["ClienteId"] != null)
+            {
+                cliente.Id = (int)ViewState["ClienteId"];
+                ClienteDatos.Modificar(cliente);
+                lblMensaje.Text = "Cliente actualizado exitosamente.";
+            }
+            else
+            {
+                ClienteDatos.Agregar(cliente);
+                lblMensaje.Text = "Cliente guardado exitosamente.";
+            }
 
-            NuevoCliente.Dni = txtDNI.Text.Trim();
-            NuevoCliente.Nombre = txtNombre.Text.Trim();
-            NuevoCliente.Apellido = txtApellido.Text.Trim();
-            NuevoCliente.Email = txtEmail.Text.Trim();
-            NuevoCliente.Telefono = txtTelefono.Text.Trim();
-            NuevoCliente.Direccion = txtDireccion.Text.Trim();
-            NuevoCliente.Activo = true;
-
-            ClienteDatos.Agregar(NuevoCliente);
-
-         
-
-            // Aquí guardas en BD...
-            lblMensaje.Text = "Cliente guardado exitosamente.";
             lblMensaje.CssClass = "alert alert-success";
             lblMensaje.Visible = true;
-
             LimpiarCampos();
         }
-
 
         private void LimpiarCampos()
         {
@@ -76,6 +95,8 @@ namespace FlexComercio
             txtEmail.Text = "";
             txtTelefono.Text = "";
             txtDireccion.Text = "";
+            ViewState["ClienteId"] = null;
+            btnGuardar.Text = "Guardar Cliente";
         }
     }
 }

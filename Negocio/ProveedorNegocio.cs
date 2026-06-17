@@ -71,5 +71,24 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+        public void Eliminar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("storedEliminarProveedor");
+                datos.setearParametro("@id_proveedor", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

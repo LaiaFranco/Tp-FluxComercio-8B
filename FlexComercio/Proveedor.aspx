@@ -37,14 +37,15 @@
         <asp:GridView ID="dgvProveedores" runat="server"
             CssClass="table"
             AutoGenerateColumns="false"
-            DataKeyNames="id">
+            DataKeyNames="id"
+            OnRowCommand="dgvProveedores_RowCommand">
             <Columns>
                 <asp:BoundField HeaderText="CUIL" DataField="cuil" />
                 <asp:BoundField HeaderText="Nombre" DataField="nombre" />
                 <asp:BoundField HeaderText="Email" DataField="email" />
                 <asp:BoundField HeaderText="Teléfono" DataField="telefono" />
                 <asp:BoundField HeaderText="Dirección" DataField="direccion" />
-                <asp:CheckBoxField HeaderText="Activo" DataField="activo" />
+                <asp:ButtonField HeaderText="Eliminar" Text="Eliminar" CommandName="EliminarProveedor" ButtonType="Button" ControlStyle-CssClass="btn btn-outline-danger btn-sm"/>
             </Columns>
         </asp:GridView>
 

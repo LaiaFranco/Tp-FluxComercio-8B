@@ -36,3 +36,12 @@ FROM PROVEEDORES
 WHERE activo = 1
 GO
 
+CREATE PROCEDURE storedListarProveedorPorId
+@id_proveedor int
+AS
+SELECT id_proveedor, cuil, nombre, email, telefono, direccion, activo
+FROM PROVEEDORES
+WHERE id_proveedor = @id_proveedor
+GO
+
+--SELECT * FROM PROVEEDORES

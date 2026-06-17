@@ -25,15 +25,20 @@ namespace FlexComercio
         {
             try
             {
+                int index = Convert.ToInt32(e.CommandArgument);
+                int id = Convert.ToInt32(dgvProveedores.DataKeys[index].Value);
+
                 if (e.CommandName == "EliminarProveedor")
                 {
-                    int index = Convert.ToInt32(e.CommandArgument);
-                    int id = Convert.ToInt32(dgvProveedores.DataKeys[index].Value);
-
                     ProveedorNegocio negocio = new ProveedorNegocio();
                     negocio.Eliminar(id);
 
                     Response.Redirect("Proveedor.aspx", false);
+                }
+
+                if (e.CommandName == "ModificarProveedor")
+                {
+                    Response.Redirect("AgregarProveedor.aspx?id=" + id, false);
                 }
             }
             catch (Exception ex)
@@ -42,6 +47,7 @@ namespace FlexComercio
                 Response.Redirect("Error.aspx");
             }
         }
+
     }
 
 }

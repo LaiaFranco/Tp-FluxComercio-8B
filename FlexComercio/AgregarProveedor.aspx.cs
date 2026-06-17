@@ -13,7 +13,30 @@ namespace FlexComercio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            try
+            {
+                if (!IsPostBack)
+                {
+                    string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
 
+                    if (id != "")
+                    {
+                        ProveedorNegocio negocio = new ProveedorNegocio();
+                        Dominio.Proveedor seleccionado = negocio.ListarPorId(int.Parse(id));
+
+                        txtCuil.Text = seleccionado.Cuil;
+                        txtNombre.Text = seleccionado.Nombre;
+                        txtEmail.Text = seleccionado.Email;
+                        txtTelefono.Text = seleccionado.Telefono;
+                        txtDireccion.Text = seleccionado.Direccion;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex.ToString());
+                Response.Redirect("Error.aspx");
+            }
         }
 
         protected void btnAceptar_Click(object sender, EventArgs e)
@@ -24,19 +47,30 @@ namespace FlexComercio
                 {
                     lblMensaje.Text = "Debe completar CUIL, nombre y email.";
                     return;
-                };
+                }
 
-                Dominio.Proveedor nuevo = new Dominio.Proveedor();
+                Dominio.Proveedor proveedor = new Dominio.Proveedor();
 
-                nuevo.Cuil = txtCuil.Text;
-                nuevo.Nombre = txtNombre.Text;
-                nuevo.Email = txtEmail.Text;
-                nuevo.Telefono = txtTelefono.Text;
-                nuevo.Direccion = txtDireccion.Text;
-                nuevo.Activo = true;
+                proveedor.Cuil = txtCuil.Text;
+                proveedor.Nombre = txtNombre.Text;
+                proveedor.Email = txtEmail.Text;
+                proveedor.Telefono = txtTelefono.Text;
+                proveedor.Direccion = txtDireccion.Text;
+                proveedor.Activo = true;
 
                 ProveedorNegocio negocio = new ProveedorNegocio();
-                negocio.Agregar(nuevo);
+
+                string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
+
+                if (id != "")
+                {
+                    proveedor.Id = int.Parse(id);
+                    negocio.Modificar(proveedor);
+                }
+                else
+                {
+                    negocio.Agregar(proveedor);
+                }
 
                 Response.Redirect("Proveedor.aspx", false);
             }
@@ -45,7 +79,6 @@ namespace FlexComercio
                 Session.Add("error", ex.ToString());
                 Response.Redirect("Error.aspx");
             }
-            //Response.Redirect("Proveedor.aspx");
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)

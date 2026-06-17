@@ -46,6 +46,7 @@
                 <asp:BoundField HeaderText="Teléfono" DataField="telefono" />
                 <asp:BoundField HeaderText="Dirección" DataField="direccion" />
                 <asp:ButtonField HeaderText="Eliminar" Text="Eliminar" CommandName="EliminarProveedor" ButtonType="Button" ControlStyle-CssClass="btn btn-outline-danger btn-sm"/>
+                <asp:ButtonField HeaderText="Editar" Text="Editar" CommandName="ModificarProveedor" ButtonType="Button" ControlStyle-CssClass="btn btn-outline-primary btn-sm"  />
             </Columns>
         </asp:GridView>
 

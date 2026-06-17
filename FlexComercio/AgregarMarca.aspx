@@ -11,7 +11,9 @@
                 <div class="card shadow border-0 rounded-4">
 
                     <div class="card-header bg-success text-white rounded-top-4">
-                        <h3 class="mb-0">Agregar Marca</h3>
+                        <h3 class="mb-0">
+                            <asp:Label ID="lblTitulo" runat="server" Text="Agregar Marca"></asp:Label>
+                        </h3>
                     </div>
 
                     <div class="card-body p-4">
@@ -47,23 +49,23 @@
                         </div>
 
                         <!-- Estado -->
-                        <div class="mb-4">
+                         <asp:Panel ID="pnlEstado" runat="server">
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">
+                                    Estado
+                                </label>
 
-                            <label class="form-label fw-semibold">
-                                Estado
-                            </label>
+                                <asp:DropDownList
+                                    ID="ddlEstado"
+                                    runat="server"
+                                    CssClass="form-select">
 
-                            <asp:DropDownList
-                                ID="ddlEstado"
-                                runat="server"
-                                CssClass="form-select">
+                                    <asp:ListItem Text="Activo" Value="true" Selected="True" />
+                                    <asp:ListItem Text="Inactivo" Value="false" />
 
-                                <asp:ListItem Text="Activo" Value="true" Selected="True" />
-                                <asp:ListItem Text="Inactivo" Value="false" />
-
-                            </asp:DropDownList>
-
-                        </div>
+                                </asp:DropDownList>
+                            </div>
+                        </asp:Panel>
 
                         <!-- Botones -->
                         <div class="d-flex justify-content-end">

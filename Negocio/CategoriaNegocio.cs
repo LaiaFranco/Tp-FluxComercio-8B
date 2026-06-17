@@ -97,7 +97,7 @@ namespace Negocio
             }
         }
 
-        public void Modificar(Categoria categoria)
+        public bool Modificar(Categoria categoria)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -107,7 +107,8 @@ namespace Negocio
                 Datos.setearParametro("@id_categoria",categoria.Id);
                 Datos.setearParametro("@nombre",categoria.Nombre);
                 Datos.setearParametro("@descipcion",categoria.Descripcion);
-                Datos.ejecutarAccion(); 
+                Datos.ejecutarAccion();
+                return true; 
             }
             catch (Exception ex)
             {

@@ -56,16 +56,18 @@ namespace FlexComercio
 
             Marca marca = listaMarca[indice];
             Session["marcaSeleccionada"] = marca;
-            Response.Redirect("ModificarMarca.aspx"); 
+            Response.Redirect("AgregarMarca.aspx"); 
         }
 
         protected void btnNuevaMarca_Click(object sender, EventArgs e)
         {
+            Session.Remove("marcaSeleccionada");
             Response.Redirect("AgregarMarca.aspx");
         }
 
         protected void btnNuevaCategoria_Click(object sender, EventArgs e)
         {
+            Session.Remove("categoriaSeleccionada"); 
             Response.Redirect("AgregarCategoria.aspx"); 
         }
 
@@ -82,7 +84,13 @@ namespace FlexComercio
 
         protected void btnModificarCategoria_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            int indice = int.Parse(btn.CommandArgument);
+            List<Categoria> listaCategoria = (List<Categoria>)Session["listaCategorias"];
 
+            Categoria categoria = listaCategoria[indice];
+            Session["categoriaSeleccionada"] = categoria;
+            Response.Redirect("AgregarCategoria.aspx");
         }
     }
 }

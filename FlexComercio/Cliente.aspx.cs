@@ -21,5 +21,10 @@ namespace FlexComercio
             }
 
         }
+
+        protected void btnNuevoCliente_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("FormularioCliente.aspx");
+        }
     }
 }

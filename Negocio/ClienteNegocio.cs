@@ -64,7 +64,9 @@ namespace Negocio
                 Datos.setearParametro("@direccion", nuevoCliente.Direccion);
                 Datos.setearParametro("@activo", nuevoCliente.Activo);
 
-            }
+                Datos.ejecutarAccion();
+                    
+              }
             catch (Exception ex)
             {
                 throw ex;

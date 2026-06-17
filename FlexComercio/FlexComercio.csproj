@@ -78,6 +78,7 @@
     <Content Include="Default.aspx" />
     <Content Include="EliminarCategoria.aspx" />
     <Content Include="EliminarMarca.aspx" />
+    <Content Include="FormularioCliente.aspx" />
     <Content Include="Global.asax" />
     <Content Include="logoFLUX.png" />
     <Content Include="MarcaYCategoria.aspx" />
@@ -144,6 +145,13 @@
     </Compile>
     <Compile Include="EliminarMarca.aspx.designer.cs">
       <DependentUpon>EliminarMarca.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioCliente.aspx.cs">
+      <DependentUpon>FormularioCliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioCliente.aspx.designer.cs">
+      <DependentUpon>FormularioCliente.aspx</DependentUpon>
     </Compile>
     <Compile Include="General.Master.cs">
       <DependentUpon>General.Master</DependentUpon>

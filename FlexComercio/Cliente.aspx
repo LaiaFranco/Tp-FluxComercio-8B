@@ -12,10 +12,11 @@
             <p class="text-secondary fs-4 mb-0">Gestión de clientes</p>
         </div>
 
-        <button class="btn btn-dark btn-lg px-4 py-3 rounded-4">
-            <i class="bi bi-plus-lg me-2"></i>
-            Nuevo Cliente
-        </button>
+      <asp:LinkButton ID="btnNuevoCliente" runat="server"
+              CssClass="btn btn-dark btn-lg px-4 py-3 rounded-4"
+                    OnClick="btnNuevoCliente_Click"   >
+                    <i class="bi bi-plus-lg me-2"></i> Nuevo Cliente
+        </asp:LinkButton>
 
     </div>
 

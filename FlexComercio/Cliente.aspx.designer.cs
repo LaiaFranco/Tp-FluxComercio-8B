@@ -15,6 +15,15 @@ namespace FlexComercio
     {
 
         /// <summary>
+        /// Control btnNuevoCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnNuevoCliente;
+
+        /// <summary>
         /// Control dgvClientes.
         /// </summary>
         /// <remarks>

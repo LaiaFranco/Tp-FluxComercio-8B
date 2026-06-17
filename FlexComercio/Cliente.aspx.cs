@@ -51,10 +51,10 @@ namespace FlexComercio
         {
             if (e.CommandName == "Eliminar")
             {
-                // Guardar el Id
+                
                 hfClienteId.Value = e.CommandArgument.ToString();
 
-                // Registrar el script para abrir el modal (sin depender de ScriptManager)
+             
                 ClientScript.RegisterStartupScript(this.GetType(), "abrirModal", "abrirModal();", true);
             }
         }

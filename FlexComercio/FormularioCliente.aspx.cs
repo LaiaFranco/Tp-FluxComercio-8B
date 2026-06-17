@@ -21,6 +21,7 @@ namespace FlexComercio
                 string clienteId = Request.QueryString["cliente"];
                 if (!string.IsNullOrEmpty(clienteId) && int.TryParse(clienteId, out int id))
                 {
+                    txtDNI.Enabled = false;
                     Dominio.Cliente cliente = ClienteDatos.GetCliente(id);
                     if (cliente != null)
                     {
@@ -75,6 +76,7 @@ namespace FlexComercio
                 cliente.Id = (int)ViewState["ClienteId"];
                 ClienteDatos.Modificar(cliente);
                 lblMensaje.Text = "Cliente actualizado exitosamente.";
+                Response.Redirect("Cliente.aspx");
             }
             else
             {

@@ -55,19 +55,16 @@ namespace Negocio
             try
             {
                 Datos.setearProcedimiento("storedAltaCategoria");
-                Datos.ejecutarLectura();
-
+                
                 Datos.setearParametro("@nombre",Categoria.Nombre);
                 Datos.setearParametro("@descripcion",Categoria.Descripcion);
                 Datos.setearParametro("@activo",Categoria.Activo);
 
                 Datos.ejecutarAccion();
                 return true; 
-
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally

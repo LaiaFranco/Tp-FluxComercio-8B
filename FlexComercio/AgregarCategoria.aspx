@@ -11,7 +11,7 @@
               <div class="card shadow border-0 rounded-4">
 
                   <div class="card-header bg-success text-white rounded-top-4">
-                      <h3 class="mb-0">Agregar Marca</h3>
+                      <h3 class="mb-0">Agregar Categoria</h3>
                   </div>
 
                   <div class="card-body p-4">

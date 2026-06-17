@@ -10,7 +10,7 @@ using Dominio;
 
 namespace FlexComercio
 {
-    public partial class Ventas : System.Web.UI.Page
+   /* public partial class Ventas : System.Web.UI.Page
     {
         private VentasNegocio VentaNegocio = new VentasNegocio();
         
@@ -32,5 +32,5 @@ namespace FlexComercio
         {
             Response.Redirect("FormularioVentas.aspx");
         }
-    }
+    }*/
 }

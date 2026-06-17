@@ -71,7 +71,13 @@ namespace FlexComercio
 
         protected void btnEliminarCategoria_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            int indice = int.Parse(btn.CommandArgument);
+            List<Categoria> listaCategoria = (List<Categoria>)Session["listaCategorias"];
 
+            Categoria categoria = listaCategoria[indice];
+            Session["categoiraSeleccionada"] = categoria;
+            Response.Redirect("EliminarCategoria.aspx");
         }
 
         protected void btnModificarCategoria_Click(object sender, EventArgs e)

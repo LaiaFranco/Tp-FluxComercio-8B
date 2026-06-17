@@ -76,6 +76,7 @@
     <Content Include="CompraDetalle.aspx" />
     <Content Include="Compras.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="EliminarCategoria.aspx" />
     <Content Include="EliminarMarca.aspx" />
     <Content Include="Global.asax" />
     <Content Include="logoFLUX.png" />
@@ -84,7 +85,7 @@
     <Content Include="Producto.aspx" />
     <Content Include="Proveedor.aspx" />
     <Content Include="Reporte.aspx" />
-    <Content Include="Venta.aspx" />
+    <Content Include="Ventas.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +130,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EliminarCategoria.aspx.cs">
+      <DependentUpon>EliminarCategoria.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EliminarCategoria.aspx.designer.cs">
+      <DependentUpon>EliminarCategoria.aspx</DependentUpon>
     </Compile>
     <Compile Include="EliminarMarca.aspx.cs">
       <DependentUpon>EliminarMarca.aspx</DependentUpon>
@@ -183,11 +191,11 @@
     <Compile Include="Reporte.aspx.designer.cs">
       <DependentUpon>Reporte.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Venta.aspx.cs">
-      <DependentUpon>Venta.aspx</DependentUpon>
+    <Compile Include="Ventas.aspx.cs">
+      <DependentUpon>Ventas.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Venta.aspx.designer.cs">
-      <DependentUpon>Venta.aspx</DependentUpon>
+    <Compile Include="Ventas.aspx.designer.cs">
+      <DependentUpon>Ventas.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

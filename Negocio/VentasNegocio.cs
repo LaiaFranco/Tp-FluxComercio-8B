@@ -11,7 +11,7 @@ namespace Negocio
 {
     public class VentasNegocio
     {
-        public List<Venta> Listar()
+        /*public List<Venta> Listar()
         {
             AccesoDatos datos = new AccesoDatos();
             List<Venta> ventas = new List<Venta>();
@@ -258,8 +258,8 @@ namespace Negocio
             {
                 datos.cerrarConexion();
             }
-        }
+        }*/
 
-    
+
     }
-}
+   }

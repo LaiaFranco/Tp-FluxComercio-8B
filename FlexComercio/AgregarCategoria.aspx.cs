@@ -30,6 +30,8 @@ namespace FlexComercio
             string opcion = ddlEstado.SelectedValue;
             bool op = opcion == "Activo";
 
+            categoria.Activo = op; 
+
             bool ok = negocio.Agregar(categoria);
             if (ok)
             {

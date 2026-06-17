@@ -46,5 +46,30 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+        public void Agregar(Proveedor nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("storedAltaProveedor");
+                datos.setearParametro("@cuil", nuevo.Cuil);
+                datos.setearParametro("@nombre", nuevo.Nombre);
+                datos.setearParametro("@email", nuevo.Email);
+                datos.setearParametro("@telefono", nuevo.Telefono);
+                datos.setearParametro("@direccion", nuevo.Direccion);
+                datos.setearParametro("@activo", nuevo.Activo);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

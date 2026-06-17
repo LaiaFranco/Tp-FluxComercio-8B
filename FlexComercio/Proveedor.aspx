@@ -9,13 +9,13 @@
     <div class="d-flex justify-content-between align-items-start mb-4">
         <div>
             <h1 class="fw-bold mb-1">Proveedores</h1>
-            <p class="text-secondary fs-4 mb-0">Gestión de proveedores</p>
+            <p class="text-secondary fs-4 mb-0">Gestión de proveedores</p>     
         </div>
-
-        <button class="btn btn-dark btn-lg px-4 py-3 rounded-4">
-            <i class="bi bi-plus-lg me-2"></i>
-            Nuevo Proveedor
-        </button>
+    <!-- Agregar Proveedor -->
+         <a href="AgregarProveedor.aspx" class="btn btn-dark btn-lg px-4 py-3 rounded-4">
+          <i class="bi bi-plus-lg me-2"></i>
+          Nuevo Proveedor
+         </a>
     </div>
 
     <!-- Card principal -->

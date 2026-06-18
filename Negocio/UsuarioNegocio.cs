@@ -26,10 +26,9 @@ namespace Negocio
                     Usuario Usuario = new Usuario();
 
                     Usuario.Id = (int)Datos.Lector["id_usuario"];
-                    Usuario.Dni = (string)Datos.Lector["dni"];
                     Usuario.Nombre = (string)Datos.Lector["nombre"];
                     Usuario.Email = (string)Datos.Lector["email"];
-                    Usuario.Password = (string)Datos.Lector["password"];
+                    Usuario.Password = (string)Datos.Lector["password_u"];
                     Usuario.Activo = (bool)Datos.Lector["activo"];
 
                     // ROL
@@ -39,14 +38,6 @@ namespace Negocio
                     Rol.Nombre = (string)Datos.Lector["nombre_rol"];
 
                     Usuario.Rol = Rol;
-
-                    // FOTO PERFIL
-                    Imagen Imagen = new Imagen();
-
-                    Imagen.Id = (int)Datos.Lector["id_imagen"];
-                    Imagen.Url = (string)Datos.Lector["url_imagen"];
-
-                    Usuario.FotoPerfil = Imagen;
 
                     Usuarios.Add(Usuario);
                 }

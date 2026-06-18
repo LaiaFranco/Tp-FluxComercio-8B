@@ -1,4 +1,5 @@
-﻿using Negocio;
+﻿using Dominio;
+using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace FlexComercio
     public partial class FormularioUsuario : System.Web.UI.Page
     {
         private RolNegocio RolDatos = new RolNegocio();
+        private UsuarioNegocio UsuarioDatos = new UsuarioNegocio();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,6 +30,14 @@ namespace FlexComercio
             ddlRol.DataValueField = "Id";
 
             ddlRol.DataBind();
+        }
+
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+            Usuario NuevoUsuario = new Usuario();
+
+            UsuarioDatos.Agregar(NuevoUsuario);
+
         }
     }
 }

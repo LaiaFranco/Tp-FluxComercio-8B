@@ -9,13 +9,13 @@
     <div class="d-flex justify-content-between align-items-start mb-4">
         <div>
             <h1 class="fw-bold mb-1">Proveedores</h1>
-            <p class="text-secondary fs-4 mb-0">Gestión de proveedores</p>
+            <p class="text-secondary fs-4 mb-0">Gestión de proveedores</p>     
         </div>
-
-        <button class="btn btn-dark btn-lg px-4 py-3 rounded-4">
-            <i class="bi bi-plus-lg me-2"></i>
-            Nuevo Proveedor
-        </button>
+    <!-- Agregar Proveedor -->
+         <a href="AgregarProveedor.aspx" class="btn btn-dark btn-lg px-4 py-3 rounded-4">
+          <i class="bi bi-plus-lg me-2"></i>
+          Nuevo Proveedor
+         </a>
     </div>
 
     <!-- Card principal -->
@@ -37,14 +37,16 @@
         <asp:GridView ID="dgvProveedores" runat="server"
             CssClass="table"
             AutoGenerateColumns="false"
-            DataKeyNames="id">
+            DataKeyNames="id"
+            OnRowCommand="dgvProveedores_RowCommand">
             <Columns>
                 <asp:BoundField HeaderText="CUIL" DataField="cuil" />
                 <asp:BoundField HeaderText="Nombre" DataField="nombre" />
                 <asp:BoundField HeaderText="Email" DataField="email" />
                 <asp:BoundField HeaderText="Teléfono" DataField="telefono" />
                 <asp:BoundField HeaderText="Dirección" DataField="direccion" />
-                <asp:CheckBoxField HeaderText="Activo" DataField="activo" />
+                <asp:ButtonField HeaderText="Eliminar" Text="Eliminar" CommandName="EliminarProveedor" ButtonType="Button" ControlStyle-CssClass="btn btn-outline-danger btn-sm"/>
+                <asp:ButtonField HeaderText="Editar" Text="Editar" CommandName="ModificarProveedor" ButtonType="Button" ControlStyle-CssClass="btn btn-outline-primary btn-sm"  />
             </Columns>
         </asp:GridView>
 

@@ -72,6 +72,7 @@
   <ItemGroup>
     <Content Include="AgregarCategoria.aspx" />
     <Content Include="AgregarMarca.aspx" />
+    <Content Include="AgregarProveedor.aspx" />
     <Content Include="Cliente.aspx" />
     <Content Include="CompraDetalle.aspx" />
     <Content Include="Compras.aspx" />
@@ -82,7 +83,6 @@
     <Content Include="Global.asax" />
     <Content Include="logoFLUX.png" />
     <Content Include="MarcaYCategoria.aspx" />
-    <Content Include="ModificarMarca.aspx" />
     <Content Include="Producto.aspx" />
     <Content Include="Proveedor.aspx" />
     <Content Include="Reporte.aspx" />
@@ -103,6 +103,13 @@
     </Compile>
     <Compile Include="AgregarMarca.aspx.designer.cs">
       <DependentUpon>AgregarMarca.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AgregarProveedor.aspx.cs">
+      <DependentUpon>AgregarProveedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AgregarProveedor.aspx.designer.cs">
+      <DependentUpon>AgregarProveedor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Cliente.aspx.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
@@ -169,13 +176,6 @@
     </Compile>
     <Compile Include="MarcaYCategoria.aspx.designer.cs">
       <DependentUpon>MarcaYCategoria.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ModificarMarca.aspx.cs">
-      <DependentUpon>ModificarMarca.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ModificarMarca.aspx.designer.cs">
-      <DependentUpon>ModificarMarca.aspx</DependentUpon>
     </Compile>
     <Compile Include="Producto.aspx.cs">
       <DependentUpon>Producto.aspx</DependentUpon>

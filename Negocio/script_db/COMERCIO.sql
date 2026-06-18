@@ -1,4 +1,4 @@
-CREATE DATABASE COMERCIO_DB
+    CREATE DATABASE COMERCIO_DB
 GO
 
 USE COMERCIO_DB
@@ -43,7 +43,7 @@ CREATE TABLE [dbo].[USUARIOS](
     [id_usuario] [int] IDENTITY(1,1) NOT NULL,
     [nombre] [varchar](255) NOT NULL,
     [email] [varchar](255) NOT NULL,
-    [password_hash] [varchar](255) NOT NULL,
+    [password_u] [varchar](255) NOT NULL,
     [id_rol] [int] NOT NULL,
     [activo] [bit] NULL CONSTRAINT [DF_USUARIOS_activo] DEFAULT (1),
  CONSTRAINT [PK_USUARIOS] PRIMARY KEY CLUSTERED
@@ -62,6 +62,7 @@ CREATE TABLE [dbo].[PRODUCTOS](
     [id_categoria] [int] NOT NULL,
     [stock_actual] [int] NOT NULL CONSTRAINT [DF_PRODUCTOS_stock_actual] DEFAULT (0),
     [stock_minimo] [int] NOT NULL CONSTRAINT [DF_PRODUCTOS_stock_minimo] DEFAULT (0),
+    [precio] [decimal](5,2) NOT NULL,
     [porcentaje_ganancia] [decimal](5,2) NOT NULL,
     [activo] [bit] NULL CONSTRAINT [DF_PRODUCTOS_activo] DEFAULT (1),
  CONSTRAINT [PK_PRODUCTOS] PRIMARY KEY CLUSTERED
@@ -171,19 +172,15 @@ CREATE TABLE [dbo].[VENTA_DETALLES](
 )
 GO
 
-CREATE TABLE [dbo].[IMAGENES](
-    [id_imagen] [int] IDENTITY(1,1) NOT NULL,
-    [url] [varchar](255) NOT NULL,
-    [orden] [int] NULL CONSTRAINT [DF_IMAGENES_orden] DEFAULT (0),
-    [activo] [bit] NULL CONSTRAINT [DF_IMAGENES_activo] DEFAULT (1),
-    [id_img_user] [int] NOT NULL,
-    [id_producto] [int] NOT NULL,
- CONSTRAINT [PK_IMAGENES] PRIMARY KEY CLUSTERED
-(
-    [id_imagen] ASC
-),
- CONSTRAINT [UQ_IMAGENES_id_img_user] UNIQUE ([id_img_user])
-)
+
+CREATE TABLE [dbo].[IMAGENES] (
+    id_imagen INT IDENTITY(1,1) NOT NULL,
+    url VARCHAR(500) NOT NULL,
+    activo BIT DEFAULT 1,
+    tipo_entidad VARCHAR(20) NOT NULL,
+    id_entidad INT NOT NULL,
+    CONSTRAINT PK_imagenes PRIMARY KEY (id_imagen)
+);
 GO
 
 ALTER TABLE [dbo].[USUARIOS] WITH CHECK ADD CONSTRAINT [FK_USUARIOS_ROLES] FOREIGN KEY([id_rol])
@@ -236,23 +233,4 @@ GO
 
 ALTER TABLE [dbo].[VENTA_DETALLES] WITH CHECK ADD CONSTRAINT [FK_VENTA_DETALLES_PRODUCTOS] FOREIGN KEY([id_producto])
 REFERENCES [dbo].[PRODUCTOS] ([id_producto])
-GO
-
-ALTER TABLE [dbo].[IMAGENES] WITH CHECK ADD CONSTRAINT [FK_IMAGENES_USUARIOS] FOREIGN KEY([id_img_user])
-REFERENCES [dbo].[USUARIOS] ([id_usuario])
-GO
-
-ALTER TABLE [dbo].[IMAGENES] WITH CHECK ADD CONSTRAINT [FK_IMAGENES_PRODUCTOS] FOREIGN KEY([id_producto])
-REFERENCES [dbo].[PRODUCTOS] ([id_producto])
-GO
-
-CREATE TABLE [dbo].[imagenes] (
-    id_imagen INT IDENTITY(1,1) NOT NULL,
-    url VARCHAR(500) NOT NULL,
-    orden INT DEFAULT 0,
-    activo BIT DEFAULT 1,
-    tipo_entidad VARCHAR(20) NOT NULL,
-    id_entidad INT NOT NULL,
-    CONSTRAINT PK_imagenes PRIMARY KEY (id_imagen)
-);
 GO

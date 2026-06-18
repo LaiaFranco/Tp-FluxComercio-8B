@@ -33,9 +33,7 @@ namespace Negocio
                     venta.Cliente = new Cliente();
                     venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"].ToString();
                     venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"].ToString();
-                    
-             
-
+                   
 
                     ventas.Add(venta);
                 }
@@ -201,18 +199,29 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearProcedimiento("storedAltaVentaConUnDetalle");
+                datos.setearProcedimiento("storedAltaVenta");
                 datos.setearParametro("@id_cliente", nuevaVenta.Cliente.Id);
                 datos.setearParametro("@fecha", nuevaVenta.Fecha);
                 datos.setearParametro("@id_usuario ", nuevaVenta.Usuario.Id);
-                
 
-                string jsonDetalles = JsonConvert.SerializeObject(nuevaVenta.Detalle);
+                int idVentaGenerado = 0;
+                object resultado = datos.ejecutarEscalar();
 
-                datos.setearParametro("@DetallesJSON", jsonDetalles);
+                if (resultado != null && resultado != DBNull.Value)
+                {
+                    idVentaGenerado = Convert.ToInt32(resultado);
+                }              
 
+              foreach(DetalleVenta detalle in nuevaVenta.Detalle){
+                    datos.setearProcedimiento("storedAltaVentaDetalle");
+                    datos.setearParametro("@id_venta", idVentaGenerado);
+                    datos.setearParametro("@id_producto",detalle.Id);
+                    datos.setearParametro("@cantidad", detalle.Cantidad);
+                    datos.setearParametro("@precio_unitario", detalle.PrecioUnitario);
+                    datos.setearParametro("@subtotal", detalle.Subtotal);
 
-                datos.ejecutarEscalar();
+                    datos.ejecutarAccion();
+                }
 
             }
             catch (Exception ex)

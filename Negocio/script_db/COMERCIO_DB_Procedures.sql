@@ -1,381 +1,439 @@
-	USE COMERCIO_DB
-	GO
+USE COMERCIO_DB;
+GO
 
-	create procedure [dbo].[storedListarMarcas] as
-	select id_marca, nombre, descripcion, activo
-	from MARCAS
-	GO
+-- ========== MARCAS ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarMarcas]
+AS
+SELECT id_marca, nombre, descripcion, activo
+FROM MARCAS;
+GO
 
-	create procedure [dbo].[storedAltaMarca]
-	@nombre varchar(255),
-	@descripcion varchar(300),
-	@activo bit
-	as
-	insert into MARCAS (nombre, descripcion, activo)
-	values (@nombre, @descripcion, @activo)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaMarca]
+    @nombre VARCHAR(255),
+    @descripcion VARCHAR(300),
+    @activo BIT
+AS
+INSERT INTO MARCAS (nombre, descripcion, activo)
+VALUES (@nombre, @descripcion, @activo);
+GO
 
-	create procedure [dbo].[storedModificarMarca]
-	@id_marca int,
-	@nombre varchar(255),
-	@descripcion varchar(300),
-	@activo bit
-	as
-	update MARCAS set nombre = @nombre, descripcion = @descripcion, activo = @activo
-	where id_marca = @id_marca
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarMarca]
+    @id_marca INT,
+    @nombre VARCHAR(255),
+    @descripcion VARCHAR(300),
+    @activo BIT
+AS
+UPDATE MARCAS 
+SET nombre = @nombre, descripcion = @descripcion, activo = @activo
+WHERE id_marca = @id_marca;
+GO
 
+-- ========== CATEGORIAS ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarCategorias]
+AS
+SELECT id_categoria, nombre, descripcion, activo
+FROM CATEGORIAS;
+GO
 
-	create procedure [dbo].[storedListarCategorias] as
-	select id_categoria, nombre, descripcion, activo
-	from CATEGORIAS
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaCategoria]
+    @nombre VARCHAR(255),
+    @descripcion VARCHAR(300),
+    @activo BIT
+AS
+INSERT INTO CATEGORIAS (nombre, descripcion, activo)
+VALUES (@nombre, @descripcion, @activo);
+GO
 
-	create procedure [dbo].[storedAltaCategoria]
-	@nombre varchar(255),
-	@descripcion varchar(300),
-	@activo bit
-	as
-	insert into CATEGORIAS (nombre, descripcion, activo)
-	values (@nombre, @descripcion, @activo)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarCategoria]
+    @id_categoria INT,
+    @nombre VARCHAR(255),
+    @descripcion VARCHAR(300),
+    @activo BIT
+AS
+UPDATE CATEGORIAS 
+SET nombre = @nombre, descripcion = @descripcion, activo = @activo
+WHERE id_categoria = @id_categoria;
+GO
 
-	create procedure [dbo].[storedModificarCategoria]
-	@id_categoria int,
-	@nombre varchar(255),
-	@descripcion varchar(300),
-	@activo bit
-	as
-	update CATEGORIAS set nombre = @nombre, descripcion = @descripcion, activo = @activo
-	where id_categoria = @id_categoria
-	GO
+-- ========== ROLES ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarRoles]
+AS
+SELECT id_rol, nombre
+FROM ROLES;
+GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaRol]
+    @nombre VARCHAR(255)
+AS
+INSERT INTO ROLES (nombre)
+VALUES (@nombre);
+GO
 
-	create procedure [dbo].[storedListarRoles] as
-	select id_rol, nombre
-	from ROLES
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarRol]
+    @id_rol INT,
+    @nombre VARCHAR(255)
+AS
+UPDATE ROLES 
+SET nombre = @nombre
+WHERE id_rol = @id_rol;
+GO
 
-	create procedure [dbo].[storedAltaRol]
-	@nombre varchar(255)
-	as
-	insert into ROLES (nombre)
-	values (@nombre)
-	GO
+-- ========== USUARIOS ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarUsuarios]
+AS
+SELECT id_usuario, nombre, email, password_u, id_rol, activo
+FROM USUARIOS;
+GO
 
-	create procedure [dbo].[storedModificarRol]
-	@id_rol int,
-	@nombre varchar(255)
-	as
-	update ROLES set nombre = @nombre
-	where id_rol = @id_rol
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaUsuario]
+    @nombre VARCHAR(255),
+    @email VARCHAR(255),
+    @password_u VARCHAR(255),
+    @id_rol INT,
+    @activo BIT
+AS
+INSERT INTO USUARIOS (nombre, email, password_u, id_rol, activo)
+VALUES (@nombre, @email, @password_u, @id_rol, @activo);
+GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarUsuario]
+    @id_usuario INT,
+    @nombre VARCHAR(255),
+    @email VARCHAR(255),
+    @password_u VARCHAR(255),
+    @id_rol INT,
+    @activo BIT
+AS
+UPDATE USUARIOS 
+SET nombre = @nombre, email = @email, password_u = @password_u, id_rol = @id_rol, activo = @activo
+WHERE id_usuario = @id_usuario;
+GO
 
-	create procedure [dbo].[storedListarUsuarios] as
-	select id_usuario, nombre, email, password_hash, id_rol, activo
-	from USUARIOS
-	GO
+-- ========== PRODUCTOS ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarProductos]
+AS
+SELECT id_producto, nombre, descripcion, id_marca, id_categoria, 
+       stock_actual, stock_minimo, precio, porcentaje_ganancia, activo
+FROM PRODUCTOS;
+GO
 
-	create procedure [dbo].[storedAltaUsuario]
-	@nombre varchar(255),
-	@email varchar(255),
-	@password_hash varchar(255),
-	@id_rol int,
-	@activo bit
-	as
-	insert into USUARIOS (nombre, email, password_hash, id_rol, activo)
-	values (@nombre, @email, @password_hash, @id_rol, @activo)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaProducto]
+    @nombre VARCHAR(255),
+    @descripcion VARCHAR(300),
+    @id_marca INT,
+    @id_categoria INT,
+    @stock_actual INT,
+    @stock_minimo INT,
+    @precio DECIMAL(5,2),
+    @porcentaje_ganancia DECIMAL(5,2),
+    @activo BIT
+AS
+INSERT INTO PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, precio, porcentaje_ganancia, activo)
+VALUES (@nombre, @descripcion, @id_marca, @id_categoria, @stock_actual, @stock_minimo, @precio, @porcentaje_ganancia, @activo);
+GO
 
-	create procedure [dbo].[storedModificarUsuario]
-	@id_usuario int,
-	@nombre varchar(255),
-	@email varchar(255),
-	@password_hash varchar(255),
-	@id_rol int,
-	@activo bit
-	as
-	update USUARIOS set nombre = @nombre, email = @email, password_hash = @password_hash, id_rol = @id_rol, activo = @activo
-	where id_usuario = @id_usuario
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarProducto]
+    @id_producto INT,
+    @nombre VARCHAR(255),
+    @descripcion VARCHAR(300),
+    @id_marca INT,
+    @id_categoria INT,
+    @stock_actual INT,
+    @stock_minimo INT,
+    @precio DECIMAL(5,2),
+    @porcentaje_ganancia DECIMAL(5,2),
+    @activo BIT
+AS
+UPDATE PRODUCTOS 
+SET nombre = @nombre, descripcion = @descripcion, id_marca = @id_marca, id_categoria = @id_categoria,
+    stock_actual = @stock_actual, stock_minimo = @stock_minimo, precio = @precio, 
+    porcentaje_ganancia = @porcentaje_ganancia, activo = @activo
+WHERE id_producto = @id_producto;
+GO
 
+-- ========== PROVEEDORES ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarProveedores]
+AS
+SELECT id_proveedor, cuil, nombre, email, telefono, direccion, activo
+FROM PROVEEDORES
+WHERE activo = 1;   -- solo activos por defecto
+GO
 
-	create procedure [dbo].[storedListarProductos] as
-	select id_producto, nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, porcentaje_ganancia, activo
-	from PRODUCTOS
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedListarProveedorPorId]
+    @id_proveedor INT
+AS
+SELECT id_proveedor, cuil, nombre, email, telefono, direccion, activo
+FROM PROVEEDORES
+WHERE id_proveedor = @id_proveedor;
+GO
 
-	create procedure [dbo].[storedAltaProducto]
-	@nombre varchar(255),
-	@descripcion varchar(300),
-	@id_marca int,
-	@id_categoria int,
-	@stock_actual int,
-	@stock_minimo int,
-	@porcentaje_ganancia decimal(5,2),
-	@activo bit
-	as
-	insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, porcentaje_ganancia, activo)
-	values (@nombre, @descripcion, @id_marca, @id_categoria, @stock_actual, @stock_minimo, @porcentaje_ganancia, @activo)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaProveedor]
+    @cuil VARCHAR(20),
+    @nombre VARCHAR(255),
+    @email VARCHAR(255),
+    @telefono VARCHAR(255),
+    @direccion VARCHAR(255),
+    @activo BIT
+AS
+INSERT INTO PROVEEDORES (cuil, nombre, email, telefono, direccion, activo)
+VALUES (@cuil, @nombre, @email, @telefono, @direccion, @activo);
+GO
 
-	create procedure [dbo].[storedModificarProducto]
-	@id_producto int,
-	@nombre varchar(255),
-	@descripcion varchar(300),
-	@id_marca int,
-	@id_categoria int,
-	@stock_actual int,
-	@stock_minimo int,
-	@porcentaje_ganancia decimal(5,2),
-	@activo bit
-	as
-	update PRODUCTOS set nombre = @nombre, descripcion = @descripcion, id_marca = @id_marca, id_categoria = @id_categoria,
-	stock_actual = @stock_actual, stock_minimo = @stock_minimo, porcentaje_ganancia = @porcentaje_ganancia, activo = @activo
-	where id_producto = @id_producto
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarProveedor]
+    @id_proveedor INT,
+    @cuil VARCHAR(20),
+    @nombre VARCHAR(255),
+    @email VARCHAR(255),
+    @telefono VARCHAR(255),
+    @direccion VARCHAR(255),
+    @activo BIT
+AS
+UPDATE PROVEEDORES 
+SET cuil = @cuil, nombre = @nombre, email = @email, telefono = @telefono, 
+    direccion = @direccion, activo = @activo
+WHERE id_proveedor = @id_proveedor;
+GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedEliminarProveedor]
+    @id_proveedor INT
+AS
+UPDATE PROVEEDORES
+SET activo = 0
+WHERE id_proveedor = @id_proveedor;
+GO
 
-	create procedure [dbo].[storedListarProveedores] as
-	select id_proveedor, cuil, nombre, email, telefono, direccion, activo
-	from PROVEEDORES
-	GO
+-- ========== PRODUCTO_PROVEEDOR ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarProductoProveedor]
+AS
+SELECT id_producto, id_proveedor
+FROM PRODUCTO_PROVEEDOR;
+GO
 
-	create procedure [dbo].[storedAltaProveedor]
-	@cuil varchar(20),
-	@nombre varchar(255),
-	@email varchar(255),
-	@telefono varchar(255),
-	@direccion varchar(255),
-	@activo bit
-	as
-	insert into PROVEEDORES (cuil, nombre, email, telefono, direccion, activo)
-	values (@cuil, @nombre, @email, @telefono, @direccion, @activo)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaProductoProveedor]
+    @id_producto INT,
+    @id_proveedor INT
+AS
+INSERT INTO PRODUCTO_PROVEEDOR (id_producto, id_proveedor)
+VALUES (@id_producto, @id_proveedor);
+GO
 
-	create procedure [dbo].[storedModificarProveedor]
-	@id_proveedor int,
-	@cuil varchar(20),
-	@nombre varchar(255),
-	@email varchar(255),
-	@telefono varchar(255),
-	@direccion varchar(255),
-	@activo bit
-	as
-	update PROVEEDORES set cuil = @cuil, nombre = @nombre, email = @email, telefono = @telefono, direccion = @direccion, activo = @activo
-	where id_proveedor = @id_proveedor
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarProductoProveedor]
+    @id_producto_anterior INT,
+    @id_proveedor_anterior INT,
+    @id_producto INT,
+    @id_proveedor INT
+AS
+UPDATE PRODUCTO_PROVEEDOR 
+SET id_producto = @id_producto, id_proveedor = @id_proveedor
+WHERE id_producto = @id_producto_anterior AND id_proveedor = @id_proveedor_anterior;
+GO
 
+-- ========== COMPRAS ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarCompras]
+AS
+SELECT 
+    C.id_compra,
+    C.fecha,
+    C.total,
+    P.id_proveedor,
+    P.cuil,
+    P.nombre AS nombre_proveedor,
+    U.id_usuario,
+    U.nombre AS nombre_usuario,
+    R.id_rol,
+    R.nombre AS nombre_rol
+FROM COMPRAS C
+INNER JOIN PROVEEDORES P ON P.id_proveedor = C.id_proveedor
+INNER JOIN USUARIOS U ON U.id_usuario = C.id_usuario
+INNER JOIN ROLES R ON R.id_rol = U.id_rol;
+GO
 
-	create procedure [dbo].[storedListarProductoProveedor] as
-	select id_producto, id_proveedor
-	from PRODUCTO_PROVEEDOR
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaCompra]
+    @id_proveedor INT,
+    @id_usuario INT,
+    @total DECIMAL(10,2)
+AS
+INSERT INTO COMPRAS (id_proveedor, id_usuario, total)
+VALUES (@id_proveedor, @id_usuario, @total);
+GO
 
-	create procedure [dbo].[storedAltaProductoProveedor]
-	@id_producto int,
-	@id_proveedor int
-	as
-	insert into PRODUCTO_PROVEEDOR (id_producto, id_proveedor)
-	values (@id_producto, @id_proveedor)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarCompra]
+    @id_compra INT,
+    @fecha DATETIME,
+    @id_proveedor INT,
+    @id_usuario INT,
+    @total DECIMAL(10,2)
+AS
+UPDATE COMPRAS 
+SET fecha = @fecha, id_proveedor = @id_proveedor, id_usuario = @id_usuario, total = @total
+WHERE id_compra = @id_compra;
+GO
 
-	create procedure [dbo].[storedModificarProductoProveedor]
-	@id_producto_anterior int,
-	@id_proveedor_anterior int,
-	@id_producto int,
-	@id_proveedor int
-	as
-	update PRODUCTO_PROVEEDOR set id_producto = @id_producto, id_proveedor = @id_proveedor
-	where id_producto = @id_producto_anterior and id_proveedor = @id_proveedor_anterior
-	GO
+-- ========== COMPRA_DETALLES ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarCompraDetalles]
+AS
+SELECT id_detalle, id_compra, id_producto, cantidad, precio_unitario, subtotal
+FROM COMPRA_DETALLES;
+GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaCompraDetalle]
+    @id_compra INT,
+    @id_producto INT,
+    @cantidad INT,
+    @precio_unitario DECIMAL(10,2),
+    @subtotal DECIMAL(10,2)
+AS
+INSERT INTO COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal)
+VALUES (@id_compra, @id_producto, @cantidad, @precio_unitario, @subtotal);
+GO
 
-	create procedure [dbo].[storedListarCompras] as
-	select id_compra, fecha, id_proveedor, id_usuario, total
-	from COMPRAS
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarCompraDetalle]
+    @id_detalle INT,
+    @id_compra INT,
+    @id_producto INT,
+    @cantidad INT,
+    @precio_unitario DECIMAL(10,2),
+    @subtotal DECIMAL(10,2)
+AS
+UPDATE COMPRA_DETALLES 
+SET id_compra = @id_compra, id_producto = @id_producto, cantidad = @cantidad,
+    precio_unitario = @precio_unitario, subtotal = @subtotal
+WHERE id_detalle = @id_detalle;
+GO
 
-	create procedure [dbo].[storedAltaCompra]
-	@id_proveedor int,
-	@id_usuario int,
-	@total decimal(10,2)
-	as
-	insert into COMPRAS (id_proveedor, id_usuario, total)
-	values (@id_proveedor, @id_usuario, @total)
-	GO
+-- ========== CLIENTES ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarClientes]
+AS
+SELECT id_cliente, dni, nombre, apellido, email, telefono, direccion, activo
+FROM CLIENTES;
+GO
 
-	create procedure [dbo].[storedModificarCompra]
-	@id_compra int,
-	@fecha datetime,
-	@id_proveedor int,
-	@id_usuario int,
-	@total decimal(10,2)
-	as
-	update COMPRAS set fecha = @fecha, id_proveedor = @id_proveedor, id_usuario = @id_usuario, total = @total
-	where id_compra = @id_compra
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaCliente]
+    @dni VARCHAR(20),
+    @nombre VARCHAR(255),
+    @apellido VARCHAR(255),
+    @email VARCHAR(255),
+    @telefono VARCHAR(255),
+    @direccion VARCHAR(255),
+    @activo BIT
+AS
+INSERT INTO CLIENTES (dni, nombre, apellido, email, telefono, direccion, activo)
+VALUES (@dni, @nombre, @apellido, @email, @telefono, @direccion, @activo);
+GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarCliente]
+    @id_cliente INT,
+    @nombre VARCHAR(255),
+    @apellido VARCHAR(255),
+    @email VARCHAR(255),
+    @telefono VARCHAR(255),
+    @direccion VARCHAR(255)
+AS
+UPDATE CLIENTES 
+SET nombre = @nombre, apellido = @apellido, email = @email,
+    telefono = @telefono, direccion = @direccion
+WHERE id_cliente = @id_cliente;
+GO
 
-	create procedure [dbo].[storedListarCompraDetalles] as
-	select id_detalle, id_compra, id_producto, cantidad, precio_unitario, subtotal
-	from COMPRA_DETALLES
-	GO
+-- ========== VENTAS ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarVentas]
+AS
+BEGIN
+    SELECT 
+        v.id_venta,
+        v.fecha,
+        v.id_cliente,
+        c.nombre AS nombre_cliente,
+        c.apellido AS apellido_cliente,
+        v.total,
+        v.numero_factura
+    FROM VENTAS v
+    INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
+    ORDER BY v.id_venta DESC;
+END;
+GO
 
-	create procedure [dbo].[storedAltaCompraDetalle]
-	@id_compra int,
-	@id_producto int,
-	@cantidad int,
-	@precio_unitario decimal(10,2),
-	@subtotal decimal(10,2)
-	as
-	insert into COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal)
-	values (@id_compra, @id_producto, @cantidad, @precio_unitario, @subtotal)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaVenta]
+    @id_cliente INT,
+    @id_usuario INT,
+    @total DECIMAL(10,2),
+    @numero_factura VARCHAR(255)
+AS
+INSERT INTO VENTAS (id_cliente, id_usuario, total, numero_factura)
+VALUES (@id_cliente, @id_usuario, @total, @numero_factura);
+GO
 
-	create procedure [dbo].[storedModificarCompraDetalle]
-	@id_detalle int,
-	@id_compra int,
-	@id_producto int,
-	@cantidad int,
-	@precio_unitario decimal(10,2),
-	@subtotal decimal(10,2)
-	as
-	update COMPRA_DETALLES set id_compra = @id_compra, id_producto = @id_producto, cantidad = @cantidad,
-	precio_unitario = @precio_unitario, subtotal = @subtotal
-	where id_detalle = @id_detalle
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarVenta]
+    @id_venta INT,
+    @fecha DATETIME,
+    @id_cliente INT,
+    @id_usuario INT,
+    @total DECIMAL(10,2),
+    @numero_factura VARCHAR(255)
+AS
+UPDATE VENTAS 
+SET fecha = @fecha, id_cliente = @id_cliente, id_usuario = @id_usuario,
+    total = @total, numero_factura = @numero_factura
+WHERE id_venta = @id_venta;
+GO
 
+-- ========== VENTA_DETALLES ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarVentaDetalles]
+AS
+SELECT id_detalle, id_venta, id_producto, cantidad, precio_unitario, subtotal
+FROM VENTA_DETALLES;
+GO
 
-	create procedure [dbo].[storedListarClientes] as
-	select id_cliente, dni, nombre, apellido, email, telefono, direccion, activo
-	from CLIENTES
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaVentaDetalle]
+    @id_venta INT,
+    @id_producto INT,
+    @cantidad INT,
+    @precio_unitario DECIMAL(10,2),
+    @subtotal DECIMAL(10,2)
+AS
+INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal)
+VALUES (@id_venta, @id_producto, @cantidad, @precio_unitario, @subtotal);
+GO
 
-	create procedure [dbo].[storedAltaCliente]
-	@dni varchar(20),
-	@nombre varchar(255),
-	@apellido varchar(255),
-	@email varchar(255),
-	@telefono varchar(255),
-	@direccion varchar(255),
-	@activo bit
-	as
-	insert into CLIENTES (dni, nombre, apellido, email, telefono, direccion, activo)
-	values (@dni, @nombre, @apellido, @email, @telefono, @direccion, @activo)
-	GO
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarVentaDetalle]
+    @id_detalle INT,
+    @id_venta INT,
+    @id_producto INT,
+    @cantidad INT,
+    @precio_unitario DECIMAL(10,2),
+    @subtotal DECIMAL(10,2)
+AS
+UPDATE VENTA_DETALLES 
+SET id_venta = @id_venta, id_producto = @id_producto, cantidad = @cantidad,
+    precio_unitario = @precio_unitario, subtotal = @subtotal
+WHERE id_detalle = @id_detalle;
+GO
 
-	create procedure [dbo].[storedModificarCliente]
-	@id_cliente int,
-	@dni varchar(20),
-	@nombre varchar(255),
-	@apellido varchar(255),
-	@email varchar(255),
-	@telefono varchar(255),
-	@direccion varchar(255),
-	@activo bit
-	as
-	update CLIENTES set dni = @dni, nombre = @nombre, apellido = @apellido, email = @email,
-	telefono = @telefono, direccion = @direccion, activo = @activo
-	where id_cliente = @id_cliente
-	GO
+-- ========== IMAGENES (corregido según la tabla real) ==========
+CREATE OR ALTER PROCEDURE [dbo].[storedListarImagenes]
+AS
+SELECT id_imagen, url, activo, tipo_entidad, id_entidad
+FROM IMAGENES;
+GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaImagen]
+    @url VARCHAR(500),
+    @activo BIT,
+    @tipo_entidad VARCHAR(20),
+    @id_entidad INT
+AS
+INSERT INTO IMAGENES (url, activo, tipo_entidad, id_entidad)
+VALUES (@url, @activo, @tipo_entidad, @id_entidad);
+GO
 
-	create procedure [dbo].[storedListarVentas] as
-	select id_venta, fecha, id_cliente, id_usuario, total, numero_factura
-	from VENTAS
-	GO
-
-	create procedure [dbo].[storedAltaVenta]
-	@id_cliente int,
-	@id_usuario int,
-	@total decimal(10,2),
-	@numero_factura varchar(255)
-	as
-	insert into VENTAS (id_cliente, id_usuario, total, numero_factura)
-	values (@id_cliente, @id_usuario, @total, @numero_factura)
-	GO
-
-	create procedure [dbo].[storedModificarVenta]
-	@id_venta int,
-	@fecha datetime,
-	@id_cliente int,
-	@id_usuario int,
-	@total decimal(10,2),
-	@numero_factura varchar(255)
-	as
-	update VENTAS set fecha = @fecha, id_cliente = @id_cliente, id_usuario = @id_usuario,
-	total = @total, numero_factura = @numero_factura
-	where id_venta = @id_venta
-	GO
-
-
-	create procedure [dbo].[storedListarVentaDetalles] as
-	select id_detalle, id_venta, id_producto, cantidad, precio_unitario, subtotal
-	from VENTA_DETALLES
-	GO
-
-	create procedure [dbo].[storedAltaVentaDetalle]
-	@id_venta int,
-	@id_producto int,
-	@cantidad int,
-	@precio_unitario decimal(10,2),
-	@subtotal decimal(10,2)
-	as
-	insert into VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal)
-	values (@id_venta, @id_producto, @cantidad, @precio_unitario, @subtotal)
-	GO
-
-	create procedure [dbo].[storedModificarVentaDetalle]
-	@id_detalle int,
-	@id_venta int,
-	@id_producto int,
-	@cantidad int,
-	@precio_unitario decimal(10,2),
-	@subtotal decimal(10,2)
-	as
-	update VENTA_DETALLES set id_venta = @id_venta, id_producto = @id_producto, cantidad = @cantidad,
-	precio_unitario = @precio_unitario, subtotal = @subtotal
-	where id_detalle = @id_detalle
-	GO
-
-
-	create procedure [dbo].[storedListarImagenes] as
-	select id_imagen, url, orden, activo, id_img_user, id_producto
-	from IMAGENES
-	GO
-
-	create procedure [dbo].[storedAltaImagen]
-	@url varchar(255),
-	@orden int,
-	@activo bit,
-	@id_img_user int,
-	@id_producto int
-	as
-	insert into IMAGENES (url, orden, activo, id_img_user, id_producto)
-	values (@url, @orden, @activo, @id_img_user, @id_producto)
-	GO
-
-	create procedure [dbo].[storedModificarImagen]
-	@id_imagen int,
-	@url varchar(255),
-	@orden int,
-	@activo bit,
-	@id_img_user int,
-	@id_producto int
-	as
-	update IMAGENES set url = @url, orden = @orden, activo = @activo, id_img_user = @id_img_user, id_producto = @id_producto
-	where id_imagen = @id_imagen
-	GO
-
-
-
-	EXEC storedListarMarcas
-	EXEC storedListarCategorias
-	EXEC storedListarProductos
-	EXEC storedListarClientes
-	EXEC storedListarVentas
-
-	EXEC storedListarCompras
-	EXEC storedListarProveedores
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarImagen]
+    @id_imagen INT,
+    @url VARCHAR(500),
+    @activo BIT,
+    @tipo_entidad VARCHAR(20),
+    @id_entidad INT
+AS
+UPDATE IMAGENES 
+SET url = @url, activo = @activo, tipo_entidad = @tipo_entidad, id_entidad = @id_entidad
+WHERE id_imagen = @id_imagen;
+GO

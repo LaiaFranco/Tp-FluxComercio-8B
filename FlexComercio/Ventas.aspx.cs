@@ -30,7 +30,7 @@ namespace FlexComercio
 
         protected void btnPuntoVenta_Click(object sender, EventArgs e)
         {
-            Response.Redirect("FormularioVentas.aspx");
+            Response.Redirect("FormularioVenta.aspx");
         }
     }
 }

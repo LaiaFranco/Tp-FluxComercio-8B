@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/Script/">
-    <File Path="../../../../Downloads/ModificarProcedureListarCompras.sql" />
+    <File Path="LISTAR_PROCEDURES.sql" />
     <File Path="Negocio/script_db/CARGA_DATOS_DB.sql" />
     <File Path="Negocio/script_db/COMERCIO.sql" />
     <File Path="Negocio/script_db/COMERCIO_DB_Procedures.sql" />

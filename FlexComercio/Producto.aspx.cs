@@ -21,5 +21,11 @@ namespace FlexComercio
 
             }
         }
+
+        protected void btnNuevoProducto_Click(object sender, EventArgs e)
+        {
+            Session.Remove("productoSeleccionado");
+            Response.Redirect("AgregarProducto.aspx");
+        }
     }
 }

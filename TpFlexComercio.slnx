@@ -1,9 +1,9 @@
 <Solution>
   <Folder Name="/Script/">
-    <File Path="../../../../Downloads/ModificarProcedureListarCompras.sql" />
     <File Path="Negocio/script_db/CARGA_DATOS_DB.sql" />
     <File Path="Negocio/script_db/COMERCIO.sql" />
     <File Path="Negocio/script_db/COMERCIO_DB_Procedures.sql" />
+    <File Path="Negocio/script_db/ModificarProcedureListarCompras.sql" />
     <File Path="Negocio/script_db/ModificarProcedureVentas.sql" />
   </Folder>
   <Project Path="Dominio/Dominio.csproj" Id="5d478fa1-586b-4f84-b371-09fc8259bf36" />

@@ -1,0 +1,260 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/General.Master" AutoEventWireup="true" CodeBehind="AgregarProducto.aspx.cs" Inherits="FlexComercio.AgregarProducto" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-10">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-header bg-success text-white rounded-top-4">
+                    <h3 class="mb-0">
+                        <asp:Label ID="lblTitulo" runat="server" Text="Agregar Producto"></asp:Label>
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+
+                    <!-- Nombre -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre</label>
+
+                        <asp:TextBox
+                            ID="txtNombre"
+                            runat="server"
+                            CssClass="form-control" />
+                    </div>
+
+                    <!-- Marca -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Marca</label>
+
+                        <asp:DropDownList
+                            ID="ddlMarca"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+                    </div>
+
+                    <!-- Categoría -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Categoría</label>
+
+                        <asp:DropDownList
+                            ID="ddlCategoria"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+                    </div>
+
+                    <!-- Proveedor -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Proveedor</label>
+
+                        <asp:DropDownList
+                            ID="ddlProveedor"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Descripción</label>
+
+                        <asp:TextBox
+                            ID="txtDescripcion"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="MultiLine"
+                            Rows="4" />
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">
+                                Stock Actual
+                            </label>
+
+                            <asp:TextBox
+                                ID="txtStockActual"
+                                runat="server"
+                                CssClass="form-control"
+                                TextMode="Number" />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">
+                                Stock Mínimo
+                            </label>
+
+                            <asp:TextBox
+                                ID="txtStockMinimo"
+                                runat="server"
+                                CssClass="form-control"
+                                TextMode="Number" />
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">
+                                Precio
+                            </label>
+
+                            <asp:TextBox
+                                ID="txtPrecio"
+                                runat="server"
+                                CssClass="form-control"
+                                TextMode="Number" />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">
+                                % Ganancia
+                            </label>
+
+                            <asp:TextBox
+                                ID="txtGanancia"
+                                runat="server"
+                                CssClass="form-control"
+                                TextMode="Number" />
+                        </div>
+
+                    </div>
+
+                    <!-- Imágenes -->
+                    <hr />
+
+                    <h5>Imágenes</h5>
+
+                    <div class="row">
+
+                        <div class="col-md-8">
+
+                            <div class="input-group mb-3">
+
+                                <asp:TextBox
+                                    ID="txtUrlImagen"
+                                    runat="server"
+                                    CssClass="form-control"
+                                    placeholder="Ingrese URL de la imagen"
+                                    AutoPostBack="true"
+                                    OnTextChanged="txtUrlImagen_TextChanged"
+                                     />
+
+                                <asp:Button
+                                    ID="btnAgregarImagen"
+                                    runat="server"
+                                    Text="Agregar"
+                                    CssClass="btn btn-outline-primary"
+                                    OnClick="btnAgregarImagen_Click" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 text-center">
+
+                            <asp:Image
+                                ID="imgPreview"
+                                runat="server"
+                                Width="250px"
+                                Height="250px"
+                                CssClass="img-thumbnail"
+                                ImageUrl="~/Imagenes/sin-imagen.png" />
+
+                        </div>
+
+                    </div>
+
+                    <asp:Repeater ID="rptImagenes" runat="server">
+
+                        <ItemTemplate>
+
+                            <div class="card mb-2">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+
+                                    <span>
+                                        <%# Eval("UrlImagen") %>
+                                    </span>
+
+                                    <asp:Button
+                                        ID="btnEliminarImagen"
+                                        runat="server"
+                                        Text="Eliminar"
+                                        CssClass="btn btn-danger btn-sm"
+                                        CommandArgument='<%# Container.ItemIndex %>'
+                                         />
+
+                                </div>
+                            </div>
+
+                        </ItemTemplate>
+
+                    </asp:Repeater>
+
+                    <!-- Estado -->
+                    <asp:Panel ID="pnlEstado" runat="server">
+
+                        <div class="mb-4 mt-3">
+
+                            <label class="form-label fw-semibold">
+                                Estado
+                            </label>
+
+                            <asp:DropDownList
+                                ID="ddlEstado"
+                                runat="server"
+                                CssClass="form-select">
+
+                                <asp:ListItem Text="Activo"
+                                    Value="true"
+                                    Selected="True" />
+
+                                <asp:ListItem Text="Inactivo"
+                                    Value="false" />
+
+                            </asp:DropDownList>
+
+                        </div>
+
+                    </asp:Panel>
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-end">
+
+                        <asp:Button
+                            ID="btnGuardar"
+                            runat="server"
+                            Text="Guardar"
+                            CssClass="btn btn-primary rounded-pill px-4"
+                            OnClick="btnGuardar_Click" />
+
+                        <asp:Button
+                            ID="btnCancelar"
+                            runat="server"
+                            Text="Cancelar"
+                            CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
+                            PostBackUrl="~/Producto.aspx" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</asp:Content>

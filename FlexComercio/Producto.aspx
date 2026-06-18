@@ -6,17 +6,32 @@
 <div class="container-fluid py-4">
 
     <!-- Encabezado -->
-    <div class="d-flex justify-content-between align-items-start mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center py-4 px-4">
+
+    <div class="d-flex align-items-center">
+
+        <i class="bi bi-box-seam fs-3 me-3"></i>
+
         <div>
-            <h1 class="fw-bold mb-1">Productos</h1>
-            <p class="text-secondary fs-4 mb-0">Gestión de productos</p>
+            <h2 class="h3 fw-semibold mb-0">
+                Productos
+            </h2>
+
+            <small class="text-muted">
+                Gestión de productos
+            </small>
         </div>
 
-        <button class="btn btn-dark btn-lg px-4 py-3 rounded-4">
-            <i class="bi bi-plus-lg me-2"></i>
-            Nuevo Producto
-        </button>
     </div>
+
+    <asp:Button
+        ID="btnNuevoProducto"
+        runat="server"
+        Text="Nuevo Producto"
+        CssClass="btn btn-dark rounded-4 px-4 py-2"
+        OnClick="btnNuevoProducto_Click" />
+
+</div>
 
     <!-- Card -->
     <div class="card border-0 shadow-sm rounded-4">
@@ -85,7 +100,7 @@
 
                                         <p class="mb-1">
                                             <strong>Stock:</strong>
-                                            <%# Eval("StocmkActual") %>
+                                            <%# Eval("StockActual") %>
                                         </p>
 
                                         <p class="mb-1">

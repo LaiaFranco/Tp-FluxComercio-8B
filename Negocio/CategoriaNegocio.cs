@@ -106,7 +106,8 @@ namespace Negocio
                 Datos.setearProcedimiento("storedModificarCategoria");
                 Datos.setearParametro("@id_categoria",categoria.Id);
                 Datos.setearParametro("@nombre",categoria.Nombre);
-                Datos.setearParametro("@descipcion",categoria.Descripcion);
+                Datos.setearParametro("@descripcion", categoria.Descripcion);
+                Datos.setearParametro("@activo", true);
                 Datos.ejecutarAccion();
                 return true; 
             }

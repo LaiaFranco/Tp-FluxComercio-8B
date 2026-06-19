@@ -62,12 +62,10 @@ namespace Negocio
             {
                 Datos.setearProcedimiento("storedAltaUsuario");
 
-                Datos.setearParametro("@dni", Usuario.Dni);
                 Datos.setearParametro("@nombre", Usuario.Nombre);
                 Datos.setearParametro("@email", Usuario.Email);
-                Datos.setearParametro("@password", Usuario.Password);
+                Datos.setearParametro("@password_u", Usuario.Password);
                 Datos.setearParametro("@id_rol", Usuario.Rol.Id);
-                Datos.setearParametro("@id_imagen", Usuario.FotoPerfil.Id);
                 Datos.setearParametro("@activo", Usuario.Activo);
 
                 Datos.ejecutarAccion();
@@ -88,8 +86,10 @@ namespace Negocio
 
             try
             {
-                Datos.setearProcedimiento("storedModificarUsuario");
 
+                string query = "UPDATE USUARIOS SET activo = @activo WHERE id_usuario = @id_usuario";
+
+                Datos.setearConsulta(query);
                 Datos.setearParametro("@id_usuario", id);
                 Datos.setearParametro("@activo", activo);
 

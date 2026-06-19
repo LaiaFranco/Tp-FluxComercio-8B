@@ -27,7 +27,7 @@
                                 CommandName="Modificar" CommandArgument='<%# Eval("Id") %>' />
                             <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-sm btn-danger"
                                 CommandName="Eliminar" CommandArgument='<%# Eval("Id") %>'
-                                OnClientClick="return confirm('¿Está seguro de eliminar este usuario?');" />
+                                OnClick="btnEliminar_Click"   />
                         </ItemTemplate>
                         <ItemStyle CssClass="table-actions" />
                     </asp:TemplateField>
@@ -35,4 +35,6 @@
             </asp:GridView>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </asp:Content>

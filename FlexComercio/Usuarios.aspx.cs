@@ -35,5 +35,59 @@ namespace FlexComercio
         {
             Response.Redirect("FormularioUsuario.aspx");
         }
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+
+
+            string idStr = btn.CommandArgument;
+
+
+            if (int.TryParse(idStr, out int id))
+            {
+
+                try
+                {
+                    UsuarioDatos.Eliminar(id);
+                    CargarUsuarios();
+                    string script = @"
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'La categoria se elimino ',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                       
+                    });
+                ";
+                    ClientScript.RegisterStartupScript(this.GetType(), "SweetAlert", script, true);
+
+                } catch (Exception ex)
+                {
+
+                    string script = @"
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo eliminar la categoria',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                ";
+
+                    ClientScript.RegisterStartupScript(
+                           this.GetType(),
+                           "SweetAlertError",
+                           script,
+                           true
+                    );
+
+                }
+                
+
+            }
+
+
+        }
     }
 }

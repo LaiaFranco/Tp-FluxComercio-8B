@@ -56,8 +56,7 @@ namespace FlexComercio
                     ddlProveedor.DataTextField = "Nombre";
                     ddlProveedor.DataBind();
                 }
-
-               
+      
             }
         }
 
@@ -84,6 +83,7 @@ namespace FlexComercio
             producto.StockMinimo = int.Parse(txtStockMinimo.Text);
             producto.Precio = float.Parse(txtPrecio.Text);
             producto.PorcentajeGanancia = float.Parse(txtGanancia.Text);
+            producto.Activo = true;
 
             producto.Categoria = new Categoria();
             producto.Categoria.Id = int.Parse(ddlCategoria.SelectedValue);
@@ -102,15 +102,15 @@ namespace FlexComercio
             if (ok)
             {
                 string script = @"
-        Swal.fire({
-            title: 'Éxito',
-            text: 'Producto agregado correctamente',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-        }).then(() => {
-            window.location = 'Productos.aspx';
-        });
-        ";
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'Producto agregado correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location = 'Productos.aspx';
+                    });
+                    ";
 
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
@@ -122,13 +122,13 @@ namespace FlexComercio
             else
             {
                 string script = @"
-        Swal.fire({
-            title: 'Error',
-            text: 'No se pudo agregar el producto',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-        ";
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo agregar el producto',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    ";
 
                 ClientScript.RegisterStartupScript(
                     this.GetType(),

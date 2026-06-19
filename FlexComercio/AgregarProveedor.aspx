@@ -16,23 +16,85 @@
         <div class="card-body p-4">
 
             <div class="mb-3">
-                <label class="form-label">CUIL</label>
-                <asp:TextBox ID="txtCuil" runat="server" CssClass="form-control"></asp:TextBox>
+              <!-- cuil -->
+                <label class="form-label fw-semibold">
+                    CUIL <span class="text-danger">*</span>
+                </label>
+
+                 <asp:TextBox
+                     ID="txtCuil"
+                     runat="server"
+                     CssClass="form-control" />
+
+                 <asp:RequiredFieldValidator
+                     ID="rfvCuil"
+                     runat="server"
+                     ErrorMessage="Campo obligatorio"
+                     ControlToValidate="txtCuil"
+                     CssClass="text-danger"
+                     Display="Dynamic" />
+               </div>
+
+            <div class="mb-3">
+                <!-- Nombre -->
+                
+                <label class="form-label fw-semibold">
+                    Nombre <span class="text-danger">*</span>
+                </label>
+
+                 <asp:TextBox
+                     ID="txtNombre"
+                     runat="server"
+                     CssClass="form-control" />
+
+                 <asp:RequiredFieldValidator
+                     ID="rfvNombre"
+                     runat="server"
+                     ErrorMessage="Campo obligatorio"
+                     ControlToValidate="txtNombre"
+                     CssClass="text-danger"
+                     Display="Dynamic" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Nombre</label>
-                <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control"></asp:TextBox>
+               <!-- Email -->
+                 <label class="form-label fw-semibold">
+                     Email <span class="text-danger">*</span>
+                 </label>
+
+                  <asp:TextBox
+                      ID="txtEmail"
+                      runat="server"
+                      CssClass="form-control" />
+
+                  <asp:RequiredFieldValidator
+                      ID="rfvEmail"
+                      runat="server"
+                      ErrorMessage="Campo obligatorio"
+                      ControlToValidate="txtEmail"
+                      CssClass="text-danger"
+                      Display="Dynamic" />
+
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Email</label>
-                <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
+                
+                 <label class="form-label fw-semibold">
+                     Telefono <span class="text-danger">*</span>
+                 </label>
 
-            <div class="mb-3">
-                <label class="form-label">Teléfono</label>
-                <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control"></asp:TextBox>
+                  <asp:TextBox
+                      ID="txtTelefono"
+                      runat="server"
+                      CssClass="form-control" />
+
+                  <asp:RequiredFieldValidator
+                      ID="rfvTelefono"
+                      runat="server"
+                      ErrorMessage="Campo obligatorio"
+                      ControlToValidate="txtTelefono"
+                      CssClass="text-danger"
+                      Display="Dynamic" />
             </div>
 
             <div class="mb-3">
@@ -40,10 +102,21 @@
                 <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control"></asp:TextBox>
             </div>
 
-            <asp:Label ID="lblMensaje" runat="server" CssClass="text-danger d-block mb-3"></asp:Label>
+            <asp:Label ID="lblMensaje" 
+                runat="server" 
+                CssClass="text-danger d-block mb-3"></asp:Label>
 
-            <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" CssClass="btn btn-dark" OnClick="btnAceptar_Click" />
-            <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-secondary ms-2" OnClick="btnCancelar_Click" />
+            <asp:Button ID="btnAceptar" 
+                runat="server" Text="Aceptar" 
+                CssClass="btn btn-dark" 
+                OnClick="btnAceptar_Click" />
+
+            <asp:Button ID="btnCancelar" 
+                runat="server" 
+                Text="Cancelar" 
+                CssClass="btn btn-secondary ms-2" 
+                OnClick="btnCancelar_Click" 
+                CausesValidation="false"/>
 
         </div>
     </div>

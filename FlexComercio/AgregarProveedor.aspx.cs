@@ -43,11 +43,8 @@ namespace FlexComercio
         {
             try
             {
-                if (txtCuil.Text == "" || txtNombre.Text == "" || txtEmail.Text == "")
-                {
-                    lblMensaje.Text = "Debe completar CUIL, nombre y email.";
+                if (!Page.IsValid)
                     return;
-                }
 
                 Dominio.Proveedor proveedor = new Dominio.Proveedor();
 

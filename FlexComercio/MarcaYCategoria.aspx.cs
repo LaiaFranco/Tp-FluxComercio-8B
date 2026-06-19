@@ -19,14 +19,15 @@ namespace FlexComercio
                 
                 MarcaNegocio negocioMarca = new MarcaNegocio();
 
-                Session.Add("listaMarcas", negocioMarca.Listar());
+                Session.Add("listaMarcas", negocioMarca.Listar().Where(n=>n.Activo).ToList());
                 dgvMarcas.DataSource = Session["listaMarcas"];
+                
                 dgvMarcas.DataBind();
 
                
                 CategoriaNegocio negocioCategoria = new CategoriaNegocio();
 
-                Session.Add("listaCategorias", negocioCategoria.Listar());
+                Session.Add("listaCategorias", negocioCategoria.Listar().Where(n=>n.Activo).ToList());
                 dgvCategorias.DataSource = Session["listaCategorias"];
                 dgvCategorias.DataBind();
             }

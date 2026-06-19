@@ -26,10 +26,9 @@ namespace Negocio
                     Usuario Usuario = new Usuario();
 
                     Usuario.Id = (int)Datos.Lector["id_usuario"];
-                    Usuario.Dni = (string)Datos.Lector["dni"];
                     Usuario.Nombre = (string)Datos.Lector["nombre"];
                     Usuario.Email = (string)Datos.Lector["email"];
-                    Usuario.Password = (string)Datos.Lector["password"];
+                    Usuario.Password = (string)Datos.Lector["password_u"];
                     Usuario.Activo = (bool)Datos.Lector["activo"];
 
                     // ROL
@@ -39,14 +38,6 @@ namespace Negocio
                     Rol.Nombre = (string)Datos.Lector["nombre_rol"];
 
                     Usuario.Rol = Rol;
-
-                    // FOTO PERFIL
-                    Imagen Imagen = new Imagen();
-
-                    Imagen.Id = (int)Datos.Lector["id_imagen"];
-                    Imagen.Url = (string)Datos.Lector["url_imagen"];
-
-                    Usuario.FotoPerfil = Imagen;
 
                     Usuarios.Add(Usuario);
                 }
@@ -142,5 +133,61 @@ namespace Negocio
                 Datos.cerrarConexion();
             }
         }
+
+        public Usuario GetUsuarioCredenciales(string email,string passowrd)
+        {
+            AccesoDatos Datos = new AccesoDatos();
+
+
+            try
+            {
+
+                string query = @"SELECT 
+                            u.id_usuario,
+                            u.nombre,
+                            u.email,
+                            u.id_rol,
+                            r.nombre AS nombre_rol,
+                            u.activo
+                            FROM USUARIOS u
+                            INNER JOIN ROLES r ON u.id_rol = r.id_rol
+                            WHERE u.email = @email AND u.password = @password";
+
+                Datos.setearConsulta(query);
+                Datos.setearParametro("@email", email);
+                Datos.setearParametro("@password", passowrd);
+
+                if (Datos.Lector.Read())
+                {
+
+                    Usuario NuevoUsuario = new Usuario();
+
+                    NuevoUsuario.Id = (int)Datos.Lector["id_usuario"];
+
+                    NuevoUsuario.Rol = new Rol();
+                    NuevoUsuario.Rol.Id = (int)Datos.Lector["id_rol"];
+                    NuevoUsuario.Rol.Nombre = (string)Datos.Lector["nombre_rol"];
+                    NuevoUsuario.Activo = (bool)Datos.Lector["activo"];
+                    NuevoUsuario.Nombre = (string)Datos.Lector["nombre"];
+
+                    return NuevoUsuario;
+                }
+
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+            finally
+            {
+                Datos.cerrarConexion();
+            }
+        }
     }
+
+
+    
 }

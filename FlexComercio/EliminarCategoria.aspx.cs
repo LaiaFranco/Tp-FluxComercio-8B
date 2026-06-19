@@ -39,7 +39,7 @@ namespace FlexComercio
             categoria = (Categoria)Session["categoriaSeleccionada"];
 
             int id = categoria.Id;
-            bool activo = categoria.Activo;
+            bool activo = false;
 
             bool exito = negocio.Eliminar(id, activo);
             if (exito)

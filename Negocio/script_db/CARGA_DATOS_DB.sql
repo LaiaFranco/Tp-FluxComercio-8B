@@ -40,12 +40,12 @@ values ('Vendedor')
 set @idRolVendedor = SCOPE_IDENTITY()
 
 
-insert into USUARIOS (nombre, email, password_hash, id_rol, activo)
+insert into USUARIOS (nombre, email, password_u, id_rol, activo)
 values ('Admin Sistema', 'admin@comercio.com', '123456', @idRolAdmin, 1)
 
 set @idUsuarioAdmin = SCOPE_IDENTITY()
 
-insert into USUARIOS (nombre, email, password_hash, id_rol, activo)
+insert into USUARIOS (nombre, email, password_u, id_rol, activo)
 values ('Juan Vendedor', 'juan@comercio.com', '123456', @idRolVendedor, 1)
 
 set @idUsuarioVendedor = SCOPE_IDENTITY()
@@ -94,23 +94,24 @@ values ('27-87654321-4', 'Insumos Digitales SRL', 'contacto@insumosdigitales.com
 set @idProveedor2 = SCOPE_IDENTITY()
 
 
-insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, porcentaje_ganancia, activo)
-values ('Samsung Galaxy A55', 'Celular Samsung Galaxy A55 256GB', @idMarcaSamsung, @idCategoriaCelulares, 15, 3, 30.00, 1)
+-- CORRECCIÓN: precios ajustados a decimal(5,2)
+insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, precio, porcentaje_ganancia, activo)
+values ('Samsung Galaxy A55', 'Celular Samsung Galaxy A55 256GB', @idMarcaSamsung, @idCategoriaCelulares, 15, 3, 350.00, 30.00, 1);
 
-set @idProducto1 = SCOPE_IDENTITY()
+set @idProducto1 = SCOPE_IDENTITY();
 
-insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, porcentaje_ganancia, activo)
-values ('iPhone 15', 'Celular Apple iPhone 15 128GB', @idMarcaApple, @idCategoriaCelulares, 8, 2, 35.00, 1)
+insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, precio, porcentaje_ganancia, activo)
+values ('iPhone 15', 'Celular Apple iPhone 15 128GB', @idMarcaApple, @idCategoriaCelulares, 8, 2, 799.99, 35.00, 1);   -- antes 800.00
 
-set @idProducto2 = SCOPE_IDENTITY()
+set @idProducto2 = SCOPE_IDENTITY();
 
-insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, porcentaje_ganancia, activo)
-values ('MacBook Air M2', 'Notebook Apple MacBook Air con chip M2', @idMarcaApple, @idCategoriaNotebooks, 5, 1, 28.00, 1)
+insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, precio, porcentaje_ganancia, activo)
+values ('MacBook Air M2', 'Notebook Apple MacBook Air con chip M2', @idMarcaApple, @idCategoriaNotebooks, 5, 1, 999.99, 28.00, 1);   -- antes 1200.00
 
-set @idProducto3 = SCOPE_IDENTITY()
+set @idProducto3 = SCOPE_IDENTITY();
 
-insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, porcentaje_ganancia, activo)
-values ('Mouse Logitech M280', 'Mouse inalambrico Logitech', @idMarcaLogitech, @idCategoriaAccesorios, 30, 5, 40.00, 1)
+insert into PRODUCTOS (nombre, descripcion, id_marca, id_categoria, stock_actual, stock_minimo, precio, porcentaje_ganancia, activo)
+values ('Mouse Logitech M280', 'Mouse inalambrico Logitech', @idMarcaLogitech, @idCategoriaAccesorios, 30, 5, 25.00, 40.00, 1);
 
 set @idProducto4 = SCOPE_IDENTITY()
 
@@ -163,11 +164,11 @@ insert into VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, su
 values (@idVenta1, @idProducto4, 1, 40000.00, 40000.00)
 
 
-insert into IMAGENES (url, orden, activo, id_img_user, id_producto)
-values ('https://example.com/img/samsung-galaxy-a55.jpg', 1, 1, @idUsuarioAdmin, @idProducto1)
+insert into IMAGENES (url, activo, tipo_entidad, id_entidad)
+values ('https://example.com/img/samsung-galaxy-a55.jpg', 1, 'PRODUCTO', @idProducto1);
 
-insert into IMAGENES (url, orden, activo, id_img_user, id_producto)
-values ('https://example.com/img/iphone-15.jpg', 1, 1, @idUsuarioVendedor, @idProducto2)
+insert into IMAGENES (url, activo, tipo_entidad, id_entidad)
+values ('https://example.com/img/iphone-15.jpg', 1, 'PRODUCTO', @idProducto2);
 GO
 
 

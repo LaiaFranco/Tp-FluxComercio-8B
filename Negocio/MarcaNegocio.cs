@@ -81,8 +81,6 @@ namespace Negocio
                 Datos.setearParametro("@id_marca", id);
                 Datos.setearParametro("@activo", activo);
                 Datos.ejecutarAccion();
-
-                Datos.ejecutarAccion();
                 return true; 
             }
             catch (Exception ex)

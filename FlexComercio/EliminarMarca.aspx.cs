@@ -40,7 +40,8 @@ namespace FlexComercio
             marca = (Marca)Session["marcaSeleccionada"];
 
             int id = marca.Id;
-            bool activo = marca.Activo;
+            bool activo = false;
+           
 
             bool exito = negocio.Eliminar(id, activo);
             if (exito)

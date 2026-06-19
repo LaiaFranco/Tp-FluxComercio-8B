@@ -1,0 +1,3 @@
+Tenes que ejecutar en el powershell teniendo en cuenta la ruta donde clonaste el repo:
+
+powershell -ExecutionPolicy Bypass -File "C:\Users\Catalina\Documents\TP-FINAL-FLUX\19-6\limpiar-bin-obj.ps1"

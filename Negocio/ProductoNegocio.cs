@@ -97,17 +97,15 @@ namespace Negocio
                 Datos.setearProcedimiento("storedAltaProducto");
 
                 Datos.setearParametro("@nombre", Producto.Nombre);
+                Datos.setearParametro("@descripcion", Producto.Descripcion);
                 Datos.setearParametro("@id_marca", Producto.Marca.Id);
                 Datos.setearParametro("@id_categoria", Producto.Categoria.Id);
-                Datos.setearParametro("@descripcion", Producto.Descripcion);
+                Datos.setearParametro("@id_proveedor", Producto.Proveedor.Id);
+                Datos.setearParametro("@precio", Math.Round((decimal)Producto.Precio, 2));
                 Datos.setearParametro("@stock_actual", Producto.StockActual);
                 Datos.setearParametro("@stock_minimo", Producto.StockMinimo);
                 Datos.setearParametro("@porcentaje_ganancia", Math.Round((decimal)Producto.PorcentajeGanancia, 2));
-                Datos.setearParametro("@precio", Math.Round((decimal)Producto.Precio, 2)); 
-              // Datos.setearParametro("@id_imagen", Producto.Imagen.Url);
-                //Datos.setearParametro("@id_proveedor", Producto.Proveedor.Id);
-                Datos.setearParametro("@activo", Producto.Activo);
-
+                Datos.setearParametro("@url_imagen", Producto.Imagen.Url);
                 Datos.ejecutarAccion();
                 return true;
             }

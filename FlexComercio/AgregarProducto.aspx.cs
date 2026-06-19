@@ -108,7 +108,7 @@ namespace FlexComercio
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
-                        window.location = 'Productos.aspx';
+                        window.location = 'Producto.aspx';
                     });
                     ";
 

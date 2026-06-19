@@ -106,7 +106,7 @@ namespace FlexComercio
 
             if (int.TryParse(idStr, out int id))
             {
-                Response.Redirect("FormularioUsuario.aspx?venta="+id);
+                Response.Redirect("FormularioUsuario.aspx?usuario="+id);
             }
               
         }

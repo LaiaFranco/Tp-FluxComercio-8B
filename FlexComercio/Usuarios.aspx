@@ -24,7 +24,7 @@
                     <asp:TemplateField HeaderText="Acciones">
                         <ItemTemplate>
                             <asp:Button ID="btnModificar" runat="server" Text="Modificar" CssClass="btn btn-sm btn-warning"
-                                CommandName="Modificar" CommandArgument='<%# Eval("Id") %>' />
+                                CommandName="Modificar" CommandArgument='<%# Eval("Id") %>'  OnClick="btnModificar_Click"/>
                             <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-sm btn-danger"
                                 CommandName="Eliminar" CommandArgument='<%# Eval("Id") %>'
                                 OnClick="btnEliminar_Click"   />

@@ -31,6 +31,12 @@ namespace FlexComercio
             gvUsuarios.DataBind();
         }
 
+        private void CargarInputs(int id)
+        {
+            UsuarioDatos.GetUsuario(id);
+        }
+
+
         protected void btnNuevo_Click(object sender, EventArgs e)
         {
             Response.Redirect("FormularioUsuario.aspx");
@@ -88,6 +94,21 @@ namespace FlexComercio
             }
 
 
+        }
+
+        protected void btnModificar_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+
+
+            string idStr = btn.CommandArgument;
+
+
+            if (int.TryParse(idStr, out int id))
+            {
+                Response.Redirect("FormularioUsuario.aspx?venta="+id);
+            }
+              
         }
     }
 }

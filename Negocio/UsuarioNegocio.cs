@@ -114,12 +114,10 @@ namespace Negocio
                 Datos.setearProcedimiento("storedModificarUsuario");
 
                 Datos.setearParametro("@id_usuario", Usuario.Id);
-                Datos.setearParametro("@dni", Usuario.Dni);
                 Datos.setearParametro("@nombre", Usuario.Nombre);
                 Datos.setearParametro("@email", Usuario.Email);
-                Datos.setearParametro("@password", Usuario.Password);
+                Datos.setearParametro("@password_u", Usuario.Password);
                 Datos.setearParametro("@id_rol", Usuario.Rol.Id);
-                Datos.setearParametro("@id_imagen", Usuario.FotoPerfil.Id);
                 Datos.setearParametro("@activo", Usuario.Activo);
 
                 Datos.ejecutarAccion();
@@ -132,6 +130,62 @@ namespace Negocio
             {
                 Datos.cerrarConexion();
             }
+        }
+
+        public Usuario GetUsuario(int id)
+        {
+
+            AccesoDatos Datos = new AccesoDatos();
+
+
+            try
+            {
+
+                string query = @"SELECT 
+                            u.id_usuario,
+                            u.nombre,
+                            u.email,
+                            u.id_rol,
+                            u.activo
+                            FROM USUARIOS u
+                            INNER JOIN ROLES r ON u.id_rol = r.id_rol
+                            WHERE u.id_usuario = @id";
+
+                Datos.setearConsulta(query);
+                Datos.setearParametro("@id", id);
+                Datos.ejecutarLectura();
+
+                if (Datos.Lector != null && Datos.Lector.Read())
+                {
+
+                    Usuario NuevoUsuario = new Usuario();
+
+                    NuevoUsuario.Id = (int)Datos.Lector["id_usuario"];
+
+                    NuevoUsuario.Rol = new Rol();
+                    NuevoUsuario.Rol.Id = (int)Datos.Lector["id_rol"];
+                    NuevoUsuario.Activo = (bool)Datos.Lector["activo"];
+                    NuevoUsuario.Email = (string)Datos.Lector["email"];
+                    NuevoUsuario.Nombre = (string)Datos.Lector["nombre"];
+
+            
+
+                    return NuevoUsuario;
+                }
+
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+            finally
+            {
+                Datos.cerrarConexion();
+            }
+
         }
 
         public Usuario GetUsuarioCredenciales(string email,string passowrd)

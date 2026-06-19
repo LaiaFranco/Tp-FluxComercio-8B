@@ -38,19 +38,19 @@
                 </div>
 
                 <!-- Campo Contraseña -->
-                <div class="mb-3">
-                    <label for="txtPassword" class="form-label">Contraseña</label>
-                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" MaxLength="255" TextMode="Password" />
-                    <asp:RequiredFieldValidator ID="rfvPassword" runat="server"
-                        ControlToValidate="txtPassword"
-                        ErrorMessage="La contraseña es obligatoria."
-                        CssClass="text-danger" Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="revPassword" runat="server"
-                        ControlToValidate="txtPassword"
-                        ValidationExpression="^.{6,}$"
-                        ErrorMessage="La contraseña debe tener al menos 6 caracteres."
-                        CssClass="text-danger" Display="Dynamic" />
-                </div>
+             <div class="mb-3">
+    <asp:Label ID="lblPassword" runat="server" CssClass="form-label" Text="Contraseña" />
+    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" MaxLength="255" TextMode="Password" />
+    <asp:RequiredFieldValidator ID="rfvPassword" runat="server"
+        ControlToValidate="txtPassword"
+        ErrorMessage="La contraseña es obligatoria."
+        CssClass="text-danger" Display="Dynamic" />
+    <asp:RegularExpressionValidator ID="revPassword" runat="server"
+        ControlToValidate="txtPassword"
+        ValidationExpression="^.{6,}$"
+        ErrorMessage="La contraseña debe tener al menos 6 caracteres."
+        CssClass="text-danger" Display="Dynamic" />
+</div>
 
                 <!-- Campo Rol -->
                 <div class="mb-3">

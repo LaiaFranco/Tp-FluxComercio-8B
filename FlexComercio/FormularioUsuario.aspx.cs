@@ -11,32 +11,157 @@ namespace FlexComercio
 {
     public partial class FormularioUsuario : System.Web.UI.Page
     {
-        private RolNegocio RolDatos = new RolNegocio();
-        private UsuarioNegocio UsuarioDatos = new UsuarioNegocio();
+        private UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        private int? idUsuarioEdicion = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 CargarRoles();
+
+                if (Request.QueryString["venta"] != null)
+                {
+                    int id;
+                    if (int.TryParse(Request.QueryString["venta"], out id))
+                    {
+                        idUsuarioEdicion = id;
+                        CargarUsuario(id);
+                    
+                    }
+                }
             }
         }
 
         private void CargarRoles()
         {
-            ddlRol.DataSource = RolDatos.Listar();
-
-            ddlRol.DataTextField = "Nombre";
-            ddlRol.DataValueField = "Id";
-
+            var roles = new RolNegocio().Listar(); // Ajusta según tu negocio
+            ddlRol.DataSource = roles;
+            ddlRol.DataTextField = "nombre";
+            ddlRol.DataValueField = "id";
             ddlRol.DataBind();
+            ddlRol.Items.Insert(0, new ListItem("-- Seleccione --", ""));
         }
 
-        private void MostrarMensaje(string mensaje, string tipo)
+        private void CargarUsuario(int id)
         {
-            lblMensaje.Text = mensaje;
-            lblMensaje.CssClass = $"alert alert-{tipo} w-100";
-            lblMensaje.Visible = true;
+            Usuario usuario = usuarioNegocio.GetUsuario(id);
+            
+            if (usuario != null)
+            {
+                txtNombre.Text = usuario.Nombre;
+                txtEmail.Text = usuario.Email;
+               txtPassword.Text = usuario.Password;
+                ddlRol.SelectedValue = usuario.Rol.Id.ToString();
+             
+            }
+            else
+            {
+                MostrarMensaje("Usuario no encontrado.", "danger");
+            }
+        }
+
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (!Page.IsValid)
+            {
+                MostrarMensaje("Por favor, corrija los errores marcados.", "danger");
+                return;
+            }
+
+            string nombre = txtNombre.Text.Trim();
+            string email = txtEmail.Text.Trim();
+            string password = txtPassword.Text.Trim(); // ¡En texto plano!
+
+            int idRol;
+            if (!int.TryParse(ddlRol.SelectedValue, out idRol) || idRol <= 0)
+            {
+                MostrarMensaje("Debe seleccionar un rol válido.", "danger");
+                return;
+            }
+        
+            if (string.IsNullOrEmpty(nombre))
+            {
+                MostrarMensaje("El nombre es obligatorio.", "danger");
+                return;
+            }
+            if (string.IsNullOrEmpty(email) || !IsValidEmail(email))
+            {
+                MostrarMensaje("El email es obligatorio y debe tener formato válido.", "danger");
+                return;
+            }
+
+            try
+            {
+                if (idUsuarioEdicion.HasValue)
+                {
+                    // --- MODO EDICIÓN ---
+                    Usuario usuario = new Usuario();
+                    usuario.Id = idUsuarioEdicion.Value;
+                    usuario.Nombre = nombre;
+                    usuario.Email = email;
+
+                    // Si se ingresó una nueva contraseña, la guardamos (sin hash)
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        if (password.Length < 6)
+                        {
+                            MostrarMensaje("La contraseña debe tener al menos 6 caracteres.", "danger");
+                            return;
+                        }
+                        usuario.Password = password; // Directamente
+                    }
+                    else
+                    {
+                        // Mantener la existente
+                        Usuario existente = usuarioNegocio.GetUsuario(idUsuarioEdicion.Value);
+                        usuario.Password = existente.Password;
+                    }
+
+                    Rol NuevoRol = new Rol();
+                    NuevoRol.Id = idRol;
+                    usuario.Rol = NuevoRol;
+                    usuario.Activo = true;
+
+                    usuarioNegocio.Modificar(usuario);
+                    MostrarMensaje("Usuario actualizado correctamente.", "success");
+                }
+                else
+                {
+                    // --- MODO ALTA ---
+                    if (string.IsNullOrEmpty(password) || password.Length < 6)
+                    {
+                        MostrarMensaje("La contraseña es obligatoria y debe tener al menos 6 caracteres.", "danger");
+                        return;
+                    }
+
+                    Usuario nuevo = new Usuario();
+                    nuevo.Nombre = nombre;
+                    nuevo.Email = email;
+                    nuevo.Password = password;
+                    Rol NuevaRol = new Rol();
+
+                    NuevaRol.Id = idRol;
+
+                    nuevo.Rol = NuevaRol;
+                    nuevo.Activo = true;
+
+                     usuarioNegocio.Agregar(nuevo);
+                    MostrarMensaje($"Usuario creado exitosamente", "success");
+                    LimpiarCampos();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("duplicate") || ex.Message.Contains("UNIQUE"))
+                {
+                    MostrarMensaje("El email ya está registrado. Por favor, use otro.", "danger");
+                }
+                else
+                {
+                    MostrarMensaje("Error al guardar: " + ex.Message, "danger");
+                }
+            }
         }
 
         private bool IsValidEmail(string email)
@@ -52,104 +177,26 @@ namespace FlexComercio
             }
         }
 
+        private void MostrarMensaje(string mensaje, string tipo)
+        {
+            lblMensaje.Text = mensaje;
+            lblMensaje.CssClass = $"alert alert-{tipo} w-100";
+            lblMensaje.Visible = true;
+        }
+        private void ConfigurarModoEdicion()
+        {
+            lblPassword.Text = "Contraseña (dejar en blanco para mantener)";
+            txtPassword.Attributes["placeholder"] = "Dejar en blanco para mantener la actual";
+
+            txtPassword.Enabled = false; 
+        }
         private void LimpiarCampos()
         {
             txtNombre.Text = "";
             txtEmail.Text = "";
             txtPassword.Text = "";
             ddlRol.SelectedIndex = 0;
-       
-        }
-
-
-        protected void btnGuardar_Click(object sender, EventArgs e)
-        {
-           
-            if (!Page.IsValid)
-            {
-                MostrarMensaje("Por favor, corrija los errores marcados en el formulario.", "danger");
-                return;
-            }
-
-        
-            string nombre = txtNombre.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string password = txtPassword.Text.Trim();
-            int idRol = 0;
-
-            // Validar nombre
-            if (string.IsNullOrEmpty(nombre))
-            {
-                MostrarMensaje("El nombre es obligatorio.", "danger");
-                return;
-            }
-
-            // Validar email
-            if (string.IsNullOrEmpty(email))
-            {
-                MostrarMensaje("El email es obligatorio.", "danger");
-                return;
-            }
-            if (!IsValidEmail(email))
-            {
-                MostrarMensaje("El formato del email no es válido.", "danger");
-                return;
-            }
-
-            // Validar contraseña
-            if (string.IsNullOrEmpty(password))
-            {
-                MostrarMensaje("La contraseña es obligatoria.", "danger");
-                return;
-            }
-            if (password.Length < 6)
-            {
-                MostrarMensaje("La contraseña debe tener al menos 6 caracteres.", "danger");
-                return;
-            }
-
-            // Validar rol
-            if (!int.TryParse(ddlRol.SelectedValue, out idRol) || idRol <= 0)
-            {
-                MostrarMensaje("Debe seleccionar un rol válido.", "danger");
-                return;
-            }
-
-            // 3. Todas las validaciones pasaron, intentamos guardar
-            try
-            {
-                Usuario nuevoUsuario = new Usuario();
-                nuevoUsuario.Nombre = nombre;
-                nuevoUsuario.Email = email;
-                nuevoUsuario.Password = (password);
-
-                Rol NuevoRol = new Rol();
-                NuevoRol.Id = idRol;
-
-                nuevoUsuario.Rol = NuevoRol;
-                nuevoUsuario.Activo = true;
-
-                 UsuarioDatos.Agregar(nuevoUsuario);
-
-                MostrarMensaje($"¡Usuario creado exitosamente !", "success");
-
-                // Opcional: limpiar campos después de guardar
-                LimpiarCampos();
-            }
-            catch (Exception ex)
-            {
-                // Capturar errores como email duplicado
-                if (ex.Message.Contains("duplicate") || ex.Message.Contains("UNIQUE") || ex.Message.Contains("Violation of UNIQUE KEY"))
-                {
-                    MostrarMensaje("El email ya está registrado. Por favor, use otro.", "danger");
-                }
-                else
-                {
-                    MostrarMensaje($"Error al guardar: {ex.Message}", "danger");
-                }
-            }
-            ;
-
+            
         }
     }
 }

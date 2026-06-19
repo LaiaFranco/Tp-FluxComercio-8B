@@ -89,6 +89,11 @@
                                         </h3>
 
                                         <p class="mb-1">
+                                            <strong>Descripcion:</strong>
+                                            <%# Eval("Descripcion") %>
+                                        </p>
+
+                                        <p class="mb-1">
                                             <strong>Marca:</strong>
                                             <%# Eval("Marca.Nombre") %>
                                         </p>
@@ -127,13 +132,15 @@
                                             ID="btnEliminar"
                                             runat="server"
                                             Text="Eliminar"
-                                            CssClass="btn btn-outline-danger rounded-pill me-2" />
+                                            CssClass="btn btn-outline-danger rounded-pill me-2"
+                                            OnClick="btnEliminar_Click"/>
 
                                         <asp:Button
                                             ID="btnModificar"
                                             runat="server"
                                             Text="Modificar"
-                                            CssClass="btn btn-outline-warning rounded-pill" />
+                                            CssClass="btn btn-outline-warning rounded-pill"
+                                            OnClick="btnModificar_Click"/>
 
                                     </div>
 

@@ -28,6 +28,15 @@ SET nombre = @nombre, descripcion = @descripcion, activo = @activo
 WHERE id_marca = @id_marca;
 GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedCambiarEstadoMarca]
+    @id_marca INT,
+    @activo BIT
+AS
+UPDATE MARCAS
+SET activo = @activo
+WHERE id_marca = @id_marca;
+GO
+
 -- ========== CATEGORIAS ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedListarCategorias]
 AS
@@ -55,6 +64,14 @@ SET nombre = @nombre, descripcion = @descripcion, activo = @activo
 WHERE id_categoria = @id_categoria;
 GO
 
+CREATE OR ALTER PROCEDURE [dbo].[storedCambiarEstadoCategoria]
+    @id_categoria INT,
+    @activo BIT
+AS
+UPDATE CATEGORIAS
+SET activo = @activo
+WHERE id_categoria = @id_categoria;
+GO
 -- ========== ROLES ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedListarRoles]
 AS
@@ -81,8 +98,16 @@ GO
 -- ========== USUARIOS ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedListarUsuarios]
 AS
-SELECT id_usuario, nombre, email, password_u, id_rol, activo
-FROM USUARIOS;
+SELECT 
+    u.id_usuario, 
+    u.nombre, 
+    u.email, 
+    u.password_u, 
+    u.id_rol, 
+    r.nombre AS nombre_rol,  
+    u.activo
+FROM USUARIOS u
+INNER JOIN ROLES r ON u.id_rol = r.id_rol
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[storedAltaUsuario]
@@ -112,9 +137,52 @@ GO
 -- ========== PRODUCTOS ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedListarProductos]
 AS
-SELECT id_producto, nombre, descripcion, id_marca, id_categoria, 
-       stock_actual, stock_minimo, precio, porcentaje_ganancia, activo
-FROM PRODUCTOS;
+BEGIN
+
+    SELECT
+        P.id_producto,
+        P.nombre,
+        P.descripcion,
+        P.stock_actual,
+        P.stock_minimo,
+        P.precio,
+        P.porcentaje_ganancia,
+        P.activo,
+
+        -- Marca
+        M.id_marca,
+        M.nombre AS nombre_marca,
+
+        -- Categoría
+        C.id_categoria,
+        C.nombre AS nombre_categoria,
+
+        -- Proveedor
+        PR.id_proveedor,
+        PR.nombre AS nombre_proveedor,
+        PR.cuil,
+
+        -- Imagen
+        I.id_imagen,
+        I.url AS url_imagen
+
+    FROM PRODUCTOS P
+
+        INNER JOIN MARCAS M
+            ON P.id_marca = M.id_marca
+
+        INNER JOIN CATEGORIAS C
+            ON P.id_categoria = C.id_categoria
+
+        INNER JOIN PROVEEDORES PR
+            ON P.id_proveedor = PR.id_proveedor
+
+        LEFT JOIN IMAGENES I
+            ON I.id_entidad = P.id_producto
+           AND I.tipo_entidad = 'PRODUCTO'
+           AND I.activo = 1;
+
+END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[storedAltaProducto]
@@ -150,6 +218,8 @@ SET nombre = @nombre, descripcion = @descripcion, id_marca = @id_marca, id_categ
     porcentaje_ganancia = @porcentaje_ganancia, activo = @activo
 WHERE id_producto = @id_producto;
 GO
+
+
 
 -- ========== PROVEEDORES ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedListarProveedores]
@@ -323,17 +393,15 @@ GO
 
 CREATE OR ALTER PROCEDURE [dbo].[storedModificarCliente]
     @id_cliente INT,
-    @dni VARCHAR(20),
     @nombre VARCHAR(255),
     @apellido VARCHAR(255),
     @email VARCHAR(255),
     @telefono VARCHAR(255),
-    @direccion VARCHAR(255),
-    @activo BIT
+    @direccion VARCHAR(255)
 AS
 UPDATE CLIENTES 
-SET dni = @dni, nombre = @nombre, apellido = @apellido, email = @email,
-    telefono = @telefono, direccion = @direccion, activo = @activo
+SET nombre = @nombre, apellido = @apellido, email = @email,
+    telefono = @telefono, direccion = @direccion
 WHERE id_cliente = @id_cliente;
 GO
 
@@ -358,11 +426,42 @@ GO
 CREATE OR ALTER PROCEDURE [dbo].[storedAltaVenta]
     @id_cliente INT,
     @id_usuario INT,
-    @total DECIMAL(10,2),
-    @numero_factura VARCHAR(255)
+    @total DECIMAL(10,2)
 AS
-INSERT INTO VENTAS (id_cliente, id_usuario, total, numero_factura)
-VALUES (@id_cliente, @id_usuario, @total, @numero_factura);
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @anio INT = YEAR(GETDATE());
+    DECLARE @nuevo_numero INT;
+    DECLARE @numero_factura VARCHAR(255);
+    DECLARE @id_venta INT;
+
+    -- Obtener el último número usado para el año actual (si existe)
+    -- Se extrae la parte numérica del último número de factura del año
+    SELECT @nuevo_numero = MAX(CAST(SUBSTRING(numero_factura, 7, 8) AS INT)) + 1
+    FROM VENTAS
+    WHERE numero_factura LIKE 'A-' + RIGHT('0000' + CAST(@anio AS VARCHAR(4)), 4) + '-%';
+
+    -- Si no hay facturas para el año, empezamos en 1
+    IF @nuevo_numero IS NULL
+        SET @nuevo_numero = 1;
+
+    -- Construir el número de factura
+    SET @numero_factura = 'A-' 
+                        + RIGHT('0000' + CAST(@anio AS VARCHAR(4)), 4) 
+                        + '-' 
+                        + RIGHT('00000000' + CAST(@nuevo_numero AS VARCHAR(8)), 8);
+
+    -- Insertar la venta
+    INSERT INTO VENTAS (id_cliente, id_usuario, total, numero_factura)
+    VALUES (@id_cliente, @id_usuario, @total, @numero_factura);
+
+    -- Obtener el ID generado
+    SET @id_venta = SCOPE_IDENTITY();
+
+    -- Retornar el ID
+    SELECT @id_venta AS IdVenta;
+END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[storedModificarVenta]
@@ -411,7 +510,7 @@ SET id_venta = @id_venta, id_producto = @id_producto, cantidad = @cantidad,
 WHERE id_detalle = @id_detalle;
 GO
 
--- ========== IMAGENES (corregido segÃºn la tabla real) ==========
+-- ========== IMAGENES (corregido según la tabla real) ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedListarImagenes]
 AS
 SELECT id_imagen, url, activo, tipo_entidad, id_entidad

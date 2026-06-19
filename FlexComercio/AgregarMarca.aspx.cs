@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Dominio;
+using Negocio; 
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Dominio;
-using Negocio; 
 
 
 namespace FlexComercio
@@ -32,7 +34,7 @@ namespace FlexComercio
                 }
                 else
                 {
-                    pnlEstado.Visible = true;
+                    pnlEstado.Visible = false;
                     btnGuardar.Text = "Agregar";
                     lblTitulo.Text = "Agregar Marca"; 
                 }
@@ -42,15 +44,32 @@ namespace FlexComercio
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!Page.IsValid)
+                return;
+
             MarcaNegocio negocio = new MarcaNegocio();
             Marca marca = new Marca();
             bool ok;
 
             if (Session["marcaSeleccionada"] != null)
             {
+
                 marca = (Marca)Session["marcaSeleccionada"];
+                
                 txtNombre.Text = marca.Nombre;
+                marca.Nombre = CultureInfo.CurrentCulture.TextInfo
+                   .ToTitleCase(txtNombre.Text.Trim().ToLower());
+                string nombre = txtNombre.Text.Trim();
+
                 txtDescripcion.Text = marca.Descripcion;
+                
+                if (negocio.ExisteMarca(nombre))
+                {
+                    lblError.Text = "Ya existe una marca con esas caracteristicas.";
+                    lblError.Visible = true;
+                    return;
+                }
+
                 ok = negocio.Modificar(marca);
                 Session.Remove("marcaSeleccionada");
 
@@ -58,12 +77,26 @@ namespace FlexComercio
             else
             {
                 marca.Nombre = txtNombre.Text;
-                marca.Descripcion = txtDescripcion.Text;
-                string opcion = ddlEstado.SelectedValue;
-                bool op = opcion == "Activo";
-                marca.Activo = op; 
+                marca.Nombre = CultureInfo.CurrentCulture.TextInfo
+                   .ToTitleCase(txtNombre.Text.Trim().ToLower());
+                string nombre = txtNombre.Text.Trim();
 
-                ok = negocio.Agregar(marca);
+
+                marca.Descripcion = txtDescripcion.Text;
+                pnlEstado.Visible = false;
+                
+                marca.Activo = true; 
+                if (negocio.ExisteMarca(nombre))
+                {
+                    lblError.Text = "Ya existe una marca con esas caracteristicas.";
+                    lblError.Visible = true;
+                    return;
+                }
+                else
+                {
+                    ok = negocio.Agregar(marca);
+
+                }
                 
             }
             if (ok){

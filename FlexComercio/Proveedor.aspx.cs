@@ -30,10 +30,8 @@ namespace FlexComercio
 
                 if (e.CommandName == "EliminarProveedor")
                 {
-                    ProveedorNegocio negocio = new ProveedorNegocio();
-                    negocio.Eliminar(id);
-
-                    Response.Redirect("Proveedor.aspx", false);
+                    Session["idProveedorEliminar"] = id;
+                    Response.Redirect("EliminarProveedor.aspx", false);
                 }
 
                 if (e.CommandName == "ModificarProveedor")

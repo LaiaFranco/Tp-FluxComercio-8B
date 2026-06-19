@@ -77,6 +77,7 @@
     <Content Include="Default.aspx" />
     <Content Include="EliminarCategoria.aspx" />
     <Content Include="EliminarMarca.aspx" />
+    <Content Include="EliminarProveedor.aspx" />
     <Content Include="FormularioCliente.aspx" />
     <Content Include="FormularioUsuario.aspx" />
     <Content Include="Global.asax" />
@@ -159,6 +160,13 @@
     </Compile>
     <Compile Include="EliminarMarca.aspx.designer.cs">
       <DependentUpon>EliminarMarca.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EliminarProveedor.aspx.cs">
+      <DependentUpon>EliminarProveedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EliminarProveedor.aspx.designer.cs">
+      <DependentUpon>EliminarProveedor.aspx</DependentUpon>
     </Compile>
     <Compile Include="FormularioCliente.aspx.cs">
       <DependentUpon>FormularioCliente.aspx</DependentUpon>

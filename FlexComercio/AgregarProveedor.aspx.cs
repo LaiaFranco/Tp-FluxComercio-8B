@@ -2,6 +2,8 @@
 using Negocio;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -43,11 +45,8 @@ namespace FlexComercio
         {
             try
             {
-                if (txtCuil.Text == "" || txtNombre.Text == "" || txtEmail.Text == "")
-                {
-                    lblMensaje.Text = "Debe completar CUIL, nombre y email.";
+                if (!Page.IsValid)
                     return;
-                }
 
                 Dominio.Proveedor proveedor = new Dominio.Proveedor();
 
@@ -58,18 +57,41 @@ namespace FlexComercio
                 proveedor.Direccion = txtDireccion.Text;
                 proveedor.Activo = true;
 
+                proveedor.Nombre = txtNombre.Text;
+                proveedor.Nombre = CultureInfo.CurrentCulture.TextInfo
+                   .ToTitleCase(txtNombre.Text.Trim().ToUpper());
+                string nombre = txtNombre.Text.Trim();
+
                 ProveedorNegocio negocio = new ProveedorNegocio();
 
                 string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
 
                 if (id != "")
                 {
-                    proveedor.Id = int.Parse(id);
-                    negocio.Modificar(proveedor);
+                    if (negocio.ExisteProveedor(txtNombre.Text, txtCuil.Text))
+                    {
+                        lblError.Text = "Ya existe un proveedor con ese nombre o CUIL.";
+                        lblError.Visible = true;
+                        return;
+                    }
+                    else
+                    {
+                        proveedor.Id = int.Parse(id);
+                        negocio.Modificar(proveedor);
+                    }
                 }
                 else
                 {
-                    negocio.Agregar(proveedor);
+                    if (negocio.ExisteProveedor(txtNombre.Text, txtCuil.Text))
+                    {
+                        lblError.Text = "Ya existe un proveedor con ese nombre o CUIL.";
+                        lblError.Visible = true;
+                        return;
+                    }
+                    else
+                    {
+                        negocio.Agregar(proveedor);
+                    }
                 }
 
                 Response.Redirect("Proveedor.aspx", false);

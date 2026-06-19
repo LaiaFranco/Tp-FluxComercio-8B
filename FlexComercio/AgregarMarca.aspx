@@ -21,14 +21,22 @@
                         <!-- Nombre -->
                         <div class="mb-3">
 
-                            <label class="form-label fw-semibold">
-                                Nombre
-                            </label>
+                             <label class="form-label fw-semibold">
+                                 Nombre <span class="text-danger">*</span>
+                             </label>
 
-                            <asp:TextBox
-                                ID="txtNombre"
-                                runat="server"
-                                CssClass="form-control" />
+                              <asp:TextBox
+                                  ID="txtNombre"
+                                  runat="server"
+                                  CssClass="form-control" />
+
+                              <asp:RequiredFieldValidator
+                                  ID="rfvNombre"
+                                  runat="server"
+                                  ControlToValidate="txtNombre"
+                                  ErrorMessage="Campo obligatorio"
+                                  CssClass="text-danger"
+                                  Display="Dynamic" />
 
                         </div>
 
@@ -36,22 +44,28 @@
                         <div class="mb-3">
 
                             <label class="form-label fw-semibold">
-                                Descripción
+                                Descripcion <span class="text-danger">*</span>
                             </label>
 
                             <asp:TextBox
                                 ID="txtDescripcion"
                                 runat="server"
-                                CssClass="form-control"
-                                TextMode="MultiLine"
-                                Rows="4" />
+                                CssClass="form-control" />
+
+                             <asp:RequiredFieldValidator
+                                 ID="rfvDescripcion"
+                                 runat="server"
+                                 ControlToValidate="txtDescripcion"
+                                 ErrorMessage="Campo obligatorio"
+                                 CssClass="text-danger"
+                                 Display="Dynamic" />
 
                         </div>
 
                         <!-- Estado -->
                          <asp:Panel ID="pnlEstado" runat="server">
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">
+                                <label  class="form-label fw-semibold">
                                     Estado
                                 </label>
 
@@ -65,7 +79,15 @@
 
                                 </asp:DropDownList>
                             </div>
+                             <!-- ETIQUETA ERROR -->
                         </asp:Panel>
+
+                        <asp:Label
+                            ID="lblError"
+                            runat="server"
+                            CssClass="text-danger"
+                            Visible="false">
+                        </asp:Label>
 
                         <!-- Botones -->
                         <div class="d-flex justify-content-end">
@@ -82,7 +104,8 @@
                                 runat="server"
                                 Text="Cancelar"
                                 CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
-                                PostBackUrl="~/MarcaYCategoria.aspx" />
+                                PostBackUrl="~/MarcaYCategoria.aspx" 
+                                CausesValidation="false"/>
                         </div>
 
                     </div>

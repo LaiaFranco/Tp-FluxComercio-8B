@@ -19,12 +19,22 @@
 
                     <!-- Nombre -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Nombre</label>
+                        <label class="form-label fw-semibold">
+                            Nombre <span class="text-danger">*</span>
+                        </label>
 
                         <asp:TextBox
                             ID="txtNombre"
                             runat="server"
                             CssClass="form-control" />
+
+                        <asp:RequiredFieldValidator
+                            ID="rfvNombre"
+                            runat="server"
+                            ControlToValidate="txtNombre"
+                            ErrorMessage="Campo obligatorio"
+                            CssClass="text-danger"
+                            Display="Dynamic" />
                     </div>
 
                     <!-- Marca -->
@@ -129,75 +139,69 @@
                     </div>
 
                     <!-- Imágenes -->
-                    <hr />
+                     <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
-                    <h5>Imágenes</h5>
+                        <hr />
 
-                    <div class="row">
+                        <h5>Imagen del producto</h5>
 
-                        <div class="col-md-8">
+                        <div class="row">
 
-                            <div class="input-group mb-3">
+                            <div class="col-md-6">
 
-                                <asp:TextBox
-                                    ID="txtUrlImagen"
-                                    runat="server"
-                                    CssClass="form-control"
-                                    placeholder="Ingrese URL de la imagen"
-                                    AutoPostBack="true"
-                                    OnTextChanged="txtUrlImagen_TextChanged"
-                                     />
+                                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
 
-                                <asp:Button
-                                    ID="btnAgregarImagen"
-                                    runat="server"
-                                    Text="Agregar"
-                                    CssClass="btn btn-outline-primary"
-                                    OnClick="btnAgregarImagen_Click" />
+                                    <ContentTemplate>
+
+                                        <div class="mb-3">
+
+                                            <label for="txtUrlImagen" class="form-label">
+                                                URL Imagen
+                                            </label>
+
+                                            <asp:TextBox
+                                                ID="txtUrlImagen"
+                                                runat="server"
+                                                CssClass="form-control"
+                                                AutoPostBack="true"
+                                                OnTextChanged="txtUrlImagen_TextChanged">
+                                            </asp:TextBox>
+
+                                        </div>
+
+                                        <asp:Button
+                                            ID="btnAgregarImagen"
+                                            runat="server"
+                                            Text="Agregar Imagen"
+                                            CssClass="btn btn-primary"
+                                            OnClick="btnAgregarImagen_Click" />
+
+                                    </ContentTemplate>
+
+                                </asp:UpdatePanel>
+
+                            </div>
+
+                            <div class="col-md-6 text-center">
+
+                                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+
+                                    <ContentTemplate>
+
+                                        <asp:Image
+                                            ID="imgPreview"
+                                            runat="server"
+                                            Width="300px"
+                                            CssClass="img-thumbnail"
+                                            ImageUrl="https://grupoact.com.ar/wp-content/uploads/2020/04/placeholder.png" />
+
+                                    </ContentTemplate>
+
+                                </asp:UpdatePanel>
 
                             </div>
 
                         </div>
-
-                        <div class="col-md-4 text-center">
-
-                            <asp:Image
-                                ID="imgPreview"
-                                runat="server"
-                                Width="250px"
-                                Height="250px"
-                                CssClass="img-thumbnail"
-                                ImageUrl="~/Imagenes/sin-imagen.png" />
-
-                        </div>
-
-                    </div>
-
-                    <asp:Repeater ID="rptImagenes" runat="server">
-
-                        <ItemTemplate>
-
-                            <div class="card mb-2">
-                                <div class="card-body d-flex justify-content-between align-items-center">
-
-                                    <span>
-                                        <%# Eval("UrlImagen") %>
-                                    </span>
-
-                                    <asp:Button
-                                        ID="btnEliminarImagen"
-                                        runat="server"
-                                        Text="Eliminar"
-                                        CssClass="btn btn-danger btn-sm"
-                                        CommandArgument='<%# Container.ItemIndex %>'
-                                         />
-
-                                </div>
-                            </div>
-
-                        </ItemTemplate>
-
-                    </asp:Repeater>
 
                     <!-- Estado -->
                     <asp:Panel ID="pnlEstado" runat="server">

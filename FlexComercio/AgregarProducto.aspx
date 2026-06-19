@@ -23,23 +23,25 @@
                             Nombre <span class="text-danger">*</span>
                         </label>
 
-                        <asp:TextBox
-                            ID="txtNombre"
-                            runat="server"
-                            CssClass="form-control" />
+                         <asp:TextBox
+                             ID="txtNombre"
+                             runat="server"
+                             CssClass="form-control" />
 
-                        <asp:RequiredFieldValidator
-                            ID="rfvNombre"
-                            runat="server"
-                            ControlToValidate="txtNombre"
-                            ErrorMessage="Campo obligatorio"
-                            CssClass="text-danger"
-                            Display="Dynamic" />
-                    </div>
+                         <asp:RequiredFieldValidator
+                             ID="rfvNombre"
+                             runat="server"
+                             ControlToValidate="txtNombre"
+                             ErrorMessage="Campo obligatorio"
+                             CssClass="text-danger"
+                             Display="Dynamic" />
+                       </div>
 
                     <!-- Marca -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Marca</label>
+                        <label class="form-label fw-semibold">
+                            Marca <span class="text-danger">*</span>
+                        </label>
 
                         <asp:DropDownList
                             ID="ddlMarca"
@@ -50,7 +52,9 @@
 
                     <!-- Categoría -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Categoría</label>
+                        <label class="form-label fw-semibold">
+                            Categoria <span class="text-danger">*</span>
+                        </label>
 
                         <asp:DropDownList
                             ID="ddlCategoria"
@@ -61,7 +65,9 @@
 
                     <!-- Proveedor -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Proveedor</label>
+                        <label class="form-label fw-semibold">
+                            Proveedor <span class="text-danger">*</span>
+                        </label>
 
                         <asp:DropDownList
                             ID="ddlProveedor"
@@ -72,15 +78,23 @@
 
                     <!-- Descripción -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Descripción</label>
+                         <label class="form-label fw-semibold">
+                             Descripcion <span class="text-danger">*</span>
+                         </label>
 
-                        <asp:TextBox
-                            ID="txtDescripcion"
-                            runat="server"
-                            CssClass="form-control"
-                            TextMode="MultiLine"
-                            Rows="4" />
-                    </div>
+                          <asp:TextBox
+                              ID="txtDescripcion"
+                              runat="server"
+                              CssClass="form-control" />
+
+                          <asp:RequiredFieldValidator
+                              ID="rfvDescripcion"
+                              runat="server"
+                              ControlToValidate="txtDescripcion"
+                              ErrorMessage="Campo obligatorio"
+                              CssClass="text-danger"
+                              Display="Dynamic" />
+                        </div>
 
                     <div class="row">
 
@@ -113,15 +127,24 @@
                     <div class="row">
 
                         <div class="col-md-6 mb-3">
+
                             <label class="form-label fw-semibold">
-                                Precio
+                                Precio <span class="text-danger">*</span>
                             </label>
 
-                            <asp:TextBox
-                                ID="txtPrecio"
-                                runat="server"
-                                CssClass="form-control"
-                                TextMode="Number" />
+                             <asp:TextBox
+                                 ID="txtPrecio"
+                                 runat="server"
+                                 CssClass="form-control" 
+                                 TextMode="Number"/>
+
+                             <asp:RequiredFieldValidator
+                                 ID="RequiredFieldValidator1"
+                                 runat="server"
+                                 ControlToValidate="txtPrecio"
+                                 ErrorMessage="Campo obligatorio"
+                                 CssClass="text-danger"
+                                 Display="Dynamic" />
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -245,18 +268,13 @@
                             runat="server"
                             Text="Cancelar"
                             CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
-                            PostBackUrl="~/Producto.aspx" />
-
+                            PostBackUrl="~/Producto.aspx" 
+                            CausesValidation="false"/>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
-    </div>
-
+    </div> 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

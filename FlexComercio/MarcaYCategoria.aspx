@@ -221,7 +221,7 @@
                                             Text="Eliminar"
                                             CssClass="btn btn-outline-danger rounded-pill me-2"
                                             CommandArgument='<%# Container.DataItemIndex %>'
-                                            OnClick="btnEliminarCategoria_Click"
+                                            OnClick="btnEliminarCategoria_Click1"
                                             />
 
                                         <asp:Button

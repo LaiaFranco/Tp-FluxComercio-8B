@@ -73,18 +73,17 @@ namespace Negocio
             }
         }
 
-        public void Eliminar(int id, bool activo = false)
+        public bool Eliminar(int id, bool activo = false)
         {
             AccesoDatos Datos = new AccesoDatos();
 
             try
             {
-                Datos.setearProcedimiento("storedModificarCategoria");
-                Datos.setearParametro("id_categoria",id);
-                Datos.setearParametro("activo", activo);
-
-                Datos.ejecutarAccion(); 
-
+                Datos.setearProcedimiento("storedCambiarEstadoCategoria");
+                Datos.setearParametro("@id_categoria",id);
+                Datos.setearParametro("@activo", activo);
+                Datos.ejecutarAccion();
+                return true;
             }
             catch (Exception ex)
             {
@@ -107,6 +106,7 @@ namespace Negocio
                 Datos.setearParametro("@id_categoria",categoria.Id);
                 Datos.setearParametro("@nombre",categoria.Nombre);
                 Datos.setearParametro("@descipcion",categoria.Descripcion);
+                Datos.setearParametro("@activo", categoria.Activo);
                 Datos.ejecutarAccion();
                 return true; 
             }

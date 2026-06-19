@@ -11,13 +11,13 @@
             <div class="card shadow border-0 rounded-4">
 
                 <div class="card-header bg-danger text-white rounded-top-4">
-                    <h3 class="mb-0">Eliminar Marca</h3>
+                    <h3 class="mb-0">Eliminar Categoria</h3>
                 </div>
 
                 <div class="card-body p-4">
 
                     <div class="alert alert-warning">
-                        ¿Estás seguro que querés desactivar esta marca?
+                        ¿Estás seguro que querés desactivar esta categoria?
                     </div>
 
                     
@@ -64,7 +64,7 @@
                             runat="server"
                             Text="Eliminar"
                             CssClass="btn btn-danger rounded-pill px-4" 
-                             />
+                            OnClick="btnEliminar_Click"/>
 
                         <asp:Button
                             ID="btnCancelar"
@@ -72,7 +72,8 @@
                             Text="Cancelar"
                             CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
                             PostBackUrl="~/MarcaYCategoria.aspx" 
-                            OnClick="btnCancelar_Click"/>
+                            OnClick="btnCancelar_Click"
+                            />
 
                     </div>
 

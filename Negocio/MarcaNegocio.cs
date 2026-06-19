@@ -77,9 +77,10 @@ namespace Negocio
 
             try
             {
-                Datos.setearProcedimiento("storedModificarMarca");
+                Datos.setearProcedimiento("storedCambiarEstadoMarca");
                 Datos.setearParametro("@id_marca", id);
                 Datos.setearParametro("@activo", activo);
+                Datos.ejecutarAccion();
 
                 Datos.ejecutarAccion();
                 return true; 
@@ -106,7 +107,6 @@ namespace Negocio
                 Datos.setearParametro("@nombre", marca.Nombre);
                 Datos.setearParametro("@descripcion", marca.Descripcion);
                 Datos.setearParametro("@activo", marca.Activo);
-
                 Datos.ejecutarAccion();
                 return true; 
             }

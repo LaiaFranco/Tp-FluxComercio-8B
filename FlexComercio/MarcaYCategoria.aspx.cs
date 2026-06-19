@@ -71,17 +71,7 @@ namespace FlexComercio
             Response.Redirect("AgregarCategoria.aspx"); 
         }
 
-        protected void btnEliminarCategoria_Click(object sender, EventArgs e)
-        {
-            Button btn = (Button)sender;
-            int indice = int.Parse(btn.CommandArgument);
-            List<Categoria> listaCategoria = (List<Categoria>)Session["listaCategorias"];
-
-            Categoria categoria = listaCategoria[indice];
-            Session["categoiraSeleccionada"] = categoria;
-            Response.Redirect("EliminarCategoria.aspx");
-        }
-
+        
         protected void btnModificarCategoria_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
@@ -91,6 +81,17 @@ namespace FlexComercio
             Categoria categoria = listaCategoria[indice];
             Session["categoriaSeleccionada"] = categoria;
             Response.Redirect("AgregarCategoria.aspx");
+        }
+
+        protected void btnEliminarCategoria_Click1(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int indice = int.Parse(btn.CommandArgument);
+            List<Categoria> listaCategoria = (List<Categoria>)Session["listaCategorias"];
+
+            Categoria categoria = listaCategoria[indice];
+            Session["categoriaSeleccionada"] = categoria;
+            Response.Redirect("EliminarCategoria.aspx");
         }
     }
 }

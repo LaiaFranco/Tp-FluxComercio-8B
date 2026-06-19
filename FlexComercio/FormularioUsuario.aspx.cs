@@ -27,7 +27,7 @@ namespace FlexComercio
                     {
                         idUsuarioEdicion = id;
                         CargarUsuario(id);
-                    
+                        ConfigurarModoEdicion();
                     }
                 }
             }
@@ -35,7 +35,7 @@ namespace FlexComercio
 
         private void CargarRoles()
         {
-            var roles = new RolNegocio().Listar(); // Ajusta según tu negocio
+            var roles = new RolNegocio().Listar();
             ddlRol.DataSource = roles;
             ddlRol.DataTextField = "nombre";
             ddlRol.DataValueField = "id";
@@ -46,19 +46,26 @@ namespace FlexComercio
         private void CargarUsuario(int id)
         {
             Usuario usuario = usuarioNegocio.GetUsuario(id);
-            
             if (usuario != null)
             {
                 txtNombre.Text = usuario.Nombre;
                 txtEmail.Text = usuario.Email;
-               txtPassword.Text = usuario.Password;
+                txtPassword.Text = usuario.Password;
                 ddlRol.SelectedValue = usuario.Rol.Id.ToString();
-             
             }
             else
             {
                 MostrarMensaje("Usuario no encontrado.", "danger");
             }
+        }
+
+        private void ConfigurarModoEdicion()
+        {
+            lblPassword.Text = "Contraseña (dejar en blanco para mantener)";
+            txtPassword.Attributes["placeholder"] = "Dejar en blanco para mantener la actual";
+            txtPassword.Enabled = false;
+            rfvPassword.Enabled = false;
+            revPassword.Enabled = false;
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
@@ -71,7 +78,7 @@ namespace FlexComercio
 
             string nombre = txtNombre.Text.Trim();
             string email = txtEmail.Text.Trim();
-            string password = txtPassword.Text.Trim(); // ¡En texto plano!
+            string password = txtPassword.Text.Trim();
 
             int idRol;
             if (!int.TryParse(ddlRol.SelectedValue, out idRol) || idRol <= 0)
@@ -79,7 +86,7 @@ namespace FlexComercio
                 MostrarMensaje("Debe seleccionar un rol válido.", "danger");
                 return;
             }
-        
+
             if (string.IsNullOrEmpty(nombre))
             {
                 MostrarMensaje("El nombre es obligatorio.", "danger");
@@ -95,13 +102,11 @@ namespace FlexComercio
             {
                 if (idUsuarioEdicion.HasValue)
                 {
-                    // --- MODO EDICIÓN ---
                     Usuario usuario = new Usuario();
                     usuario.Id = idUsuarioEdicion.Value;
                     usuario.Nombre = nombre;
                     usuario.Email = email;
 
-                    // Si se ingresó una nueva contraseña, la guardamos (sin hash)
                     if (!string.IsNullOrEmpty(password))
                     {
                         if (password.Length < 6)
@@ -109,11 +114,10 @@ namespace FlexComercio
                             MostrarMensaje("La contraseña debe tener al menos 6 caracteres.", "danger");
                             return;
                         }
-                        usuario.Password = password; // Directamente
+                        usuario.Password = password;
                     }
                     else
                     {
-                        // Mantener la existente
                         Usuario existente = usuarioNegocio.GetUsuario(idUsuarioEdicion.Value);
                         usuario.Password = existente.Password;
                     }
@@ -128,7 +132,6 @@ namespace FlexComercio
                 }
                 else
                 {
-                    // --- MODO ALTA ---
                     if (string.IsNullOrEmpty(password) || password.Length < 6)
                     {
                         MostrarMensaje("La contraseña es obligatoria y debe tener al menos 6 caracteres.", "danger");
@@ -140,13 +143,11 @@ namespace FlexComercio
                     nuevo.Email = email;
                     nuevo.Password = password;
                     Rol NuevaRol = new Rol();
-
                     NuevaRol.Id = idRol;
-
                     nuevo.Rol = NuevaRol;
                     nuevo.Activo = true;
 
-                     usuarioNegocio.Agregar(nuevo);
+                    usuarioNegocio.Agregar(nuevo);
                     MostrarMensaje($"Usuario creado exitosamente", "success");
                     LimpiarCampos();
                 }
@@ -183,20 +184,13 @@ namespace FlexComercio
             lblMensaje.CssClass = $"alert alert-{tipo} w-100";
             lblMensaje.Visible = true;
         }
-        private void ConfigurarModoEdicion()
-        {
-            lblPassword.Text = "Contraseña (dejar en blanco para mantener)";
-            txtPassword.Attributes["placeholder"] = "Dejar en blanco para mantener la actual";
 
-            txtPassword.Enabled = false; 
-        }
         private void LimpiarCampos()
         {
             txtNombre.Text = "";
             txtEmail.Text = "";
             txtPassword.Text = "";
             ddlRol.SelectedIndex = 0;
-            
         }
     }
 }

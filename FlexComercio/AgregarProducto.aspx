@@ -19,12 +19,22 @@
 
                     <!-- Nombre -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Nombre</label>
+                        <label class="form-label fw-semibold">
+                            Nombre <span class="text-danger">*</span>
+                        </label>
 
                         <asp:TextBox
                             ID="txtNombre"
                             runat="server"
                             CssClass="form-control" />
+
+                        <asp:RequiredFieldValidator
+                            ID="rfvNombre"
+                            runat="server"
+                            ControlToValidate="txtNombre"
+                            ErrorMessage="Campo obligatorio"
+                            CssClass="text-danger"
+                            Display="Dynamic" />
                     </div>
 
                     <!-- Marca -->

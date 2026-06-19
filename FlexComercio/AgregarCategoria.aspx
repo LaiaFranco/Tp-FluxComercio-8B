@@ -21,27 +21,41 @@
                         <!-- Nombre -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold">
-                                Nombre
+                                Nombre <span class="text-danger">*</span>
                             </label>
 
-                            <asp:TextBox
-                                ID="txtNombre"
-                                runat="server"
-                                CssClass="form-control" />
+                             <asp:TextBox
+                                 ID="txtNombre"
+                                 runat="server"
+                                 CssClass="form-control" />
+
+                             <asp:RequiredFieldValidator
+                                 ID="rfvNombre"
+                                 runat="server"
+                                 ControlToValidate="txtNombre"
+                                 ErrorMessage="Campo obligatorio"
+                                 CssClass="text-danger"
+                                 Display="Dynamic" />
                         </div>
 
                         <!-- Descripción -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold">
-                                Descripción
+                                Descripcion <span class="text-danger">*</span>
                             </label>
 
                             <asp:TextBox
                                 ID="txtDescripcion"
                                 runat="server"
-                                CssClass="form-control"
-                                TextMode="MultiLine"
-                                Rows="4" />
+                                CssClass="form-control" />
+
+                             <asp:RequiredFieldValidator
+                                 ID="rfvDescripcion"
+                                 runat="server"
+                                 ControlToValidate="txtDescripcion"
+                                 ErrorMessage="Campo obligatorio"
+                                 CssClass="text-danger"
+                                 Display="Dynamic" />
                         </div>
 
                         <!-- Estado -->
@@ -78,7 +92,8 @@
                                 runat="server"
                                 Text="Cancelar"
                                 CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
-                                PostBackUrl="~/MarcaYCategoria.aspx" />
+                                PostBackUrl="~/MarcaYCategoria.aspx"
+                                CausesValidation="false" />
 
                         </div>
 

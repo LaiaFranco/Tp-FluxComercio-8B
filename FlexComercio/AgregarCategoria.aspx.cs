@@ -40,6 +40,9 @@ namespace FlexComercio
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!Page.IsValid)
+                return;
+
             CategoriaNegocio negocio = new CategoriaNegocio();
             Categoria categoria;
             bool ok;

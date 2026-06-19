@@ -42,6 +42,9 @@ namespace FlexComercio
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!Page.IsValid)
+                return;
+
             MarcaNegocio negocio = new MarcaNegocio();
             Marca marca = new Marca();
             bool ok;

@@ -70,6 +70,9 @@ namespace FlexComercio
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!Page.IsValid)
+                return;
+
             ProductoNegocio negocio = new ProductoNegocio();
             Dominio.Producto producto = new Dominio.Producto();
 

@@ -23,57 +23,64 @@ namespace Negocio
 
                 while (Datos.Lector.Read())
                 {
-                    Producto Producto = new Producto();
+                    Producto producto = new Producto();
 
-                    /*Producto.Id = (int)Datos.Lector["id_producto"];
-                    Producto.Nombre = (string)Datos.Lector["nombre"];
-                    Producto.Descripcion = (string)Datos.Lector["descripcion"];
-                    Producto.StocmkActual = Convert.ToSingle(Datos.Lector["stock_actual"]);
-                    Producto.StockMinimo = Convert.ToSingle(Datos.Lector["stock_minimo"]);
-                    Producto.PorcentajeGanancia = Convert.ToSingle(Datos.Lector["porcentaje_ganancia"]);
-                    Producto.Activo = (bool)Datos.Lector["activo"];
+                    producto.Id = Convert.ToInt32(Datos.Lector["id_producto"]);
+                    producto.Nombre = Datos.Lector["nombre"].ToString();
+
+                    producto.Descripcion = Datos.Lector["descripcion"] == DBNull.Value
+                        ? ""
+                        : Datos.Lector["descripcion"].ToString();
+
+                    producto.StockActual = (int)Datos.Lector["stock_actual"];
+                    producto.StockMinimo = (int)Datos.Lector["stock_minimo"];
+
+                    producto.Precio = Convert.ToSingle(Datos.Lector["precio"]);
+                    producto.PorcentajeGanancia = Convert.ToSingle(Datos.Lector["porcentaje_ganancia"]);
+
+                    producto.Activo = Convert.ToBoolean(Datos.Lector["activo"]);
 
                     // MARCA
-                    Marca Marca = new Marca();
-
-                    Marca.Id = (int)Datos.Lector["id_marca"];
-                    Marca.Nombre = (string)Datos.Lector["nombre_marca"];
-
-                    Producto.Marca = Marca;
+                    producto.Marca = new Marca();
+                    producto.Marca.Id = Convert.ToInt32(Datos.Lector["id_marca"]);
+                    producto.Marca.Nombre = Datos.Lector["nombre_marca"].ToString();
 
                     // CATEGORIA
-                    Categoria Categoria = new Categoria();
-
-                    Categoria.Id = (int)Datos.Lector["id_categoria"];
-                    Categoria.Nombre = (string)Datos.Lector["nombre_categoria"];
-
-                    Producto.Categoria = Categoria;
-
-                    // IMAGEN
-                    Imagen Imagen = new Imagen();
-
-                    Imagen.Id = (int)Datos.Lector["id_imagen"];
-                    Imagen.Url = (string)Datos.Lector["url_imagen"];
-
-                    Producto.Imagen = Imagen;
+                    producto.Categoria = new Categoria();
+                    producto.Categoria.Id = Convert.ToInt32(Datos.Lector["id_categoria"]);
+                    producto.Categoria.Nombre = Datos.Lector["nombre_categoria"].ToString();
 
                     // PROVEEDOR
-                    Proveedor Proveedor = new Proveedor();
+                    producto.Proveedor = new Proveedor();
+                    producto.Proveedor.Id = Convert.ToInt32(Datos.Lector["id_proveedor"]);
+                    producto.Proveedor.Nombre = Datos.Lector["nombre_proveedor"].ToString();
 
-                    Proveedor.Id = (int)Datos.Lector["id_proveedor"];
-                    Proveedor.Nombre = (string)Datos.Lector["nombre_proveedor"];
-                    Proveedor.Cuil = (string)Datos.Lector["cuil"]; 
+                    if (Datos.Lector["cuil"] != DBNull.Value)
+                        producto.Proveedor.Cuil = Datos.Lector["cuil"].ToString();
 
-                    Producto.Proveedor = Proveedor;*/
+                    // IMAGEN
+                    producto.Imagen = new Imagen();
 
-                    Productos.Add(Producto);
+                    if (Datos.Lector["id_imagen"] != DBNull.Value &&
+                         Datos.Lector["url_imagen"] != DBNull.Value)
+                    {
+                        producto.Imagen.Id = Convert.ToInt32(Datos.Lector["id_imagen"]);
+                        producto.Imagen.Url = Datos.Lector["url_imagen"].ToString();
+                    }
+                    else
+                    {
+                        producto.Imagen.Id = 0;
+                        producto.Imagen.Url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLyxIVWg1RJUCYrlPYfWA_gzwdBHqEjNSLs2q88bW0Gr-OrEgGzR2MHzU&s=10";
+                    }
+
+                    Productos.Add(producto);
                 }
 
                 return Productos;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error al listar productos: " + ex.Message, ex);
             }
             finally
             {
@@ -81,7 +88,7 @@ namespace Negocio
             }
         }
 
-        public void Agregar(Producto Producto)
+        public bool Agregar(Producto Producto)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -95,12 +102,14 @@ namespace Negocio
                 Datos.setearParametro("@descripcion", Producto.Descripcion);
                 Datos.setearParametro("@stock_actual", Producto.StockActual);
                 Datos.setearParametro("@stock_minimo", Producto.StockMinimo);
-                Datos.setearParametro("@porcentaje_ganancia", Producto.PorcentajeGanancia);
-                Datos.setearParametro("@id_imagen", Producto.Imagen.Id);
-                Datos.setearParametro("@id_proveedor", Producto.Proveedor.Id);
+                Datos.setearParametro("@porcentaje_ganancia", Math.Round((decimal)Producto.PorcentajeGanancia, 2));
+                Datos.setearParametro("@precio", Math.Round((decimal)Producto.Precio, 2)); 
+              // Datos.setearParametro("@id_imagen", Producto.Imagen.Url);
+                //Datos.setearParametro("@id_proveedor", Producto.Proveedor.Id);
                 Datos.setearParametro("@activo", Producto.Activo);
 
                 Datos.ejecutarAccion();
+                return true;
             }
             catch (Exception ex)
             {

@@ -60,6 +60,7 @@ CREATE TABLE [dbo].[PRODUCTOS](
     [descripcion] [varchar](300) NULL,
     [id_marca] [int] NOT NULL,
     [id_categoria] [int] NOT NULL,
+    [id_proveedor][int] NOT NULL,
     [stock_actual] [int] NOT NULL CONSTRAINT [DF_PRODUCTOS_stock_actual] DEFAULT (0),
     [stock_minimo] [int] NOT NULL CONSTRAINT [DF_PRODUCTOS_stock_minimo] DEFAULT (0),
     [precio] [decimal](5,2) NOT NULL,

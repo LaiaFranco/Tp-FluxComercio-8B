@@ -117,5 +117,35 @@ namespace Negocio
                 Datos.cerrarConexion();
             }
         }
+
+        public bool ExisteMarca(string nombre)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                            SELECT COUNT(*)
+                            FROM MARCAS
+                            WHERE UPPER(Nombre) = UPPER(@nombre)");
+
+                datos.setearParametro("@nombre", nombre.Trim());
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                    return Convert.ToInt32(datos.Lector[0]) > 0;
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex; 
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

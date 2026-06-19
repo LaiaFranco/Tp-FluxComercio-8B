@@ -2,6 +2,7 @@
 using Negocio; 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -30,7 +31,7 @@ namespace FlexComercio
                 }
                 else
                 {
-                    pnlEstado.Visible = true;
+                    pnlEstado.Visible = false ;
 
                     btnGuardar.Text = "Agregar";
                     lblTitulo.Text = "Agregar Categoría";
@@ -52,21 +53,49 @@ namespace FlexComercio
                 categoria = (Categoria)Session["categoriaSeleccionada"];
 
                 categoria.Nombre = txtNombre.Text;
+                categoria.Nombre = CultureInfo.CurrentCulture.TextInfo
+                   .ToTitleCase(txtNombre.Text.Trim().ToLower());
+                string nombre = txtNombre.Text.Trim();
+
+
                 categoria.Descripcion = txtDescripcion.Text;
+                if (negocio.ExisteMarca(nombre))
+                {
+                    lblError.Text = "Ya existe una categoria con esas caracteristicas.";
+                    lblError.Visible = true;
+                    return;
+                }
+                else
+                {
+                    ok = negocio.Modificar(categoria);
+                    Session.Remove("categoriaSeleccionada");
+                }
 
-                ok = negocio.Modificar(categoria);
-
-                Session.Remove("categoriaSeleccionada");
             }
             else
             {
                 categoria = new Categoria();
 
                 categoria.Nombre = txtNombre.Text;
-                categoria.Descripcion = txtDescripcion.Text;
-                categoria.Activo = bool.Parse(ddlEstado.SelectedValue);
+                categoria.Nombre = txtNombre.Text;
+                categoria.Nombre = CultureInfo.CurrentCulture.TextInfo
+                   .ToTitleCase(txtNombre.Text.Trim().ToLower());
+                string nombre = txtNombre.Text.Trim();
 
-                ok = negocio.Agregar(categoria);
+                categoria.Descripcion = txtDescripcion.Text;
+                categoria.Activo = true;
+                if (negocio.ExisteMarca(nombre))
+                {
+                    lblError.Text = "Ya existe una categoria con esas caracteristicas.";
+                    lblError.Visible = true;
+                    return;
+                }
+                else
+                {
+
+                    ok = negocio.Agregar(categoria);
+                }
+
             }
 
             if (ok)

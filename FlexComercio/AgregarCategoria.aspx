@@ -77,6 +77,16 @@
                             </div>
                         </asp:Panel>
 
+                             <!-- ETIQUETA ERROR -->
+                               
+
+                                <asp:Label
+                                    ID="lblError"
+                                    runat="server"
+                                    CssClass="text-danger"
+                                    Visible="false">
+                                </asp:Label>
+
                         <!-- Botones -->
                         <div class="d-flex justify-content-end">
 

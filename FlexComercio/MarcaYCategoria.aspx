@@ -51,7 +51,8 @@
                 runat="server"
                 AutoGenerateColumns="false"
                 CssClass="table border-0"
-                DataKeyNames="Id" OnSelectedIndexChanged="dgvMarcas_SelectedIndexChanged">
+                DataKeyNames="Id" 
+                OnSelectedIndexChanged="dgvMarcas_SelectedIndexChanged">
 
                 <Columns>
 

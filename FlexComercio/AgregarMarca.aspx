@@ -65,7 +65,7 @@
                         <!-- Estado -->
                          <asp:Panel ID="pnlEstado" runat="server">
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">
+                                <label  class="form-label fw-semibold">
                                     Estado
                                 </label>
 
@@ -79,7 +79,15 @@
 
                                 </asp:DropDownList>
                             </div>
+                             <!-- ETIQUETA ERROR -->
                         </asp:Panel>
+
+                        <asp:Label
+                            ID="lblError"
+                            runat="server"
+                            CssClass="text-danger"
+                            Visible="false">
+                        </asp:Label>
 
                         <!-- Botones -->
                         <div class="d-flex justify-content-end">

@@ -118,6 +118,14 @@
                             runat="server"
                             CssClass="text-danger d-block mb-3" />
 
+                        <!-- ETIQUETA ERROR -->
+                           <asp:Label
+                               ID="lblError"
+                               runat="server"
+                               CssClass="text-danger"
+                               Visible="false">
+                           </asp:Label>
+
                         <!-- Botones -->
                         <div class="d-flex justify-content-end">
 

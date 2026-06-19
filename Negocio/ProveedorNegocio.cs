@@ -149,5 +149,37 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public bool ExisteProveedor(string nombre, string cuil)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT COUNT(*)
+                    FROM PROVEEDORES
+                    WHERE UPPER(Nombre) = UPPER(@nombre)
+                       OR Cuil = @cuil");
+
+                datos.setearParametro("@nombre", nombre.Trim());
+                datos.setearParametro("@cuil", cuil.Trim());
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                    return Convert.ToInt32(datos.Lector[0]) > 0;
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

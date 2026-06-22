@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Dominio;
-using Negocio; 
+using Negocio;
 
 namespace FlexComercio
 {
@@ -15,10 +15,10 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
-                
+
                 CategoriaNegocio catNegocio = new CategoriaNegocio();
                 MarcaNegocio marcaNegocio = new MarcaNegocio();
-                ProveedorNegocio provNegocio = new ProveedorNegocio(); 
+                ProveedorNegocio provNegocio = new ProveedorNegocio();
 
                 if (Session["productoSeleccionado"] != null)
                 {
@@ -33,7 +33,7 @@ namespace FlexComercio
                     txtPrecio.Text = producto.Precio.ToString();
                     txtGanancia.Text = producto.PorcentajeGanancia.ToString();
                     imgPreview.ImageUrl = producto.Imagen.Url;
-                    ddlEstado.Visible = false; 
+                    ddlEstado.Visible = false;
                 }
                 else
                 {
@@ -56,7 +56,7 @@ namespace FlexComercio
                     ddlProveedor.DataTextField = "Nombre";
                     ddlProveedor.DataBind();
                 }
-      
+
             }
         }
 
@@ -65,7 +65,7 @@ namespace FlexComercio
             imgPreview.ImageUrl = txtUrlImagen.Text;
         }
 
-       
+
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -108,7 +108,7 @@ namespace FlexComercio
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
-                        window.location = 'Productos.aspx';
+                        window.location = 'Producto.aspx';
                     });
                     ";
 

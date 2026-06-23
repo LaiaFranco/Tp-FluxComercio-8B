@@ -20,10 +20,10 @@ namespace FlexComercio
             {
                 CargarRoles();
 
-                if (Request.QueryString["venta"] != null)
+                if (Request.QueryString["usuario"] != null)
                 {
                     int id;
-                    if (int.TryParse(Request.QueryString["venta"], out id))
+                    if (int.TryParse(Request.QueryString["usuario"], out id))
                     {
                         idUsuarioEdicion = id;
                         CargarUsuario(id);

@@ -43,20 +43,20 @@ namespace Negocio
                     // MARCA
                     producto.Marca = new Marca();
                     producto.Marca.Id = Convert.ToInt32(Datos.Lector["id_marca"]);
-                    producto.Marca.Nombre = Datos.Lector["nombre_marca"].ToString();
+                     producto.Marca.Nombre = Datos.Lector["nombre_marca"].ToString();
 
                     // CATEGORIA
                     producto.Categoria = new Categoria();
                     producto.Categoria.Id = Convert.ToInt32(Datos.Lector["id_categoria"]);
-                    producto.Categoria.Nombre = Datos.Lector["nombre_categoria"].ToString();
+                     producto.Categoria.Nombre = Datos.Lector["nombre_categoria"].ToString();
 
                     // PROVEEDOR
-                    producto.Proveedor = new Proveedor();
-                    producto.Proveedor.Id = Convert.ToInt32(Datos.Lector["id_proveedor"]);
-                    producto.Proveedor.Nombre = Datos.Lector["nombre_proveedor"].ToString();
+                   producto.Proveedor = new Proveedor();
+                      producto.Proveedor.Id = Convert.ToInt32(Datos.Lector["id_proveedor"]);
+                      producto.Proveedor.Nombre = Datos.Lector["nombre_proveedor"].ToString();
 
                     if (Datos.Lector["cuil"] != DBNull.Value)
-                        producto.Proveedor.Cuil = Datos.Lector["cuil"].ToString();
+                       // producto.Proveedor.Cuil = Datos.Lector["cuil"].ToString();
 
                     // IMAGEN
                     producto.Imagen = new Imagen();
@@ -97,17 +97,15 @@ namespace Negocio
                 Datos.setearProcedimiento("storedAltaProducto");
 
                 Datos.setearParametro("@nombre", Producto.Nombre);
+                Datos.setearParametro("@descripcion", Producto.Descripcion);
                 Datos.setearParametro("@id_marca", Producto.Marca.Id);
                 Datos.setearParametro("@id_categoria", Producto.Categoria.Id);
-                Datos.setearParametro("@descripcion", Producto.Descripcion);
+                Datos.setearParametro("@id_proveedor", Producto.Proveedor.Id);
+                Datos.setearParametro("@precio", Math.Round((decimal)Producto.Precio, 2));
                 Datos.setearParametro("@stock_actual", Producto.StockActual);
                 Datos.setearParametro("@stock_minimo", Producto.StockMinimo);
                 Datos.setearParametro("@porcentaje_ganancia", Math.Round((decimal)Producto.PorcentajeGanancia, 2));
-                Datos.setearParametro("@precio", Math.Round((decimal)Producto.Precio, 2)); 
-              // Datos.setearParametro("@id_imagen", Producto.Imagen.Url);
-                //Datos.setearParametro("@id_proveedor", Producto.Proveedor.Id);
-                Datos.setearParametro("@activo", Producto.Activo);
-
+                Datos.setearParametro("@url_imagen", Producto.Imagen.Url);
                 Datos.ejecutarAccion();
                 return true;
             }

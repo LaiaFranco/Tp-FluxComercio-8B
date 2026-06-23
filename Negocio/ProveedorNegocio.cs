@@ -32,6 +32,8 @@ namespace Negocio
                     aux.Direccion = (string)datos.Lector["direccion"];
                     aux.Activo = (bool)datos.Lector["activo"];
 
+                   
+
                     lista.Add(aux);
                 }
 
@@ -46,6 +48,58 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+
+        public List<Producto> Productos(int idProveerdor)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            List<Producto> ListaDeProductos = new List<Producto>();
+            try
+            {
+                datos.setearProcedimiento("storedListarProductosPorProveedor");
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Producto NuevoProducto = new Producto();
+
+                    NuevoProducto.Id = (int)datos.Lector["id_producto"];
+                    NuevoProducto.Nombre = (string)datos.Lector["id_producto"];
+                    NuevoProducto.Descripcion = (string)datos.Lector["descripcion"];
+
+                    Marca NuevaMarca = new Marca();
+                    NuevoProducto.Id = (int)datos.Lector["id_marca"];
+
+                    Proveedor NuevoProveedor = new Proveedor();
+                    NuevoProveedor.Id = (int)datos.Lector["id_proveedor"];
+
+                    NuevoProducto.StockActual = (int)datos.Lector["id_producto"];
+                    NuevoProducto.StockMinimo= (int)datos.Lector["id_producto"];
+                    NuevoProducto.Precio = (float)datos.Lector["id_producto"];
+                    NuevoProducto.Activo = (bool)datos.Lector["activo"];
+                    NuevoProducto.PorcentajeGanancia = (float)datos.Lector["procentaje_ganacia"];
+
+           
+
+                    ListaDeProductos.Add(NuevoProducto);
+
+                }
+
+                return ListaDeProductos;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        
+        }   
+
+
         public void Agregar(Proveedor nuevo)
         {
             AccesoDatos datos = new AccesoDatos();

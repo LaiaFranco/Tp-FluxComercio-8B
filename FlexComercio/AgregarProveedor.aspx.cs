@@ -19,12 +19,12 @@ namespace FlexComercio
             {
                 if (!IsPostBack)
                 {
-                    string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
-
-                    if (id != "")
+                    if (Session["idProveedorModificar"] != null)
                     {
+                        int id = int.Parse(Session["idProveedorModificar"].ToString());
+
                         ProveedorNegocio negocio = new ProveedorNegocio();
-                        Dominio.Proveedor seleccionado = negocio.ListarPorId(int.Parse(id));
+                        Dominio.Proveedor seleccionado = negocio.ListarPorId(id);
 
                         txtCuil.Text = seleccionado.Cuil;
                         txtNombre.Text = seleccionado.Nombre;
@@ -45,8 +45,11 @@ namespace FlexComercio
         {
             try
             {
-                if (!Page.IsValid)
+                if (txtCuil.Text == "" || txtNombre.Text == "" || txtEmail.Text == "")
+                {
+                    lblMensaje.Text = "Debe completar CUIL, nombre y email.";
                     return;
+                }
 
                 Dominio.Proveedor proveedor = new Dominio.Proveedor();
 
@@ -57,41 +60,18 @@ namespace FlexComercio
                 proveedor.Direccion = txtDireccion.Text;
                 proveedor.Activo = true;
 
-                proveedor.Nombre = txtNombre.Text;
-                proveedor.Nombre = CultureInfo.CurrentCulture.TextInfo
-                   .ToTitleCase(txtNombre.Text.Trim().ToUpper());
-                string nombre = txtNombre.Text.Trim();
-
                 ProveedorNegocio negocio = new ProveedorNegocio();
 
-                string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
-
-                if (id != "")
+                if (Session["idProveedorModificar"] != null)
                 {
-                    if (negocio.ExisteProveedor(txtNombre.Text, txtCuil.Text))
-                    {
-                        lblError.Text = "Ya existe un proveedor con ese nombre o CUIL.";
-                        lblError.Visible = true;
-                        return;
-                    }
-                    else
-                    {
-                        proveedor.Id = int.Parse(id);
-                        negocio.Modificar(proveedor);
-                    }
+                    proveedor.Id = int.Parse(Session["idProveedorModificar"].ToString());
+                    negocio.Modificar(proveedor);
+
+                    Session.Remove("idProveedorModificar");
                 }
                 else
                 {
-                    if (negocio.ExisteProveedor(txtNombre.Text, txtCuil.Text))
-                    {
-                        lblError.Text = "Ya existe un proveedor con ese nombre o CUIL.";
-                        lblError.Visible = true;
-                        return;
-                    }
-                    else
-                    {
-                        negocio.Agregar(proveedor);
-                    }
+                    negocio.Agregar(proveedor);
                 }
 
                 Response.Redirect("Proveedor.aspx", false);
@@ -105,6 +85,7 @@ namespace FlexComercio
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
+            Session.Remove("idProveedorModificar");
             Response.Redirect("Proveedor.aspx");
         }
     }

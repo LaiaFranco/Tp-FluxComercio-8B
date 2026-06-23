@@ -168,7 +168,7 @@ namespace Negocio
                     NuevoUsuario.Email = (string)Datos.Lector["email"];
                     NuevoUsuario.Nombre = (string)Datos.Lector["nombre"];
 
-            
+
 
                     return NuevoUsuario;
                 }
@@ -188,11 +188,9 @@ namespace Negocio
 
         }
 
-        public Usuario GetUsuarioCredenciales(string email,string passowrd)
+        public Usuario GetUsuarioCredenciales(string email, string passowrd)
         {
             AccesoDatos Datos = new AccesoDatos();
-
-
             try
             {
 
@@ -205,11 +203,12 @@ namespace Negocio
                             u.activo
                             FROM USUARIOS u
                             INNER JOIN ROLES r ON u.id_rol = r.id_rol
-                            WHERE u.email = @email AND u.password = @password";
+                            WHERE u.email = @email AND u.password_u = @password";
 
                 Datos.setearConsulta(query);
                 Datos.setearParametro("@email", email);
                 Datos.setearParametro("@password", passowrd);
+                Datos.ejecutarLectura(); 
 
                 if (Datos.Lector.Read())
                 {
@@ -240,6 +239,42 @@ namespace Negocio
                 Datos.cerrarConexion();
             }
         }
+
+        public bool Loguaer(Usuario usuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("storedLogin");
+                datos.setearParametro("@email", usuario.Nombre);
+                datos.setearParametro("@password", usuario.Password);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    usuario.Id = (int)datos.Lector["id_usuario"];
+                    usuario.Rol.Id = (int)(datos.Lector["id_rol"]);
+                    usuario.Rol.Nombre = (string)datos.Lector["nombreRol"];
+
+                    return true;
+                }
+                return false; 
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+    
+    
+
     }
 
 

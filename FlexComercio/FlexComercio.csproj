@@ -75,6 +75,7 @@
     <Content Include="CompraDetalle.aspx" />
     <Content Include="Compras.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="DefaultVendedor.aspx" />
     <Content Include="EliminarCategoria.aspx" />
     <Content Include="EliminarMarca.aspx" />
     <Content Include="EliminarProveedor.aspx" />
@@ -126,6 +127,13 @@
     <Compile Include="Cliente.aspx.designer.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vendedor.Master.cs">
+      <DependentUpon>Vendedor.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vendedor.Master.designer.cs">
+      <DependentUpon>Vendedor.Master</DependentUpon>
+    </Compile>
     <Compile Include="CompraDetalle.aspx.cs">
       <DependentUpon>CompraDetalle.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -146,6 +154,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultVendedor.aspx.cs">
+      <DependentUpon>DefaultVendedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultVendedor.aspx.designer.cs">
+      <DependentUpon>DefaultVendedor.aspx</DependentUpon>
     </Compile>
     <Compile Include="EliminarCategoria.aspx.cs">
       <DependentUpon>EliminarCategoria.aspx</DependentUpon>
@@ -237,6 +252,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="General.Master" />
+    <Content Include="Vendedor.Master" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

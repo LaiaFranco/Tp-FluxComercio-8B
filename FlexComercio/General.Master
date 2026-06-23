@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="General.master.cs" Inherits="FlexComercio.General" %>
+﻿<%@ Master Language="C#"  AutoEventWireup="true" CodeBehind="General.master.cs" Inherits="FlexComercio.General" %>
 
 <!DOCTYPE html>
 

@@ -36,7 +36,8 @@ namespace FlexComercio
 
                 if (e.CommandName == "ModificarProveedor")
                 {
-                    Response.Redirect("AgregarProveedor.aspx?id=" + id, false);
+                    Session.Add("idProveedorModificar", id);
+                    Response.Redirect("AgregarProveedor.aspx", false);
                 }
             }
             catch (Exception ex)

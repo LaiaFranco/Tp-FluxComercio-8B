@@ -33,7 +33,8 @@ namespace FlexComercio
                     txtPrecio.Text = producto.Precio.ToString();
                     txtGanancia.Text = producto.PorcentajeGanancia.ToString();
                     imgPreview.ImageUrl = producto.Imagen.Url;
-                    ddlEstado.Visible = false; 
+                    ddlEstado.Visible = false;
+                    pnlEstado.Visible = false;
                 }
                 else
                 {
@@ -55,6 +56,7 @@ namespace FlexComercio
                     ddlProveedor.DataValueField = "Id";
                     ddlProveedor.DataTextField = "Nombre";
                     ddlProveedor.DataBind();
+                    pnlEstado.Visible = false;
                 }
       
             }
@@ -76,7 +78,7 @@ namespace FlexComercio
             Dominio.Producto producto = new Dominio.Producto();
 
             bool ok;
-
+            pnlEstado.Visible = false;
             producto.Nombre = txtNombre.Text;
             producto.Descripcion = txtDescripcion.Text;
             producto.StockActual = int.Parse(txtStockActual.Text);

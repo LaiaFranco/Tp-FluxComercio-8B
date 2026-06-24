@@ -161,5 +161,59 @@
     </div>
 
 </div>
+    <style>
+    /* Animación de todas las cards */
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+    }
+
+    /* Iconos de resumen */
+    .dashboard-icon {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+        background: linear-gradient(135deg, #e0e7ff, #f0f4ff);
+    }
+
+    .dashboard-icon i {
+        font-size: 2.2rem;
+        color: #0d6efd;
+    }
+
+    /* Números principales */
+    .dashboard-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    /* Cards de accesos rápidos */
+    .quick-access {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .quick-access:hover {
+        transform: translateY(-5px);
+        border-color: #0d6efd !important;
+    }
+
+    .quick-access .dashboard-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .quick-access h3 {
+        font-size: 1.4rem;
+    }
+</style>
 
 </asp:Content>

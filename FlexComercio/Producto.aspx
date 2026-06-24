@@ -85,7 +85,7 @@
 
                                         <p class="mb-1">
                                             <strong>Stock:</strong>
-                                            <%# Eval("StocmkActual") %>
+                                            <%# Eval("StockActual") %>
                                         </p>
 
                                         <p class="mb-1">

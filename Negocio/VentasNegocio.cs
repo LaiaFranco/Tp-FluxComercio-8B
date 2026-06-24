@@ -1,274 +1,301 @@
 ﻿
-using Dominio;
-using negocio;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using Newtonsoft.Json;
-using System.Linq;
+    using Dominio;
+    using negocio;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using Newtonsoft.Json;
+    using System.Linq;
+    using System.Security.Policy;
 
-namespace Negocio
-{
-    public class VentasNegocio
+    namespace Negocio
     {
-        public List<Venta> Listar()
+        public class VentasNegocio
         {
-            AccesoDatos datos = new AccesoDatos();
-            List<Venta> ventas = new List<Venta>();
-
-            try
+            public List<Venta> Listar()
             {
-                datos.setearProcedimiento("storedListarVentas");
-                datos.ejecutarLectura();
+                AccesoDatos datos = new AccesoDatos();
+                List<Venta> ventas = new List<Venta>();
 
-                while (datos.Lector.Read())
+                try
                 {
-                    Venta venta = new Venta();
-                    venta.Id = (int)datos.Lector["id_venta"];
-                    venta.Fecha = (DateTime)datos.Lector["fecha"];
-                    venta.NumFactura = datos.Lector["numero_factura"].ToString();
-                    venta.Total = (decimal)datos.Lector["total"];
+                    datos.setearProcedimiento("storedListarVentas");
+                    datos.ejecutarLectura();
 
-                    // Cliente
-                    venta.Cliente = new Cliente();
-                    venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"].ToString();
-                    venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"].ToString();
+                    while (datos.Lector.Read())
+                    {
+                        Venta venta = new Venta();
+                        venta.Id = (int)datos.Lector["id_venta"];
+                        venta.Fecha = (DateTime)datos.Lector["fecha"];
+                        venta.NumFactura = datos.Lector["numero_factura"].ToString();
+                        venta.Total = (decimal)datos.Lector["total"];
+
+                        // Cliente
+                        venta.Cliente = new Cliente();
+                        venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"].ToString();
+                        venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"].ToString();
                    
 
-                    ventas.Add(venta);
+                        ventas.Add(venta);
+                    }
+                    return ventas;
                 }
-                return ventas;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
-
-
-        public List<DetalleVenta> VerDetallesPorVenta(int id)
-        {
-            List<DetalleVenta> detalles = new List<DetalleVenta>();
-            AccesoDatos datos = new AccesoDatos();
-
-            try
-            {
-
-                string consulta = @"
-            SELECT 
-                d.id_detalle,
-                d.id_venta,
-                d.id_producto,
-                d.cantidad,
-                d.precio_unitario,
-                d.subtotal,
-                p.nombre AS nombre_producto,
-                p.precio_actual,
-                p.stock_actual,
-                c.nombre AS nombre_categoria,
-                i.url AS url_imagen
-            FROM VENTA_DETALLES d
-            INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto
-            INNER JOIN CATEGORIAS c ON p.id_categoria = c.id_categoria
-            LEFT JOIN IMAGENES i ON p.id_producto = i.id_producto AND i.es_principal = 1
-            WHERE d.id_venta = @idVenta";   
-
-                datos.setearConsulta(consulta);
-                datos.setearParametro("@idVenta", id);
-                datos.ejecutarLectura();
-
-                while (datos.Lector.Read())
+                catch (Exception ex)
                 {
-                    DetalleVenta detalle = new DetalleVenta();
-                    detalle.Id = (int)datos.Lector["id_detalle"];
-                    detalle.Cantidad = (int)datos.Lector["cantidad"];
-                    detalle.PrecioUnitario = (float)datos.Lector["precio_unitario"];
-                    detalle.Subtotal = (float)datos.Lector["subtotal"];
-
-                    // Producto
-                    Producto producto = new Producto();
-                    producto.Id = (int)datos.Lector["id_producto"];
-                    producto.Nombre = (string)datos.Lector["nombre_producto"];
-                    producto.Precio = (decimal)datos.Lector["precio_actual"];
-                    producto.StockActual = (int)datos.Lector["stock_actual"];
-
-                    // Categoría
-                    producto.Categoria = new Categoria();
-                    producto.Categoria.Nombre = (string)datos.Lector["nombre_categoria"];
-
-                    // Imagen 
-                    producto.Imagen = new Imagen();
-                    producto.Imagen.Url = datos.Lector["url_imagen"] != DBNull.Value
-                        ? (string)datos.Lector["url_imagen"]
-                        : string.Empty;
-
-                    detalle.Producto = producto;
-                    detalles.Add(detalle);
+                    throw ex;
                 }
-
-                return detalles;
+                finally
+                {
+                    datos.cerrarConexion();
+                }
             }
-            catch (Exception ex)
+
+
+            public List<DetalleVenta> VerDetallesPorVenta(int id)
             {
-                throw  ex;
+                List<DetalleVenta> detalles = new List<DetalleVenta>();
+                AccesoDatos datos = new AccesoDatos();
+
+                try
+                {
+
+                    string consulta = @"
+                SELECT 
+                    d.id_detalle,
+                    d.id_venta,
+                    d.id_producto,
+                    d.cantidad,
+                    d.precio_unitario,
+                    d.subtotal,
+                    p.nombre AS nombre_producto,
+                    p.precio_actual,
+                    p.stock_actual,
+                    c.nombre AS nombre_categoria,
+                    i.url AS url_imagen
+                FROM VENTA_DETALLES d
+                INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto
+                INNER JOIN CATEGORIAS c ON p.id_categoria = c.id_categoria
+                LEFT JOIN IMAGENES i ON p.id_producto = i.id_producto AND i.es_principal = 1
+                WHERE d.id_venta = @idVenta";   
+
+                    datos.setearConsulta(consulta);
+                    datos.setearParametro("@idVenta", id);
+                    datos.ejecutarLectura();
+
+                    while (datos.Lector.Read())
+                    {
+                        DetalleVenta detalle = new DetalleVenta();
+                        detalle.Id = (int)datos.Lector["id_detalle"];
+                        detalle.Cantidad = (int)datos.Lector["cantidad"];
+                        detalle.PrecioUnitario = (float)datos.Lector["precio_unitario"];
+                        detalle.Subtotal = (float)datos.Lector["subtotal"];
+
+                        // Producto
+                        Producto producto = new Producto();
+                        producto.Id = (int)datos.Lector["id_producto"];
+                        producto.Nombre = (string)datos.Lector["nombre_producto"];
+                        producto.Precio = (decimal)datos.Lector["precio_actual"];
+                        producto.StockActual = (int)datos.Lector["stock_actual"];
+
+                        // Categoría
+                        producto.Categoria = new Categoria();
+                        producto.Categoria.Nombre = (string)datos.Lector["nombre_categoria"];
+
+                        // Imagen 
+                        producto.Imagen = new Imagen();
+                        producto.Imagen.Url = datos.Lector["url_imagen"] != DBNull.Value
+                            ? (string)datos.Lector["url_imagen"]
+                            : string.Empty;
+
+                        detalle.Producto = producto;
+                        detalles.Add(detalle);
+                    }
+
+                    return detalles;
+                }
+                catch (Exception ex)
+                {
+                    throw  ex;
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
             }
-            finally
+
+            public Venta VerVenta(int id)
             {
-                datos.cerrarConexion();
-            }
-        }
+                AccesoDatos datos = new AccesoDatos();
+                Venta venta = new Venta();
 
-        public Venta VerVenta(int id)
-        {
-            AccesoDatos datos = new AccesoDatos();
-            Venta venta = new Venta();
-
-            try
-            {
-
-                string consulta = @"
-                    SELECT 
-                        v.id_venta,
-                        v.fecha,
-                        v.id_cliente,
-                        v.total,
-                        v.numero_factura,
-                        v.id_usuario,
-                        c.nombre AS nombre_cliente,
-                        c.apellido AS apellido_cliente,
-                        u.nombre AS nombre_usuario,
-                        u.activo AS activo_usuario
-                    FROM VENTAS v
-                    INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
-                    LEFT JOIN USUARIOS u ON v.id_usuario = u.id_usuario
-                    WHERE v.id_venta = @idVenta";
-
-                datos.setearConsulta(consulta);
-                datos.setearParametro("@idVenta", id);
-                datos.ejecutarLectura();
+                try
+                {
 
                
 
-                if (datos.Lector.Read())
-                {
+                    datos.setearProcedimiento("storeVerVenta");
+                    datos.setearParametro("@id_venta", id);
+                    datos.ejecutarLectura();
 
-                    venta.Id = (int)datos.Lector["id_venta"];
-                    venta.Fecha = (DateTime)datos.Lector["fecha"];
-                    venta.NumFactura = datos.Lector["numero_factura"].ToString();
-                    venta.Total = (decimal)datos.Lector["total"];
+               
+
+                    if (datos.Lector.Read())
+                    {
+
+                        venta.Id = (int)datos.Lector["id_venta"];
+                        venta.Fecha = (DateTime)datos.Lector["fecha"];
+                        venta.NumFactura = datos.Lector["numero_factura"].ToString();
+                        venta.Total = (decimal)datos.Lector["total"];
                     
 
-                    // Cliente
+                        // Cliente
 
-                    venta.Cliente = new Cliente();
-                    venta.Cliente.Id = (int)datos.Lector["id_cliente"];
-                    venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"];
-                    venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"];
+                        venta.Cliente = new Cliente();
+                        venta.Cliente.Id = (int)datos.Lector["id_cliente"];
+                        venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"];
+                        venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"];
 
-                    //Usuaurio
-                    venta.Usuario = new Usuario();
-                    venta.Usuario.Id = (int)datos.Lector["id_usuario"];
-                    venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"];
-                    venta.Usuario.Activo = (bool)datos.Lector["activo_usuario"];
+                        //Usuaurio
+                        venta.Usuario = new Usuario();
+                        venta.Usuario.Id = (int)datos.Lector["id_usuario"];
+                        venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"];
+                        venta.Usuario.Activo = (bool)datos.Lector["activo_usuario"];
 
-                    return venta;
+                        return venta;
+
+                    }
+
+                    return null;
 
                 }
-
-                return null;
-
-            }
-            catch(Exception ex)
-            {
-
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();    
-            }
-        }
-
-        public void Agregar(Venta nuevaVenta)
-        {
-           
-            AccesoDatos datos = new AccesoDatos();
-            try
-            {
-                datos.setearProcedimiento("storedAltaVenta");
-                datos.setearParametro("@id_cliente", nuevaVenta.Cliente.Id);
-                datos.setearParametro("@fecha", nuevaVenta.Fecha);
-                datos.setearParametro("@id_usuario ", nuevaVenta.Usuario.Id);
-
-                int idVentaGenerado = 0;
-                object resultado = datos.ejecutarEscalar();
-
-                if (resultado != null && resultado != DBNull.Value)
+                catch(Exception ex)
                 {
-                    idVentaGenerado = Convert.ToInt32(resultado);
-                }              
 
-              foreach(DetalleVenta detalle in nuevaVenta.Detalle){
-                    datos.setearProcedimiento("storedAltaVentaDetalle");
-                    datos.setearParametro("@id_venta", idVentaGenerado);
-                    datos.setearParametro("@id_producto",detalle.Id);
-                    datos.setearParametro("@cantidad", detalle.Cantidad);
-                    datos.setearParametro("@precio_unitario", detalle.PrecioUnitario);
-                    datos.setearParametro("@subtotal", detalle.Subtotal);
-
-                    datos.ejecutarAccion();
+                    throw ex;
                 }
-
+                finally
+                {
+                    datos.cerrarConexion();    
+                }
             }
-            catch (Exception ex)
+
+            public void Agregar(Venta nuevaVenta)
             {
-                throw ex;
+                AccesoDatos datos = new AccesoDatos();
+                try
+                {
+                    datos.setearProcedimiento("storedAltaVenta");
+                    datos.setearParametro("@id_cliente", nuevaVenta.Cliente.Id);
+                    datos.setearParametro("@fecha", nuevaVenta.Fecha);
+                    datos.setearParametro("@id_usuario", nuevaVenta.Usuario.Id);
+
+                    object resultado = datos.ejecutarEscalar();
+                    int idVentaGenerado = resultado != null ? Convert.ToInt32(resultado) : 0;
+
+                    foreach (DetalleVenta detalle in nuevaVenta.Detalle)
+                    {
+                   
+                        datos = new AccesoDatos(); 
+                        datos.setearProcedimiento("storedAltaVentaDetalle");
+                        datos.setearParametro("@id_venta", idVentaGenerado);
+                        datos.setearParametro("@id_producto", detalle.Producto.Id);
+                        datos.setearParametro("@cantidad", detalle.Cantidad);
+                        datos.setearParametro("@precio_unitario", detalle.PrecioUnitario);
+                        datos.ejecutarAccion();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
             }
-            finally
+
+            public void Modificar(Venta nuevaVenta)
             {
-                datos.cerrarConexion();
-            }
-        }
+                AccesoDatos datos = new AccesoDatos();
+                try
+                {
+                    datos.setearProcedimiento("storedModificarVenta");
 
-        public void Modificar(Venta venta)
-        {
-            AccesoDatos datos = new AccesoDatos();
-            try
+                    datos.setearParametro("@id_venta", nuevaVenta.Id);
+                    datos.setearParametro("@id_cliente", nuevaVenta.Cliente.Id);
+                    datos.setearParametro("@fecha", nuevaVenta.Fecha);
+                    datos.setearParametro("@id_usuario", nuevaVenta.Usuario.Id);
+
+
+                    object resultado = datos.ejecutarEscalar();
+                    int idVentaGenerado = resultado != null ? Convert.ToInt32(resultado) : 0;
+
+                    foreach (DetalleVenta detalle in nuevaVenta.Detalle)
+                    {
+                   
+                        datos = new AccesoDatos();
+                        datos.setearProcedimiento("storedModificarVentaDetalle");
+                        datos.setearParametro("@id_venta", idVentaGenerado);
+                        datos.setearParametro("@id_producto", detalle.Producto.Id);
+                        datos.setearParametro("@cantidad", detalle.Cantidad);
+                        datos.setearParametro("@precio_unitario", detalle.PrecioUnitario);
+                        datos.ejecutarAccion();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
+            }
+
+
+           public List<DetalleVenta> GetDetalle(int id)
             {
-                datos.setearProcedimiento("storedModificarVentaConUnDetalle");
 
+                AccesoDatos datos = new AccesoDatos();
+                List<DetalleVenta> ListaVentas = new List<DetalleVenta>();
 
-                string jsonDetalles = JsonConvert.SerializeObject(venta.Detalle.Select(d => new {
-                    ProductoId = d.Producto.Id,
-                    Cantidad = d.Cantidad,
-                    PrecioUnitario = d.PrecioUnitario
-                }));
+                try {
 
-                datos.setearParametro("@id_venta", venta.Id);
-                datos.setearParametro("@id_cliente", venta.Cliente.Id);
-                datos.setearParametro("@fecha", venta.Fecha);
+                    datos.setearProcedimiento("storeDetalleVenta");
+                    datos.setearParametro("@id_venta", id);
+                    datos.ejecutarLectura();
 
+                    while (datos.Lector.Read())
+                    {
+                        DetalleVenta detalle = new DetalleVenta();
 
-                datos.setearParametro("@DetallesJSO", jsonDetalles);
+                        detalle.Id = (int)datos.Lector["id_detalle"];
+                        detalle.Cantidad = (int)datos.Lector["cantidad"];
+                        detalle.Subtotal = (float)datos.Lector["subtotal"];
 
+                        Producto nuevoProducto = new Producto();
 
-                datos.ejecutarAccion();
+                        nuevoProducto.Id = (int)datos.Lector["id_producto"];
+                        nuevoProducto.Precio = (decimal)datos.Lector["precio"];
+                        nuevoProducto.Nombre = (string)datos.Lector["nombre"];
 
+                        detalle.Producto = nuevoProducto;
+
+                        ListaVentas.Add(detalle);   
+                    }
+
+                    return ListaVentas;
+            
+                }catch(Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
-
     
+        }
     }
-}

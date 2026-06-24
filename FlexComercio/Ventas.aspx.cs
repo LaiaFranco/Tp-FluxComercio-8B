@@ -24,6 +24,7 @@ namespace FlexComercio
 
                 if(ListaVentas == null) {
                     ListaVentas = new List<Venta>();
+                    
                 }
             }
         }
@@ -31,6 +32,23 @@ namespace FlexComercio
         protected void btnPuntoVenta_Click(object sender, EventArgs e)
         {
             Response.Redirect("FormularioVenta.aspx");
+        }
+
+        protected void Unnamed_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            string id = btn.CommandArgument;
+
+            if (!string.IsNullOrEmpty(id) || id != null)
+            {
+                Session["idVenta"] = id;
+                Response.Redirect("FormularioVenta.aspx");
+            }
+            else
+            {
+                // Manejar error: mostrar mensaje o redirigir
+                Response.Redirect("Ventas.aspx");
+            }
         }
     }
 }

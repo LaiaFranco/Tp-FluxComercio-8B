@@ -82,8 +82,10 @@
     <Content Include="FormularioCliente.aspx" />
     <Content Include="FormularioUsuario.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Login.aspx" />
     <Content Include="logoFLUX.png" />
     <Content Include="MarcaYCategoria.aspx" />
+    <Content Include="fondoFLUX.png" />
     <Content Include="Producto.aspx" />
     <Content Include="Proveedor.aspx" />
     <Content Include="Reporte.aspx" />
@@ -126,6 +128,13 @@
     </Compile>
     <Compile Include="Cliente.aspx.designer.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vendedor.Master.cs">
       <DependentUpon>Vendedor.Master</DependentUpon>

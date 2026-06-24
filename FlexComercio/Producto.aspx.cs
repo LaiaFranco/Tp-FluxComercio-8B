@@ -31,7 +31,13 @@ namespace FlexComercio
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
-
+            Button btn = (Button)sender;
+            int indice = int.Parse(btn.CommandArgument);
+            List<Dominio.Producto> listaProducto = (List<Dominio.Producto>)Session["listaProductos"];
+            
+            Dominio.Producto producto = listaProducto[indice];
+            Session["productoSeleccionado"] = producto;
+            Response.Redirect("");
         }
 
         protected void btnModificar_Click(object sender, EventArgs e)

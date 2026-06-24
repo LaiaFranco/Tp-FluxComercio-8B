@@ -13,5 +13,15 @@ namespace FlexComercio
         {
 
         }
+
+        protected void btnBuscarCliente_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnBuscarCliente_Click1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -92,9 +92,11 @@
 
             <div class="row g-4">
 
-                <!-- Nueva Venta -->
-                <div class="col-lg-4">
-                    <div class="card h-100 border rounded-4">
+              
+                            <!-- Nueva Venta -->
+            <div class="col-lg-4">
+                <a href="Ventas.aspx" class="text-decoration-none text-dark">
+                    <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 
                             <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
@@ -111,11 +113,13 @@
 
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
 
-                <!-- Productos -->
-                <div class="col-lg-4">
-                    <div class="card h-100 border rounded-4">
+            <!-- Productos -->
+            <div class="col-lg-4">
+                <a href="Producto.aspx" class="text-decoration-none text-dark">
+                    <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 
                             <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
@@ -132,11 +136,13 @@
 
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
 
-                <!-- Compras -->
-                <div class="col-lg-4">
-                    <div class="card h-100 border rounded-4">
+            <!-- Compras -->
+            <div class="col-lg-4">
+                <a href="Compras.aspx" class="text-decoration-none text-dark">
+                    <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 
                             <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
@@ -153,7 +159,8 @@
 
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
 
             </div>
 

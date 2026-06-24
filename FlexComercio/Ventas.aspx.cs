@@ -13,18 +13,19 @@ namespace FlexComercio
     public partial class Ventas : System.Web.UI.Page
     {
         private VentasNegocio VentaNegocio = new VentasNegocio();
-        
+
         public List<Venta> ListaVentas { get; set; }
-        
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 ListaVentas = VentaNegocio.Listar();
 
-                if(ListaVentas == null) {
+                if (ListaVentas == null)
+                {
                     ListaVentas = new List<Venta>();
-                    
+
                 }
             }
         }

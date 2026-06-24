@@ -77,10 +77,9 @@ namespace Negocio
 
             try
             {
-                Datos.setearProcedimiento("storedModificarMarca");
+                Datos.setearProcedimiento("storedCambiarEstadoMarca");
                 Datos.setearParametro("@id_marca", id);
                 Datos.setearParametro("@activo", activo);
-
                 Datos.ejecutarAccion();
                 return true; 
             }
@@ -106,7 +105,6 @@ namespace Negocio
                 Datos.setearParametro("@nombre", marca.Nombre);
                 Datos.setearParametro("@descripcion", marca.Descripcion);
                 Datos.setearParametro("@activo", marca.Activo);
-
                 Datos.ejecutarAccion();
                 return true; 
             }
@@ -117,6 +115,36 @@ namespace Negocio
             finally
             {
                 Datos.cerrarConexion();
+            }
+        }
+
+        public bool ExisteMarca(string nombre)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                            SELECT COUNT(*)
+                            FROM MARCAS
+                            WHERE UPPER(Nombre) = UPPER(@nombre)");
+
+                datos.setearParametro("@nombre", nombre.Trim());
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                    return Convert.ToInt32(datos.Lector[0]) > 0;
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex; 
+            }
+            finally
+            {
+                datos.cerrarConexion();
             }
         }
     }

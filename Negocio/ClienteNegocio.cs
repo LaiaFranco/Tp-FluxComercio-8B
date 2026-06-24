@@ -64,6 +64,8 @@ namespace Negocio
                 Datos.setearParametro("@direccion", nuevoCliente.Direccion);
                 Datos.setearParametro("@activo", nuevoCliente.Activo);
 
+                Datos.ejecutarAccion();
+
             }
             catch (Exception ex)
             {
@@ -82,8 +84,10 @@ namespace Negocio
 
             try
             {
-                Datos.setearProcedimiento("storedModificarCliente");
-                Datos.setearParametro("@idVenta", id);
+
+                string query = "UPDATE CLIENTES SET activo = @activo WHERE id_cliente = @id";
+                Datos.setearConsulta(query);
+                Datos.setearParametro("@id", id);
                 Datos.setearParametro("@activo", false);
                 Datos.ejecutarAccion();
             }
@@ -94,7 +98,7 @@ namespace Negocio
             }
             finally
             {
-                Datos.cerrarConexion(); 
+                Datos.cerrarConexion();
             }
         }
         public void Modificar(Cliente cliente)
@@ -104,11 +108,14 @@ namespace Negocio
             try
             {
                 Datos.setearProcedimiento("storedModificarCliente");
+                Datos.setearParametro("@id_cliente", cliente.Id);
                 Datos.setearParametro("@nombre", cliente.Nombre);
                 Datos.setearParametro("@apellido", cliente.Apellido);
                 Datos.setearParametro("@email", cliente.Email);
                 Datos.setearParametro("@telefono", cliente.Telefono);
                 Datos.setearParametro("@direccion", cliente.Direccion);
+
+                Datos.ejecutarAccion();
             }
             catch (Exception ex)
             {
@@ -117,9 +124,53 @@ namespace Negocio
             }
             finally
             {
-                Datos.cerrarConexion(); 
+                Datos.cerrarConexion();
 
+            }
+
+
+        }
+
+        public Cliente GetCliente(int id)
+        {
+            AccesoDatos Datos = new AccesoDatos();
+            Cliente cliente = null;
+
+            try
+            {
+                string query = "SELECT id_cliente, dni, nombre, apellido, email, telefono, direccion, activo FROM CLIENTES WHERE id_cliente = @id";
+                Datos.setearConsulta(query);
+                Datos.setearParametro("@id", id);
+                Datos.ejecutarLectura();
+
+                if (Datos.Lector.Read())
+                {
+                    cliente = new Cliente();
+                    cliente.Id = (int)Datos.Lector["id_cliente"];
+                    cliente.Dni = (string)Datos.Lector["dni"];
+                    cliente.Nombre = (string)Datos.Lector["nombre"];
+                    cliente.Apellido = (string)Datos.Lector["apellido"];
+                    cliente.Email = (string)Datos.Lector["email"];
+                    cliente.Telefono = (string)Datos.Lector["telefono"];
+                    cliente.Direccion = (string)Datos.Lector["direccion"];
+                    cliente.Activo = (bool)Datos.Lector["activo"];
+                }
+
+                return cliente;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Datos.cerrarConexion();
             }
         }
     }
+
 }
+
+   
+ 
+

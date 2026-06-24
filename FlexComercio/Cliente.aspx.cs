@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dominio;
+using Negocio; 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Negocio; 
 
 namespace FlexComercio
 {
@@ -14,12 +15,57 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
-                ClienteNegocio negocio = new ClienteNegocio();
-                Session.Add("listaClientes",negocio.Listar());
-                dgvClientes.DataSource = Session["listaClientes"];
-                dgvClientes.DataBind();
+                CargarClientes();
             }
 
         }
+
+        private void CargarClientes()
+        {
+            ClienteNegocio negocio = new ClienteNegocio();
+            List<Dominio.Cliente> listaCompleta = negocio.Listar();
+            List<Dominio.Cliente> listaActivos = listaCompleta.Where(c => c.Activo).ToList();
+            Session.Add("listaClientes", listaActivos);
+            dgvClientes.DataSource = Session["listaClientes"];
+            dgvClientes.DataBind();
+        }
+
+        protected void btnNuevoCliente_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("FormularioCliente.aspx");
+        }
+
+        protected void btnConfirmarEliminar_Click(object sender, EventArgs e)
+        {
+
+            string valorId = hfClienteId.Value?.Trim();
+            ClienteNegocio negocio = new ClienteNegocio();
+            negocio.Eliminar(int.Parse(valorId));
+            
+            CargarClientes();
+        
+        }
+
+
+        protected void dgvClientes_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Eliminar")
+            {
+                
+                hfClienteId.Value = e.CommandArgument.ToString();
+
+             
+                ClientScript.RegisterStartupScript(this.GetType(), "abrirModal", "abrirModal();", true);
+            }
+        }
+
+        protected void btnModificar_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int id = (int)dgvClientes.DataKeys[row.RowIndex].Value;
+            Response.Redirect("FormularioCliente.aspx?cliente=" + id);
+        }
     }
-}
+
+    }

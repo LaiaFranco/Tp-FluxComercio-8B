@@ -35,26 +35,28 @@ namespace FlexComercio
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            CargarClientes();
-            CargarProductos();
-            CargarDetallesGvProductos();
-
-            if (Session["idVenta"] != null)
+            if (!IsPostBack)  
             {
-                int idVenta;
-                if (int.TryParse(Session["idVenta"].ToString(), out idVenta))
+                CargarClientes();
+                CargarProductos();
+                CargarDetallesGvProductos();
+
+                if (Session["idVenta"] != null)
                 {
-                    CargarCampos(idVenta);
-                    Session.Remove("idVenta");
-                }
-                else
-                {
-                  
-                    Session.Remove("idVenta");
+                    int idVenta;
+                    if (int.TryParse(Session["idVenta"].ToString(), out idVenta))
+                    {
+                        CargarCampos(idVenta);
+                        Session.Remove("idVenta");
+                    }
+                    else
+                    {
+                        Session.Remove("idVenta");
+                    }
                 }
             }
         }
-        
+
 
         private void CargarClientes()
         {
@@ -72,7 +74,7 @@ namespace FlexComercio
 
         private void CargarProductos()
         {
-            List<Dominio.Producto> productos = ProductoDatos.Listar().Where(c => c.Activo &&  c.StockActual > 0).ToList();
+            List<Dominio.Producto> productos = ProductoDatos.Listar().Where(c => c.Activo && c.StockActual > 0).ToList();
             Session["Productos"] = productos;
             gvProductos.DataSource = productos;
             gvProductos.DataBind();

@@ -21,5 +21,41 @@ namespace FlexComercio
                 dgvProveedores.DataBind();
             }
         }
+        protected void dgvProveedores_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                int index = Convert.ToInt32(e.CommandArgument);
+                int id = Convert.ToInt32(dgvProveedores.DataKeys[index].Value);
+
+                if (e.CommandName == "EliminarProveedor")
+                {
+                    Session["idProveedorEliminar"] = id;
+                    Response.Redirect("EliminarProveedor.aspx", false);
+                }
+
+                if (e.CommandName == "ModificarProveedor")
+                {
+                    Session.Add("idProveedorModificar", id);
+                    Response.Redirect("AgregarProveedor.aspx", false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex.ToString());
+                Response.Redirect("Error.aspx");
+            }
+        }
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnEditar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
+
 }

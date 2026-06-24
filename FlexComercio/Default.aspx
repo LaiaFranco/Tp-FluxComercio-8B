@@ -92,9 +92,11 @@
 
             <div class="row g-4">
 
-                <!-- Nueva Venta -->
-                <div class="col-lg-4">
-                    <div class="card h-100 border rounded-4">
+              
+                            <!-- Nueva Venta -->
+            <div class="col-lg-4">
+                <a href="Ventas.aspx" class="text-decoration-none text-dark">
+                    <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 
                             <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
@@ -111,11 +113,13 @@
 
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
 
-                <!-- Productos -->
-                <div class="col-lg-4">
-                    <div class="card h-100 border rounded-4">
+            <!-- Productos -->
+            <div class="col-lg-4">
+                <a href="Producto.aspx" class="text-decoration-none text-dark">
+                    <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 
                             <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
@@ -132,11 +136,13 @@
 
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
 
-                <!-- Compras -->
-                <div class="col-lg-4">
-                    <div class="card h-100 border rounded-4">
+            <!-- Compras -->
+            <div class="col-lg-4">
+                <a href="Compras.aspx" class="text-decoration-none text-dark">
+                    <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 
                             <div class="bg-light rounded-4 d-inline-flex p-3 mb-3">
@@ -153,7 +159,8 @@
 
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
 
             </div>
 
@@ -161,5 +168,59 @@
     </div>
 
 </div>
+    <style>
+    /* Animación de todas las cards */
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+    }
+
+    /* Iconos de resumen */
+    .dashboard-icon {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+        background: linear-gradient(135deg, #e0e7ff, #f0f4ff);
+    }
+
+    .dashboard-icon i {
+        font-size: 2.2rem;
+        color: #0d6efd;
+    }
+
+    /* Números principales */
+    .dashboard-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    /* Cards de accesos rápidos */
+    .quick-access {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .quick-access:hover {
+        transform: translateY(-5px);
+        border-color: #0d6efd !important;
+    }
+
+    .quick-access .dashboard-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .quick-access h3 {
+        font-size: 1.4rem;
+    }
+</style>
 
 </asp:Content>

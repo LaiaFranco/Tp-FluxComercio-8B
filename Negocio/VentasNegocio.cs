@@ -94,7 +94,7 @@
                         Producto producto = new Producto();
                         producto.Id = (int)datos.Lector["id_producto"];
                         producto.Nombre = (string)datos.Lector["nombre_producto"];
-                        producto.Precio = (decimal)datos.Lector["precio_actual"];
+                        producto.Precio = (float)datos.Lector["precio_actual"];
                         producto.StockActual = (int)datos.Lector["stock_actual"];
 
                         // Categoría
@@ -277,7 +277,7 @@
                         Producto nuevoProducto = new Producto();
 
                         nuevoProducto.Id = (int)datos.Lector["id_producto"];
-                        nuevoProducto.Precio = (decimal)datos.Lector["precio"];
+                        nuevoProducto.Precio = (float)datos.Lector["precio"];
                         nuevoProducto.Nombre = (string)datos.Lector["nombre"];
 
                         detalle.Producto = nuevoProducto;

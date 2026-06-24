@@ -48,25 +48,23 @@ namespace Negocio
         }
 
 
-        public void Agregar(Categoria Categoria)
+        public bool Agregar(Categoria Categoria)
         {
             AccesoDatos Datos = new AccesoDatos();
 
             try
             {
                 Datos.setearProcedimiento("storedAltaCategoria");
-                Datos.ejecutarLectura();
-
+                
                 Datos.setearParametro("@nombre",Categoria.Nombre);
                 Datos.setearParametro("@descripcion",Categoria.Descripcion);
                 Datos.setearParametro("@activo",Categoria.Activo);
 
-                Datos.ejecutarAccion(); 
-
+                Datos.ejecutarAccion();
+                return true; 
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally
@@ -75,18 +73,17 @@ namespace Negocio
             }
         }
 
-        public void Eliminar(int id, bool activo = false)
+        public bool Eliminar(int id, bool activo = false)
         {
             AccesoDatos Datos = new AccesoDatos();
 
             try
             {
-                Datos.setearProcedimiento("storedModificarCategoria");
-                Datos.setearParametro("id_categoria",id);
-                Datos.setearParametro("activo", activo);
-
-                Datos.ejecutarAccion(); 
-
+                Datos.setearProcedimiento("storedCambiarEstadoCategoria");
+                Datos.setearParametro("@id_categoria",id);
+                Datos.setearParametro("@activo", activo);
+                Datos.ejecutarAccion();
+                return true;
             }
             catch (Exception ex)
             {
@@ -99,7 +96,7 @@ namespace Negocio
             }
         }
 
-        public void Modificar(Categoria categoria)
+        public bool Modificar(Categoria categoria)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -108,8 +105,10 @@ namespace Negocio
                 Datos.setearProcedimiento("storedModificarCategoria");
                 Datos.setearParametro("@id_categoria",categoria.Id);
                 Datos.setearParametro("@nombre",categoria.Nombre);
-                Datos.setearParametro("@descipcion",categoria.Descripcion);
-                Datos.ejecutarAccion(); 
+                Datos.setearParametro("@descripcion", categoria.Descripcion);
+                Datos.setearParametro("@activo", true);
+                Datos.ejecutarAccion();
+                return true; 
             }
             catch (Exception ex)
             {
@@ -121,6 +120,36 @@ namespace Negocio
             }
 
         }
-        
+
+        public bool ExisteMarca(string nombre)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                            SELECT COUNT(*)
+                            FROM CATEGORIAS
+                            WHERE UPPER(Nombre) = UPPER(@nombre)");
+
+                datos.setearParametro("@nombre", nombre.Trim());
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                    return Convert.ToInt32(datos.Lector[0]) > 0;
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

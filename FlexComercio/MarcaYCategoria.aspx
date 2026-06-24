@@ -4,26 +4,25 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+  <div class="container-fluid py-4">
 
-<div class="container-fluid py-4">
-
-    <!-- TITULO -->
+    <!-- TITULO GENERAL -->
     <div class="mb-4">
+
         <h1 class="fw-bold mb-1">Marcas y Categorías</h1>
 
         <p class="text-secondary fs-4 mb-0">
             Gestión de marcas y categorías de productos
         </p>
+
     </div>
 
-    <!-- ========================= -->
-    <!-- MARCAS -->
-    <!-- ========================= -->
+    <!-- ================= MARCAS ================= -->
+    <div class="card shadow-sm border-0 rounded-4 mb-5">
 
-    <div class="card border-0 shadow-sm rounded-4 mb-5">
-
-        <!-- HEADER -->
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-4 px-4">
+        <!-- HEADER MARCAS (BOTÓN ALINEADO) -->
+        
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-4 px-4">
 
             <div class="d-flex align-items-center">
 
@@ -39,20 +38,19 @@
                 ID="btnNuevaMarca"
                 runat="server"
                 Text="Nueva Marca"
-                CssClass="btn btn-dark rounded-4 px-4 py-2"
-                OnClick="btnNuevaMarca_Click"/>
+                CssClass="btn btn-dark btn-lg px-4 py-3 rounded-4"
+                OnClick="btnNuevaMarca_Click" />
 
         </div>
 
-        <!-- GRIDVIEW MARCAS -->
-        <div class="p-4">
+        <!-- GRID MARCAS -->
+        <div class="container-fluid mt-4">
 
             <asp:GridView ID="dgvMarcas"
                 runat="server"
                 AutoGenerateColumns="false"
-                CssClass="table border-0"
-                DataKeyNames="Id" 
-                OnSelectedIndexChanged="dgvMarcas_SelectedIndexChanged">
+                CssClass="table"
+                DataKeyNames="Id">
 
                 <Columns>
 
@@ -60,62 +58,69 @@
 
                         <ItemTemplate>
 
-                            <div class="card shadow-sm border-0 rounded-4 mb-3 p-4">
+                            <div class="card marca-card rounded-4 mb-4 p-3">
 
-                                <div class="row align-items-center">
+                                <div class="row g-0 align-items-center">
 
-                                    <!-- ICONO -->
-                                    <div class="col-md-2 text-center">
+                                    <div class="col-md-2 col-lg-1 text-center">
 
-                                        <div class="bg-light rounded-4 p-4">
+                                        <div class="rounded-4 p-4 d-inline-block"
+                                             style="background: linear-gradient(135deg, #e0f7fa, #e3f2fd);">
 
-                                            <i class="bi bi-tag fs-1"></i>
+                                            <i class="bi bi-tag fs-1 text-primary"></i>
 
                                         </div>
 
                                     </div>
 
-                                    <!-- DATOS -->
-                                    <div class="col-md-7">
+                                    <div class="col-md-7 col-lg-8">
 
-                                        <h3 class="fw-bold mb-2">
+                                        <h3 class="fw-bold mb-1 text-dark">
                                             <%# Eval("Nombre") %>
                                         </h3>
 
-                                        <p class="mb-2 text-secondary">
-                                            <%# Eval("Descripcion") %>
-                                        </p>
+                                        <div class="row g-2 mt-2">
 
-                                        <p class="mb-0">
+                                            <div class="col-12">
+                                                <span class="badge bg-light text-dark p-2 w-100 text-start">
+                                                    <i class="bi bi-card-text me-1"></i>
+                                                    <strong>Descripción:</strong>
+                                                    <%# Eval("Descripcion") %>
+                                                </span>
+                                            </div>
 
-                                            <strong>Estado:</strong>
+                                            <div class="col-12">
+                                                <span class="badge bg-light text-dark p-2 w-100 text-start">
+                                                    <i class="bi bi-check-circle me-1"></i>
+                                                    <strong>Estado:</strong>
+                                                    <%# (bool)Eval("Activo") ? "Activo" : "Inactivo" %>
+                                                </span>
+                                            </div>
 
-                                            <%# (bool)Eval("Activo") ? "Activo" : "Inactivo" %>
-
-                                        </p>
+                                        </div>
 
                                     </div>
 
-                                    <!-- BOTONES -->
-                                    <div class="col-md-3 text-end">
+                                    <div class="col-md-3 col-lg-3 text-end">
 
-                                        <asp:Button
-                                            ID="btnEliminarMarca"
-                                            runat="server"
-                                            Text="Eliminar"
-                                            CssClass="btn btn-outline-danger rounded-pill me-2"
-                                            CommandArgument='<%# Container.DataItemIndex %>'
-                                            OnClick="btnEliminarMarca_Click"
-                                            />
+                                        <div class="d-flex justify-content-end gap-2">
 
-                                        <asp:Button
-                                            ID="btnModificarMarca"
-                                            runat="server"
-                                            Text="Modificar"
-                                            CssClass="btn btn-outline-warning rounded-pill" 
-                                            CommandArgument='<%# Container.DataItemIndex %>'
-                                            OnClick ="btnModificarMarca_Click"
-                                            />
+                                            <asp:Button ID="btnEliminarMarca"
+                                                runat="server"
+                                                Text="Eliminar"
+                                                CssClass="btn btn-outline-danger rounded-pill px-4 py-2"
+                                                CommandArgument='<%# Container.DataItemIndex %>'
+                                                OnClick="btnEliminarMarca_Click" />
+
+                                            <asp:Button ID="btnModificarMarca"
+                                                runat="server"
+                                                Text="Editar"
+                                                CssClass="btn btn-outline-warning rounded-pill px-4 py-2"
+                                                CommandArgument='<%# Container.DataItemIndex %>'
+                                                OnClick="btnModificarMarca_Click" />
+
+                                        </div>
+
                                     </div>
 
                                 </div>
@@ -134,14 +139,11 @@
 
     </div>
 
-    <!-- ========================= -->
-    <!-- CATEGORIAS -->
-    <!-- ========================= -->
-
-    <div class="card border-0 shadow-sm rounded-4">
-
-        <!-- HEADER -->
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-4 px-4">
+    <!-- ================= CATEGORÍAS ================= -->
+   <div class="card shadow-sm border-0 rounded-4 mb-5">
+        
+        <!-- HEADER CATEGORÍAS (BOTÓN ALINEADO) -->
+                 <div class="card-header bg-white d-flex justify-content-between align-items-center py-4 px-4">
 
             <div class="d-flex align-items-center">
 
@@ -157,18 +159,18 @@
                 ID="btnNuevaCategoria"
                 runat="server"
                 Text="Nueva Categoría"
-                CssClass="btn btn-dark rounded-4 px-4 py-2"
-                OnClick="btnNuevaCategoria_Click"/>
+                CssClass="btn btn-dark btn-lg px-4 py-3 rounded-4"
+                OnClick="btnNuevaCategoria_Click" />
 
         </div>
 
-        <!-- GRIDVIEW CATEGORIAS -->
-        <div class="p-4">
+        <!-- GRID CATEGORÍAS -->
+        <div class="container-fluid mt-4">
 
             <asp:GridView ID="dgvCategorias"
                 runat="server"
                 AutoGenerateColumns="false"
-                CssClass="table border-0"
+                CssClass="table"
                 DataKeyNames="Id">
 
                 <Columns>
@@ -177,61 +179,68 @@
 
                         <ItemTemplate>
 
-                            <div class="card shadow-sm border-0 rounded-4 mb-3 p-4">
+                            <div class="card categoria-card rounded-4 mb-4 p-3">
 
-                                <div class="row align-items-center">
+                                <div class="row g-0 align-items-center">
 
-                                    <!-- ICONO -->
-                                    <div class="col-md-2 text-center">
+                                    <div class="col-md-2 col-lg-1 text-center">
 
-                                        <div class="bg-light rounded-4 p-4">
+                                        <div class="rounded-4 p-4 d-inline-block"
+                                             style="background: linear-gradient(135deg, #fff3e0, #ffe0b2);">
 
-                                            <i class="bi bi-folder fs-1"></i>
+                                            <i class="bi bi-folder fs-1 text-warning"></i>
 
                                         </div>
 
                                     </div>
 
-                                    <!-- DATOS -->
-                                    <div class="col-md-7">
+                                    <div class="col-md-7 col-lg-8">
 
-                                        <h3 class="fw-bold mb-2">
+                                        <h3 class="fw-bold mb-1 text-dark">
                                             <%# Eval("Nombre") %>
                                         </h3>
 
-                                        <p class="mb-2 text-secondary">
-                                            <%# Eval("Descripcion") %>
-                                        </p>
+                                        <div class="row g-2 mt-2">
 
-                                        <p class="mb-0">
+                                            <div class="col-12">
+                                                <span class="badge bg-light text-dark p-2 w-100 text-start">
+                                                    <i class="bi bi-card-text me-1"></i>
+                                                    <strong>Descripción:</strong>
+                                                    <%# Eval("Descripcion") %>
+                                                </span>
+                                            </div>
 
-                                            <strong>Estado:</strong>
+                                            <div class="col-12">
+                                                <span class="badge bg-light text-dark p-2 w-100 text-start">
+                                                    <i class="bi bi-check-circle me-1"></i>
+                                                    <strong>Estado:</strong>
+                                                    <%# (bool)Eval("Activo") ? "Activo" : "Inactivo" %>
+                                                </span>
+                                            </div>
 
-                                            <%# (bool)Eval("Activo") ? "Activo" : "Inactivo" %>
-
-                                        </p>
+                                        </div>
 
                                     </div>
 
-                                    <!-- BOTONES -->
-                                    <div class="col-md-3 text-end">
+                                    <div class="col-md-3 col-lg-3 text-end">
 
-                                        <asp:Button
-                                            ID="btnEliminarCategoria"
-                                            runat="server"
-                                            Text="Eliminar"
-                                            CssClass="btn btn-outline-danger rounded-pill me-2"
-                                            CommandArgument='<%# Container.DataItemIndex %>'
-                                            OnClick="btnEliminarCategoria_Click1"
-                                            />
+                                        <div class="d-flex justify-content-end gap-2">
 
-                                        <asp:Button
-                                            ID="btnModificarCategoria"
-                                            runat="server"
-                                            Text="Modificar"
-                                            CssClass="btn btn-outline-warning rounded-pill" 
-                                            CommandArgument='<%# Container.DataItemIndex %>'
-                                            OnClick="btnModificarCategoria_Click"/>
+                                            <asp:Button ID="btnEliminarCategoria"
+                                                runat="server"
+                                                Text="Eliminar"
+                                                CssClass="btn btn-outline-danger rounded-pill px-4 py-2"
+                                                CommandArgument='<%# Container.DataItemIndex %>'
+                                                OnClick="btnEliminarCategoria_Click1" />
+
+                                            <asp:Button ID="btnModificarCategoria"
+                                                runat="server"
+                                                Text="Editar"
+                                                CssClass="btn btn-outline-warning rounded-pill px-4 py-2"
+                                                CommandArgument='<%# Container.DataItemIndex %>'
+                                                OnClick="btnModificarCategoria_Click" />
+
+                                        </div>
 
                                     </div>
 
@@ -251,6 +260,37 @@
 
     </div>
 
-</div>
+</div>  
+
+    <style>
+    /* Sombra más suave al hacer hover */
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+    }
+    /* Badges con mejor legibilidad */
+    .badge.bg-light {
+        font-weight: 400;
+        font-size: 0.95rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem !important;
+    }
+    /* Iconos dentro de badges */
+    .badge i {
+        font-size: 1.1rem;
+    }
+    /* Botones más atractivos */
+    .btn-outline-danger, .btn-outline-warning {
+        border-width: 2px;
+        font-weight: 600;
+    }
+    .btn-outline-danger:hover, .btn-outline-warning:hover {
+        transform: scale(1.02);
+        transition: all 0.15s ease;
+    }
+</style>
 
 </asp:Content>

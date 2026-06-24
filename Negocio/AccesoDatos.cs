@@ -96,18 +96,18 @@ namespace negocio
             conexion.Close();
         } 
 
-        public object ejecutarEscalar()
-        {
-            comando.Connection = conexion;
-            try
+            public object ejecutarEscalar()
             {
-                conexion.Open();
-                return comando.ExecuteScalar();
+                comando.Connection = conexion;
+                try
+                {
+                    conexion.Open();
+                    return comando.ExecuteScalar();
 
-            }catch(Exception ex)
-            {
-                throw ex;
+                }catch(Exception ex)
+                {
+                    throw ex;
+                }
             }
-        }
     }
 }

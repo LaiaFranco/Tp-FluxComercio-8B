@@ -81,6 +81,8 @@
     <Content Include="EliminarProveedor.aspx" />
     <Content Include="FormularioCliente.aspx" />
     <Content Include="FormularioUsuario.aspx" />
+    <Content Include="FormularioVenta.aspx" />
+    <Content Include="FormularioVentas.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
     <Content Include="logoFLUX.png" />
@@ -128,6 +130,20 @@
     </Compile>
     <Compile Include="Cliente.aspx.designer.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioVenta.aspx.cs">
+      <DependentUpon>FormularioVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioVenta.aspx.designer.cs">
+      <DependentUpon>FormularioVenta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioVentas.aspx.cs">
+      <DependentUpon>FormularioVentas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioVentas.aspx.designer.cs">
+      <DependentUpon>FormularioVentas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -254,6 +270,7 @@
     </Compile>
     <Compile Include="Ventas.aspx.cs">
       <DependentUpon>Ventas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Ventas.aspx.designer.cs">
       <DependentUpon>Ventas.aspx</DependentUpon>

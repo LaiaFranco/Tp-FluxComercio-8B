@@ -1,21 +1,15 @@
 ﻿using Dominio;
 using Negocio;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.WebSockets;
-using System.Xml.Linq;
-
-
 
 namespace FlexComercio
 {
-    public partial class FormularioVentas : System.Web.UI.Page
+    public partial class FormularioVenta : System.Web.UI.Page
     {
         private ClienteNegocio ClienteDatos = new ClienteNegocio();
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
@@ -41,17 +35,32 @@ namespace FlexComercio
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (!IsPostBack)  
             {
                 CargarClientes();
                 CargarProductos();
                 CargarDetallesGvProductos();
+
+                if (Session["idVenta"] != null)
+                {
+                    int idVenta;
+                    if (int.TryParse(Session["idVenta"].ToString(), out idVenta))
+                    {
+                        CargarCampos(idVenta);
+                        Session.Remove("idVenta");
+                    }
+                    else
+                    {
+                        Session.Remove("idVenta");
+                    }
+                }
             }
         }
 
+
         private void CargarClientes()
         {
-            List<Dominio.Cliente> Clientes = ClienteDatos.Listar();
+            List<Dominio.Cliente> Clientes = ClienteDatos.Listar().Where(c => c.Activo).ToList();
             var listaClientes = Clientes.Select(c => new
             {
                 Id = c.Id,
@@ -65,7 +74,7 @@ namespace FlexComercio
 
         private void CargarProductos()
         {
-            List<Dominio.Producto> productos = ProductoDatos.Listar();
+            List<Dominio.Producto> productos = ProductoDatos.Listar().Where(c => c.Activo && c.StockActual > 0).ToList();
             Session["Productos"] = productos;
             gvProductos.DataSource = productos;
             gvProductos.DataBind();
@@ -104,7 +113,7 @@ namespace FlexComercio
 
             DetalleVenta detalle = new DetalleVenta
             {
-                                                                                                                                                    
+
                 Producto = producto,
                 Cantidad = cantidad,
                 PrecioUnitario = precioUnitario,
@@ -154,43 +163,108 @@ namespace FlexComercio
 
         protected void btnRegistrar_Click(object sender, EventArgs e)
         {
-            Dominio.Venta NuevaVeta = new Venta();
-
-          
-
             if (string.IsNullOrEmpty(ddlCliente.SelectedValue))
             {
-                
+                MostrarMensaje("Seleccione un cliente.", "danger");
                 return;
             }
-
 
             DateTime fecha;
             if (!DateTime.TryParse(txtFecha.Text, out fecha))
             {
-               
+                MostrarMensaje("Fecha inválida.", "danger");
                 return;
             }
 
-           
             if (ListaDetalles == null || ListaDetalles.Count == 0)
             {
-               
+                MostrarMensaje("Agregue al menos un producto.", "warning");
                 return;
             }
 
-            NuevaVeta.Cliente = new Dominio.Cliente();
-            NuevaVeta.Usuario = new Dominio.Usuario();
+            Dominio.Venta venta = new Dominio.Venta();
+            venta.Cliente = new Dominio.Cliente { Id = int.Parse(ddlCliente.SelectedValue) };
+            venta.Usuario = new Dominio.Usuario { Id = 1 };
+            venta.Detalle = ListaDetalles;
+            venta.Fecha = fecha;
 
-            NuevaVeta.Cliente.Id = int.Parse(ddlCliente.SelectedValue);
-            NuevaVeta.Detalle = ListaDetalles;
-            NuevaVeta.Usuario.Id = 1;
-            NuevaVeta.Fecha = Convert.ToDateTime(txtFecha.Text);
+            try
+            {
+                // Verificar si hay un ID en sesión (modo edición)
+                if (Session["idVenta"] != null)
+                {
+                    venta.Id = Convert.ToInt32(Session["idVenta"]);
+                    VentasDatos.Modificar(venta);
+                    Session.Remove("idVenta");
+                    MostrarMensaje("Venta actualizada con éxito.", "success");
+                }
+                else
+                {
+                    VentasDatos.Agregar(venta);
+                    MostrarMensaje("Venta registrada con éxito.", "success");
+                }
 
-           
-            VentasDatos.Agregar(NuevaVeta);
+                LimpiarFormulario();
+            }
+            catch (Exception ex)
+            {
+                MostrarMensaje("Error al procesar la venta: " + ex.Message, "danger");
+            }
+        }
+
+        // ===== NUEVOS MÉTODOS =====
+
+        private void MostrarMensaje(string texto, string tipo)
+        {
+            if (string.IsNullOrEmpty(texto))
+            {
+                lblMensaje.Visible = false;
+                lblMensaje.CssClass = "alert d-none";
+                return;
+            }
+
+            lblMensaje.Visible = true;
+            lblMensaje.Text = texto;
+            lblMensaje.CssClass = $"alert alert-{tipo}";
+        }
+
+        private void LimpiarFormulario()
+        {
+            ddlCliente.SelectedIndex = 0;
+            txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            txtNumFactura.Text = "";
+            ListaDetalles.Clear();
+            Session["listaDetalles"] = ListaDetalles;
+            CargarDetallesGvProductos();
+            lblTotal.Text = "$0.00";
+        }
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
+            MostrarMensaje("", ""); // oculta cualquier mensaje
+        }
 
 
+        private void CargarCampos(int idVenta)
+        {
+            Venta venta = VentasDatos.VerVenta(idVenta);
+
+            if (venta == null) return;
+
+            // Cargar cliente
+            ddlCliente.SelectedValue = venta.Cliente.Id.ToString();
+
+            // Cargar fecha
+            txtFecha.Text = venta.Fecha.ToString("yyyy-MM-dd");
+
+            // Cargar detalles en la sesión
+            List<DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
+            Session["listaDetalles"] = detalles;
+            CargarDetallesGvProductos();
+
+            // Cambiar el texto del botón (opcional, si tienes un botón guardar)
+            // btnRegistrar.Text = "Actualizar Venta";
         }
     }
 }

@@ -35,11 +35,35 @@
                 <div class="mt-3">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0 text-dark">Productos</h5>
-                        <asp:Button ID="btnAgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-sm btn-success" />
+                        <asp:Button ID="btnAgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-sm btn-success" 
+                           OnClientClick="abrirModalProductos(event);" />
                     </div>
 
-                    <!-- Aquí se mostrarán dinámicamente los productos agregados -->
-                    <asp:Panel ID="pnlProductos" runat="server"></asp:Panel>
+                        <!-- Aquí se mostrarán dinámicamente los productos agregados -->
+       <asp:Panel ID="pnlDetalles" runat="server" CssClass="panel-detalles">
+    <h4>Productos agregados</h4>
+    <asp:GridView ID="gvDetalles" runat="server" 
+                  AutoGenerateColumns="False" 
+                  CssClass="table table-striped table-bordered"
+                  EmptyDataText="No hay productos agregados aún.">
+        <Columns>
+            <asp:BoundField DataField="Producto.Nombre" HeaderText="Producto" />
+            <asp:BoundField DataField="PrecioUnitario" HeaderText="Precio Unit." DataFormatString="{0:C2}" HtmlEncode="False" />
+            <asp:BoundField DataField="Cantidad" HeaderText="Cantidad" />
+            <asp:BoundField DataField="Subtotal" HeaderText="Subtotal" DataFormatString="{0:C2}" HtmlEncode="False" />
+            <asp:TemplateField HeaderText="Acciones">
+                <ItemTemplate>
+                    <asp:Button ID="btnEliminar" runat="server" 
+                                CommandArgument='<%# Eval("Id") %>'
+                                CssClass="btn btn-sm btn-danger"
+                                Text="Quitar" 
+                                OnClick="btnEliminar_Click" />
+                </ItemTemplate>
+            </asp:TemplateField>
+        </Columns>
+    </asp:GridView>
+    
+</asp:Panel>
 
                     <!-- Totales -->
                     <div class="row mt-4">
@@ -54,11 +78,74 @@
                     <!-- Botones -->
                     <div class="d-flex justify-content-end mt-4 gap-2">
                         <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" CssClass="btn btn-outline-secondary" />
-                        <asp:Button ID="btnRegistrar" runat="server" Text="Registrar Venta" CssClass="btn btn-success" />
+                        <asp:Button ID="btnRegistrar" runat="server" Text="Registrar Venta" CssClass="btn btn-success"
+                            OnClick="btnRegistrar_Click"/>
                     </div>
                 </div>
             </div>
         </div>
+
+
+    <!-- Modal para seleccionar producto -->
+<div class="modal fade" id="modalProductos" tabindex="-1" aria-labelledby="modalProductosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalProductosLabel">
+                    <i class="bi bi-box-seam me-2"></i>Seleccionar Producto
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Filtro opcional -->
+                <div class="mb-3">
+                    <asp:TextBox ID="txtBuscarProducto" runat="server" CssClass="form-control" placeholder="Buscar producto..." />
+                </div>
+
+                <!-- GridView con los productos -->
+                <asp:GridView ID="gvProductos" runat="server" AutoGenerateColumns="False" 
+                              CssClass="table table-bordered table-hover" 
+                              DataKeyNames="Id">
+                    <Columns>
+                        <asp:BoundField DataField="Id" HeaderText="ID" Visible="false" />
+                        <asp:BoundField DataField="Nombre" HeaderText="Producto" />
+                        <asp:BoundField DataField="Precio" HeaderText="Precio" DataFormatString="{0:C2}" />
+                        <asp:TemplateField HeaderText="Cantidad">
+                            <ItemTemplate>
+                                <asp:TextBox ID="txtCantidad" runat="server" Text="1" Width="60px" CssClass="form-control form-control-sm" TextMode="Number" min="1" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <!-- Botón Agregar por producto -->
+                                <asp:Button ID="btnAgregar" runat="server" 
+                                            CommandName="AgregarProducto" 
+                                            CommandArgument='<%# Eval("Id") %>'
+                                            CssClass="btn btn-sm btn-success" 
+                                            Text="Agregar" 
+                                            OnClick="btnAgregar_Click" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+            </div>
+
+            <div class="modal-footer">
+                <!-- Botón Guardar general -->
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        function abrirModalProductos(e) {
+            e.preventDefault(); // Evita el postback
+            var modal = new bootstrap.Modal(document.getElementById('modalProductos'));
+            modal.show();
+        }
+</script>
 
 
 </asp:Content>

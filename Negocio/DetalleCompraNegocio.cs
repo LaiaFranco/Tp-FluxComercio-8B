@@ -32,7 +32,7 @@ namespace Negocio
                     aux.Producto = new Producto();
                     aux.Producto.Id = (int)datos.Lector["id_producto"];
 
-                    aux.Cantidad = float.Parse(datos.Lector["cantidad"].ToString());
+                    aux.Cantidad = int.Parse(datos.Lector["cantidad"].ToString());
                     aux.PrecioUnitario = float.Parse(datos.Lector["precio_unitario"].ToString());
                     aux.Subtotal = float.Parse(datos.Lector["subtotal"].ToString());
 
@@ -76,7 +76,7 @@ namespace Negocio
                     aux.Producto.Id = (int)datos.Lector["id_producto"];
                     aux.Producto.Nombre = (string)datos.Lector["nombre_producto"];
 
-                    aux.Cantidad = float.Parse(datos.Lector["cantidad"].ToString());
+                    aux.Cantidad = int.Parse(datos.Lector["cantidad"].ToString());
                     aux.PrecioUnitario = float.Parse(datos.Lector["precio_unitario"].ToString());
                     aux.Subtotal = float.Parse(datos.Lector["subtotal"].ToString());
 

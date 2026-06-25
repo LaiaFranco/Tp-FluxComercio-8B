@@ -846,7 +846,7 @@ GO
 
 -- ========== VENTAS ==========
 
--- Listar ventas (incluye activo)
+-- *** LISTAR VENTAS (MODIFICADO: INCLUYE id_usuario Y nombre_usuario) ***
 CREATE OR ALTER PROCEDURE [dbo].[storedListarVentas]
 AS
 BEGIN
@@ -856,11 +856,14 @@ BEGIN
         v.id_cliente,
         c.nombre AS nombre_cliente,
         c.apellido AS apellido_cliente,
+        v.id_usuario,
+        u.nombre AS nombre_usuario,  -- <-- NUEVO CAMPO
         v.total,
         v.numero_factura,
         v.activo
     FROM VENTAS v
     INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
+    INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario  -- <-- NUEVO JOIN
     ORDER BY v.id_venta DESC;
 END
 GO

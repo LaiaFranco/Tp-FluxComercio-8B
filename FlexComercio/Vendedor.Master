@@ -13,60 +13,174 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-                <!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <!-- HEADER SUPERIOR -->
+<header class="bg-black text-white shadow-sm">
+    <div class="container-fluid">
 
-<!-- NAVBAR SUPERIOR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-black py-2">
-    <div class="container">
+        <div class="d-flex justify-content-between align-items-center py-3">
 
-        <!-- Logo -->
-        <a class="navbar-brand me-4" href="#">
-            <img src="logoFLUX.png" alt="Logo" height="65">
-        </a>
+            <!-- Logo -->
+            <div class="d-flex align-items-center">
 
-        <!-- Categorías -->
+                <div class="me-3">
+                    <img src="logoFLUX.png" alt="Logo" class="logo-sidebar me-3" style =" width: 120px;height: 120px;object-fit: contain;">
+                </div>
+
+                <div>
+                    <h3 class="fw-bold mb-0">
+                        Sistema de Gestión
+                    </h3>
+
+                    <small class="text-light opacity-75">
+                        Compras y Ventas
+                    </small>
+                </div>
+
+            </div>
+
+            <!-- Usuario -->
+            <div class="d-flex align-items-center">
+
+                <div class="text-end me-3">
+                   <h5 class="fw-bold mb-0">
+                        <asp:Label ID="lblNombreUsuario" runat="server" />
+                    </h5>
+
+                    <small class="text-light opacity-75">
+                        Vendededor
+                    </small>
+                </div>
+                     <!-- PERFIL DROPDOWN -->
+<div class="dropdown">
+
+    <button class="btn btn-outline-light dropdown-toggle rounded-pill px-3"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+
+        <i class="bi bi-person me-2"></i>
+        Perfil
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end shadow">
+
+        <!-- Registrar usuario -->
         
 
-            <!-- Buscador -->
-            <form class="d-flex flex-grow-1 me-4">
-                <div class="input-group">
+        <!-- Cerrar sesión -->
+        <li>
+            <a class="dropdown-item text-danger" href="Login.aspx">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Cerrar sesión
+            </a>
+        </li>
 
-                    <input
-                        class="form-control rounded-start-pill border-0"
-                        type="search"
-                        placeholder="Buscar...">
+    </ul>
 
-                    <button class="btn btn-light rounded-end-pill">
-                        <i class="bi bi-search"></i>
-                    </button>
+</div>
 
-                </div>
-            </form>
+            </div>
 
-            <!-- Cuenta -->
-            <ul class="navbar-nav">
+        </div>
 
-                <li class="nav-item dropdown me-3">
-                    <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-person"></i> Crea tu cuenta
-                    </a>
+    </div>
+</header>
 
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Iniciar sesión</a></li>
-                        <li><a class="dropdown-item" href="#">Registrarse</a></li>
-                    </ul>
+<!-- MENÚ -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+    <div class="container-fluid">
 
-                </li>
+        <div class="collapse navbar-collapse show">
 
-                <!-- Carrito -->
+            <ul class="navbar-nav w-100">
+
                 <li class="nav-item">
-                    <a class="btn btn-success fw-bold px-4" href="#">
-                        <i class="bi bi-cart-fill"></i>
-                        MI CARRITO
+                    <a id="lnkFlux" runat="server"
+                        class="nav-link px-4 py-3"
+                        href="#">
+                        FLUX
                     </a>
                 </li>
+
+                <li class="nav-item">
+                  <a id="lnkInicio" runat="server"
+                    class="nav-link px-4 py-3"
+                        href="DefaultVendedor.aspx">
+                      <i class="bi bi-house-door me-2"></i>
+                        Inicio
+                   </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <div class="btn-group">
+
+                        <!-- Al hacer clic acá va a Nueva Venta -->
+                        <a id="lnkVentas" runat="server"
+                            class="nav-link px-4 py-3"
+                            href="VentaVendedor.aspx">
+                            <i class="bi bi-cart me-2"></i>
+                            Ventas
+                        </a>
+
+                        <!-- Flechita del dropdown -->
+                        <a class="nav-link dropdown-toggle dropdown-toggle-split py-3"
+                            href="#"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="MisVentas.aspx">
+                                    Mis ventas
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="Cotizaciones.aspx">
+                                    Cotizaciones
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="Estados.aspx">
+                                    Estados
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a id="lknClientes" runat="server"
+                       class="nav-link px-4 py-3"
+                        href= "Stock.aspx">
+                        <i class="bi bi-people me-2"></i>
+                        Stock
+                    </a>
+                </li>
+
+                <li class="nav-item ms-auto">
+                    <div class="input-group" style="width: 300px; margin-top: 8px;">
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <asp:TextBox ID="txtBuscarCliente"
+                            runat="server"
+                            CssClass="form-control"
+                            placeholder="Cliente">
+                        </asp:TextBox>
+
+                        <asp:Button ID="btnBuscarCliente"
+                            runat="server"
+                            Text="Buscar"
+                            CssClass="btn btn-dark"
+                            OnClick="btnBuscarCliente_Click1"
+                            />
+                    </div>
+                </li>
+              
 
             </ul>
 
@@ -74,56 +188,9 @@
 
     </div>
 </nav>
-
-<!-- NAVBAR INFERIOR -->
-<nav class="navbar navbar-expand bg-white border-bottom shadow-sm">
-    <div class="container justify-content-center">
-
-        <ul class="navbar-nav gap-5">
-
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="DefaultVendedor.aspx">
-                    <i class="bi bi-heart me-2"></i>Nueva Venta 
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#">
-                    <i class="bi bi-person me-2"></i>Productos
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#">
-                    <i class="bi bi-gear me-2"></i>Marcas
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#">
-                    <i class="bi bi-gear me-2"></i>Categorias
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#">
-                    <i class="bi bi-journal-text me-2"></i>Formas de pago
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#">
-                    <i class="bi bi-credit-card me-2"></i>Reportes
-                </a>
-            </li>
-
-        </ul>
-
-    </div>
-</nav>
-    <asp:ContentPlaceHolder ID="MainContent" runat="server">
-    </asp:ContentPlaceHolder>
-        </form>
+<asp:ContentPlaceHolder ID="MainContent" runat="server">
+</asp:ContentPlaceHolder>
+    </form>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

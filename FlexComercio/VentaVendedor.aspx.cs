@@ -1,20 +1,19 @@
 ﻿using Dominio;
-using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Negocio;  
 
 namespace FlexComercio
 {
-    public partial class FormularioVenta : System.Web.UI.Page
+    public partial class VentaVendedor : System.Web.UI.Page
     {
         private ClienteNegocio ClienteDatos = new ClienteNegocio();
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
         private VentasNegocio VentasDatos = new VentasNegocio();
-
         public List<DetalleVenta> ListaDetalles
         {
             get
@@ -32,14 +31,17 @@ namespace FlexComercio
                 Session["listaDetalles"] = value;
             }
         }
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)  
+            if (!IsPostBack)
             {
                 CargarClientes();
                 CargarProductos();
                 CargarDetallesGvProductos();
+
+                Usuario usuario = new Usuario();
+                usuario = (Usuario)Session["usuarioIngresado"];
+                txtVendedor.Text = usuario.Nombre; 
 
                 if (Session["idVenta"] != null)
                 {
@@ -48,6 +50,7 @@ namespace FlexComercio
                     {
                         CargarCampos(idVenta);
                         Session.Remove("idVenta");
+
                     }
                     else
                     {
@@ -55,8 +58,8 @@ namespace FlexComercio
                     }
                 }
             }
-        }
 
+        }
 
         private void CargarClientes()
         {
@@ -86,6 +89,78 @@ namespace FlexComercio
             gvDetalles.DataBind();
             decimal total = ListaDetalles.Sum(d => (decimal)d.Subtotal);
             lblTotal.Text = $"Total: {total:C2}";
+        }
+
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int id = Convert.ToInt32(btn.CommandArgument);
+            var itemAEliminar = ListaDetalles.FirstOrDefault(d => d.Id == id);
+            if (itemAEliminar != null)
+            {
+                ListaDetalles.Remove(itemAEliminar);
+                Session["listaDetalles"] = ListaDetalles;
+                CargarDetallesGvProductos();
+            }
+        }
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnRegistrar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(ddlCliente.SelectedValue))
+            {
+                MostrarMensaje("Seleccione un cliente.", "danger");
+                return;
+            }
+
+            DateTime fecha;
+            if (!DateTime.TryParse(txtFecha.Text, out fecha))
+            {
+                MostrarMensaje("Fecha inválida.", "danger");
+                return;
+            }
+
+            if (ListaDetalles == null || ListaDetalles.Count == 0)
+            {
+                MostrarMensaje("Agregue al menos un producto.", "warning");
+                return;
+            }
+
+            Dominio.Venta venta = new Dominio.Venta();
+            venta.Cliente = new Dominio.Cliente { Id = int.Parse(ddlCliente.SelectedValue) };
+            Usuario usuario = (Usuario)Session["usuarioIngresado"];
+            venta.Usuario = new Dominio.Usuario();
+            venta.Usuario.Id = usuario.Id;
+            venta.Detalle = ListaDetalles;
+            venta.Fecha = fecha.Date + DateTime.Now.TimeOfDay;
+
+            try
+            {
+                // Verificar si hay un ID en sesión (modo edición)
+                if (Session["idVenta"] != null)
+                {
+                    venta.Id = Convert.ToInt32(Session["idVenta"]);
+                    VentasDatos.Modificar(venta);
+                    Session.Remove("idVenta");
+                    MostrarMensaje("Venta actualizada con éxito.", "success");
+                }
+                else
+                {
+                    VentasDatos.Agregar(venta);
+                    MostrarMensaje("Venta registrada con éxito.", "success");
+                }
+
+                LimpiarFormulario();
+            }
+            catch (Exception ex)
+            {
+                MostrarMensaje("Error al procesar la venta: " + ex.Message, "danger");
+            }
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
@@ -133,88 +208,8 @@ namespace FlexComercio
 
             Session["listaDetalles"] = ListaDetalles;
             CargarDetallesGvProductos();
+
         }
-
-        protected void btnEliminar_Click(object sender, EventArgs e)
-        {
-            Button btn = (Button)sender;
-            int id = Convert.ToInt32(btn.CommandArgument);
-            var itemAEliminar = ListaDetalles.FirstOrDefault(d => d.Id == id);
-            if (itemAEliminar != null)
-            {
-                ListaDetalles.Remove(itemAEliminar);
-                Session["listaDetalles"] = ListaDetalles;
-                CargarDetallesGvProductos();
-            }
-        }
-
-        protected void btnGuardarModal_Click(object sender, EventArgs e)
-        {
-            bool guardadoExitoso = false;
-            if (guardadoExitoso)
-            {
-                ListaDetalles.Clear();
-                Session["listaDetalles"] = ListaDetalles;
-                CargarDetallesGvProductos();
-                string script = "$('#modalProductos').modal('hide');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "CerrarModal", script, true);
-            }
-        }
-
-        protected void btnRegistrar_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(ddlCliente.SelectedValue))
-            {
-                MostrarMensaje("Seleccione un cliente.", "danger");
-                return;
-            }
-
-            DateTime fecha;
-            if (!DateTime.TryParse(txtFecha.Text, out fecha))
-            {
-                MostrarMensaje("Fecha inválida.", "danger");
-                return;
-            }
-
-            if (ListaDetalles == null || ListaDetalles.Count == 0)
-            {
-                MostrarMensaje("Agregue al menos un producto.", "warning");
-                return;
-            }
-
-            Dominio.Venta venta = new Dominio.Venta();
-            venta.Cliente = new Dominio.Cliente { Id = int.Parse(ddlCliente.SelectedValue) };
-            Usuario usuario = (Usuario)Session["usuarioIngresado"];
-            venta.Usuario = new Dominio.Usuario();
-            venta.Usuario.Id = usuario.Id;
-            venta.Detalle = ListaDetalles;
-            venta.Fecha = fecha;
-
-            try
-            {
-                // Verificar si hay un ID en sesión (modo edición)
-                if (Session["idVenta"] != null)
-                {
-                    venta.Id = Convert.ToInt32(Session["idVenta"]);
-                    VentasDatos.Modificar(venta);
-                    Session.Remove("idVenta");
-                    MostrarMensaje("Venta actualizada con éxito.", "success");
-                }
-                else
-                {
-                    VentasDatos.Agregar(venta);
-                    MostrarMensaje("Venta registrada con éxito.", "success");
-                }
-
-                LimpiarFormulario();
-            }
-            catch (Exception ex)
-            {
-                MostrarMensaje("Error al procesar la venta: " + ex.Message, "danger");
-            }
-        }
-
-        // ===== NUEVOS MÉTODOS =====
 
         private void MostrarMensaje(string texto, string tipo)
         {
@@ -240,14 +235,6 @@ namespace FlexComercio
             CargarDetallesGvProductos();
             lblTotal.Text = "$0.00";
         }
-
-        protected void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            LimpiarFormulario();
-            MostrarMensaje("", ""); // oculta cualquier mensaje
-        }
-
-
         private void CargarCampos(int idVenta)
         {
             Venta venta = VentasDatos.VerVenta(idVenta);

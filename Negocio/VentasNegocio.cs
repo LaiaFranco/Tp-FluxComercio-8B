@@ -1,4 +1,4 @@
-﻿
+﻿  
     using Dominio;
     using negocio;
     using System;
@@ -34,8 +34,12 @@
                         venta.Cliente = new Cliente();
                         venta.Cliente.Nombre = (string)datos.Lector["nombre_cliente"].ToString();
                         venta.Cliente.Apellido = (string)datos.Lector["apellido_cliente"].ToString();
-                   
 
+                        //Usuario
+                        venta.Usuario = new Usuario();
+                        venta.Usuario.Id = (int)datos.Lector["id_usuario"];
+                        venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"].ToString();
+                        
                         ventas.Add(venta);
                     }
                     return ventas;
@@ -272,12 +276,12 @@
 
                         detalle.Id = (int)datos.Lector["id_detalle"];
                         detalle.Cantidad = (int)datos.Lector["cantidad"];
-                        detalle.Subtotal = (float)datos.Lector["subtotal"];
+                        detalle.Subtotal = Convert.ToSingle(datos.Lector["subtotal"]);
 
-                        Producto nuevoProducto = new Producto();
+                    Producto nuevoProducto = new Producto();
 
                         nuevoProducto.Id = (int)datos.Lector["id_producto"];
-                        nuevoProducto.Precio = (float)datos.Lector["precio"];
+                        nuevoProducto.Precio = Convert.ToSingle(datos.Lector["precio"]);
                         nuevoProducto.Nombre = (string)datos.Lector["nombre"];
 
                         detalle.Producto = nuevoProducto;

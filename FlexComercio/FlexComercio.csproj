@@ -74,11 +74,13 @@
     <Content Include="Cliente.aspx" />
     <Content Include="CompraDetalle.aspx" />
     <Content Include="Compras.aspx" />
+    <Content Include="Cotizaciones.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultVendedor.aspx" />
     <Content Include="EliminarCategoria.aspx" />
     <Content Include="EliminarMarca.aspx" />
     <Content Include="EliminarProveedor.aspx" />
+    <Content Include="Estados.aspx" />
     <Content Include="FormularioCliente.aspx" />
     <Content Include="FormularioUsuario.aspx" />
     <Content Include="FormularioVenta.aspx" />
@@ -88,11 +90,14 @@
     <Content Include="logoFLUX.png" />
     <Content Include="MarcaYCategoria.aspx" />
     <Content Include="fondoFLUX.png" />
+    <Content Include="MisVentas.aspx" />
     <Content Include="Producto.aspx" />
     <Content Include="Proveedor.aspx" />
     <Content Include="Reporte.aspx" />
+    <Content Include="Stock.aspx" />
     <Content Include="Usuarios.aspx" />
     <Content Include="Ventas.aspx" />
+    <Content Include="VentaVendedor.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +136,20 @@
     <Compile Include="Cliente.aspx.designer.cs">
       <DependentUpon>Cliente.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Cotizaciones.aspx.cs">
+      <DependentUpon>Cotizaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cotizaciones.aspx.designer.cs">
+      <DependentUpon>Cotizaciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Estados.aspx.cs">
+      <DependentUpon>Estados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Estados.aspx.designer.cs">
+      <DependentUpon>Estados.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FormularioVenta.aspx.cs">
       <DependentUpon>FormularioVenta.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -151,6 +170,20 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MisVentas.aspx.cs">
+      <DependentUpon>MisVentas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MisVentas.aspx.designer.cs">
+      <DependentUpon>MisVentas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Stock.aspx.cs">
+      <DependentUpon>Stock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Stock.aspx.designer.cs">
+      <DependentUpon>Stock.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vendedor.Master.cs">
       <DependentUpon>Vendedor.Master</DependentUpon>
@@ -274,6 +307,13 @@
     </Compile>
     <Compile Include="Ventas.aspx.designer.cs">
       <DependentUpon>Ventas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VentaVendedor.aspx.cs">
+      <DependentUpon>VentaVendedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VentaVendedor.aspx.designer.cs">
+      <DependentUpon>VentaVendedor.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

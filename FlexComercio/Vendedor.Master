@@ -117,7 +117,7 @@
                         <!-- Al hacer clic acá va a Nueva Venta -->
                         <a id="lnkVentas" runat="server"
                             class="nav-link px-4 py-3"
-                            href="Ventas.aspx">
+                            href="VentaVendedor.aspx">
                             <i class="bi bi-cart me-2"></i>
                             Ventas
                         </a>
@@ -154,7 +154,7 @@
                 <li class="nav-item">
                     <a id="lknClientes" runat="server"
                        class="nav-link px-4 py-3"
-                        href= "Cliente.aspx">
+                        href= "Stock.aspx">
                         <i class="bi bi-people me-2"></i>
                         Stock
                     </a>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,9 @@ namespace FlexComercio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Usuario usuario = new Usuario();
+            usuario = (Usuario)Session["usuarioIngresado"];
+            lblNombreUsuario.Text = usuario.Nombre; 
         }
 
         protected void btnBuscarCliente_Click(object sender, EventArgs e)

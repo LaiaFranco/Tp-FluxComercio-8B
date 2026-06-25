@@ -13,5 +13,25 @@ namespace FlexComercio
         {
 
         }
+
+        protected void btnImprimir_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void gvProductos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+
+        }
+
+        protected void gvDetalles_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+
+        }
     }
 }

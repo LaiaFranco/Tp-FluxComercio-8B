@@ -184,7 +184,9 @@ namespace FlexComercio
 
             Dominio.Venta venta = new Dominio.Venta();
             venta.Cliente = new Dominio.Cliente { Id = int.Parse(ddlCliente.SelectedValue) };
-            venta.Usuario = new Dominio.Usuario { Id = 1 };
+            Usuario usuario = (Usuario)Session["usuarioIngresado"];
+            venta.Usuario = new Dominio.Usuario();
+            venta.Usuario.Id = usuario.Id;
             venta.Detalle = ListaDetalles;
             venta.Fecha = fecha;
 

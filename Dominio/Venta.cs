@@ -12,12 +12,7 @@ namespace Dominio
         public DateTime Fecha { get; set; }
         public decimal Total { get; set; } = 0;
         public string NumFactura { get; set; }
-        public Cliente Cliente
-        {
-            get; set;
-
-        }
-
+        public Cliente Cliente { get; set; }
         public Usuario Usuario { get; set; }
         public List<DetalleVenta> Detalle { get; set; }
     }

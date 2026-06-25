@@ -108,15 +108,17 @@
                 BorderStyle="None"
                 GridLines="None">
 
-                <Columns>
+               <Columns>
 
                     <asp:BoundField
                         HeaderText="N° FACTURA"
-                        DataField="NumeroFactura" />
+                        DataField="NumFactura" />
 
-                    <asp:BoundField
-                        HeaderText="HORA"
-                        DataField="Hora" />
+                    <asp:TemplateField HeaderText="HORA">
+                        <ItemTemplate>
+                            <%# Eval("Fecha", "{0:HH:mm}") %>
+                        </ItemTemplate>
+                    </asp:TemplateField>
 
                     <asp:BoundField
                         HeaderText="CLIENTE"
@@ -133,18 +135,16 @@
 
                     <asp:TemplateField HeaderText="FACTURA">
                         <ItemTemplate>
-
                             <asp:LinkButton ID="btnVerFactura"
                                 runat="server"
                                 CssClass="text-decoration-none fw-semibold"
-                                CommandArgument='<%# Eval("IdVenta") %>'
+                                CommandArgument='<%# Eval("Id") %>'
                                 OnClick="btnVerFactura_Click">
 
                                 <i class="bi bi-printer me-1"></i>
                                 Ver
 
                             </asp:LinkButton>
-
                         </ItemTemplate>
                     </asp:TemplateField>
 

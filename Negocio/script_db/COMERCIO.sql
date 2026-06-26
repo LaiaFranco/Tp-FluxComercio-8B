@@ -70,17 +70,17 @@ CREATE TABLE [dbo].[PROVEEDORES](
 )
 GO
 
--- PRODUCTOS (se agrega id_proveedor y se cambia precisión de precio)
+-- PRODUCTOS
 CREATE TABLE [dbo].[PRODUCTOS](
     [id_producto] [int] IDENTITY(1,1) NOT NULL,
     [nombre] [varchar](255) NOT NULL,
     [descripcion] [varchar](300) NULL,
     [id_marca] [int] NOT NULL,
     [id_categoria] [int] NOT NULL,
-    [id_proveedor] [int] NOT NULL,                          -- NUEVA COLUMNA
+    [id_proveedor] [int] NOT NULL,
     [stock_actual] [int] NOT NULL CONSTRAINT [DF_PRODUCTOS_stock_actual] DEFAULT (0),
     [stock_minimo] [int] NOT NULL CONSTRAINT [DF_PRODUCTOS_stock_minimo] DEFAULT (0),
-    [precio] [decimal](10,2) NOT NULL,                      -- PRECISIÓN CAMBIADA
+    [precio] [decimal](10,2) NOT NULL,
     [porcentaje_ganancia] [decimal](5,2) NOT NULL,
     [activo] [bit] NULL CONSTRAINT [DF_PRODUCTOS_activo] DEFAULT (1),
  CONSTRAINT [PK_PRODUCTOS] PRIMARY KEY CLUSTERED ([id_producto] ASC)
@@ -133,7 +133,7 @@ CREATE TABLE [dbo].[CLIENTES](
 )
 GO
 
--- VENTAS
+-- VENTAS (se agrega columna activo)
 CREATE TABLE [dbo].[VENTAS](
     [id_venta] [int] IDENTITY(1,1) NOT NULL,
     [fecha] [datetime] NOT NULL CONSTRAINT [DF_VENTAS_fecha] DEFAULT (GETDATE()),
@@ -141,6 +141,7 @@ CREATE TABLE [dbo].[VENTAS](
     [id_usuario] [int] NOT NULL,
     [total] [decimal](10,2) NOT NULL,
     [numero_factura] [varchar](255) NOT NULL,
+    [activo] [bit] NOT NULL CONSTRAINT [DF_VENTAS_activo] DEFAULT (1),  -- NUEVA COLUMNA
  CONSTRAINT [PK_VENTAS] PRIMARY KEY CLUSTERED ([id_venta] ASC),
  CONSTRAINT [UQ_VENTAS_numero_factura] UNIQUE ([numero_factura])
 )
@@ -230,7 +231,7 @@ REFERENCES [dbo].[PRODUCTOS] ([id_producto])
 GO
 
 -- ============================================================
--- 4. DATOS INICIALES (maestros y 10 productos nuevos)
+-- 4. DATOS INICIALES (maestros y 10 productos)
 -- ============================================================
 
 USE COMERCIO_DB
@@ -282,7 +283,7 @@ INSERT INTO PROVEEDORES (cuil, nombre, email, telefono, direccion, activo)
 VALUES ('27-87654321-4', 'Insumos Digitales SRL', 'contacto@insumosdigitales.com', '1166778899', 'San Martin 456', 1);
 GO
 
--- 10 productos nuevos (reemplaza los anteriores)
+-- 10 productos
 DECLARE @idProducto int;
 DECLARE @idProveedor int;
 
@@ -392,8 +393,6 @@ VALUES ('https://example.com/img/mouse-logitech-m90.jpg', 1, 'PRODUCTO', 1);
 INSERT INTO IMAGENES (url, activo, tipo_entidad, id_entidad)
 VALUES ('https://example.com/img/teclado-redragon-kumara.jpg', 1, 'PRODUCTO', 2);
 GO
-
--- (Opcional: se pueden agregar compras y ventas de ejemplo, pero se omiten para mantener coherencia)
 
 -- ============================================================
 -- 5. PROCEDIMIENTOS ALMACENADOS
@@ -536,7 +535,7 @@ SET nombre = @nombre, email = @email, password_u = @password_u, id_rol = @id_rol
 WHERE id_usuario = @id_usuario;
 GO
 
--- ========== PRODUCTOS (con el nuevo storedAltaProducto) ==========
+-- ========== PRODUCTOS ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedListarProductos]
 AS
 BEGIN
@@ -568,7 +567,6 @@ BEGIN
 END
 GO
 
--- NUEVO storedAltaProducto (con id_proveedor y url_imagen)
 CREATE OR ALTER PROCEDURE [dbo].[storedAltaProducto]
     @nombre varchar(255),
     @descripcion varchar(300),
@@ -651,7 +649,7 @@ CREATE OR ALTER PROCEDURE [dbo].[storedModificarProducto]
     @id_categoria INT,
     @stock_actual INT,
     @stock_minimo INT,
-    @precio DECIMAL(5,2),
+    @precio DECIMAL(10,2),
     @porcentaje_ganancia DECIMAL(5,2),
     @activo BIT
 AS
@@ -846,7 +844,9 @@ SET nombre = @nombre, apellido = @apellido, email = @email,
 WHERE id_cliente = @id_cliente;
 GO
 
--- ========== VENTAS (reemplazado por los nuevos procedimientos) ==========
+-- ========== VENTAS ==========
+
+-- *** LISTAR VENTAS (MODIFICADO: INCLUYE id_usuario Y nombre_usuario) ***
 CREATE OR ALTER PROCEDURE [dbo].[storedListarVentas]
 AS
 BEGIN
@@ -856,177 +856,258 @@ BEGIN
         v.id_cliente,
         c.nombre AS nombre_cliente,
         c.apellido AS apellido_cliente,
+        v.id_usuario,
+        u.nombre AS nombre_usuario,  -- <-- NUEVO CAMPO
         v.total,
-        v.numero_factura
+        v.numero_factura,
+        v.activo
     FROM VENTAS v
     INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
+    INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario  -- <-- NUEVO JOIN
     ORDER BY v.id_venta DESC;
-END;
+END
 GO
 
-CREATE OR ALTER PROCEDURE [dbo].[storedAltaVentaConUnDetalle]
+-- Alta de cabecera de venta (genera número de factura, total inicial 0)
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaVenta]
     @fecha DATETIME,
     @id_cliente INT,
-    @id_usuario INT,
-    @DetallesJSON NVARCHAR(MAX)
+    @id_usuario INT
 AS
 BEGIN
     SET NOCOUNT ON;
-    BEGIN TRANSACTION;
+    DECLARE @YY CHAR(2) = RIGHT(YEAR(@fecha), 2);
+    DECLARE @MM CHAR(2) = RIGHT('0' + CAST(MONTH(@fecha) AS VARCHAR), 2);
+    DECLARE @UltimoNumero INT;
 
-    BEGIN TRY
-        DECLARE @Detalles TABLE (
-            id_producto INT,
-            cantidad INT,
-            precio_unitario DECIMAL(18,2)
-        );
+    SELECT @UltimoNumero = MAX(CAST(RIGHT(numero_factura, 4) AS INT))
+    FROM VENTAS
+    WHERE numero_factura LIKE 'A-' + @YY + '-' + @MM + '-%';
 
-        INSERT INTO @Detalles (id_producto, cantidad, precio_unitario)
-        SELECT ProductoId, Cantidad, PrecioUnitario
-        FROM OPENJSON(@DetallesJSON)
-        WITH (
-            ProductoId INT '$.ProductoId',
-            Cantidad INT '$.Cantidad',
-            PrecioUnitario DECIMAL(18,2) '$.PrecioUnitario'
-        );
+    IF @UltimoNumero IS NULL SET @UltimoNumero = 0;
 
-        IF EXISTS (
-            SELECT 1
-            FROM @Detalles d
-            INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto
-            WHERE p.stock_actual < d.cantidad
-        )
-        BEGIN
-            RAISERROR('Stock insuficiente para uno o más productos.', 16, 1);
-            ROLLBACK TRANSACTION;
-            RETURN;
-        END
+    DECLARE @NuevoNumero INT = @UltimoNumero + 1;
+    DECLARE @NumeroFactura NVARCHAR(50) = 'A-' + @YY + '-' + @MM + '-' + RIGHT('0000' + CAST(@NuevoNumero AS VARCHAR), 4);
 
-        DECLARE @Total DECIMAL(18,2);
-        SELECT @Total = SUM(cantidad * precio_unitario) FROM @Detalles;
+    INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo)
+    VALUES (@fecha, @id_cliente, @id_usuario, 0, @NumeroFactura, 1);
 
-        DECLARE @YY CHAR(2) = RIGHT(YEAR(@fecha), 2);
-        DECLARE @MM CHAR(2) = RIGHT('0' + CAST(MONTH(@fecha) AS VARCHAR), 2);
-        DECLARE @UltimoNumero INT;
-
-        SELECT @UltimoNumero = MAX(CAST(RIGHT(numero_factura, 4) AS INT))
-        FROM VENTAS
-        WHERE numero_factura LIKE 'A-' + @YY + '-' + @MM + '-%';
-
-        IF @UltimoNumero IS NULL SET @UltimoNumero = 0;
-
-        DECLARE @NuevoNumero INT = @UltimoNumero + 1;
-        DECLARE @NumeroFactura NVARCHAR(50) = 'A-' + @YY + '-' + @MM + '-' + RIGHT('0000' + CAST(@NuevoNumero AS VARCHAR), 4);
-
-        INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura)
-        VALUES (@fecha, @id_cliente, @id_usuario, @Total, @NumeroFactura);
-
-        DECLARE @VentaId INT = SCOPE_IDENTITY();
-
-        INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal)
-        SELECT @VentaId, id_producto, cantidad, precio_unitario, cantidad * precio_unitario
-        FROM @Detalles;
-
-        UPDATE p
-        SET stock_actual = p.stock_actual - d.cantidad
-        FROM PRODUCTOS p
-        INNER JOIN @Detalles d ON p.id_producto = d.id_producto;
-
-        COMMIT TRANSACTION;
-
-        SELECT @VentaId AS Id, @NumeroFactura AS NumeroFactura;
-    END TRY
-    BEGIN CATCH
-        ROLLBACK TRANSACTION;
-        THROW;
-    END CATCH
-END;
+    -- Devuelve el ID generado
+    SELECT SCOPE_IDENTITY() AS id_venta;
+END
 GO
 
-CREATE OR ALTER PROCEDURE [dbo].[storedModificarVentaConUnDetalle]
+-- Alta de un detalle de venta (actualiza stock y total)
+CREATE OR ALTER PROCEDURE [dbo].[storedAltaVentaDetalle]
     @id_venta INT,
-    @fecha DATETIME,
-    @id_cliente INT,
-    @id_usuario INT,
-    @DetallesJSON NVARCHAR(MAX)
+    @id_producto INT,
+    @cantidad INT,
+    @precio_unitario DECIMAL(10,2)
 AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRANSACTION;
 
     BEGIN TRY
-        DECLARE @OldDetails TABLE (
-            id_producto INT,
-            cantidad INT
-        );
-
-        INSERT INTO @OldDetails (id_producto, cantidad)
-        SELECT id_producto, cantidad
-        FROM VENTA_DETALLES
-        WHERE id_venta = @id_venta;
-
-        UPDATE p
-        SET stock_actual = p.stock_actual + od.cantidad
-        FROM PRODUCTOS p
-        INNER JOIN @OldDetails od ON p.id_producto = od.id_producto;
-
-        DECLARE @NewDetails TABLE (
-            id_producto INT,
-            cantidad INT,
-            precio_unitario DECIMAL(18,2)
-        );
-
-        INSERT INTO @NewDetails (id_producto, cantidad, precio_unitario)
-        SELECT ProductoId, Cantidad, PrecioUnitario
-        FROM OPENJSON(@DetallesJSON)
-        WITH (
-            ProductoId INT '$.ProductoId',
-            Cantidad INT '$.Cantidad',
-            PrecioUnitario DECIMAL(18,2) '$.PrecioUnitario'
-        );
-
-        IF EXISTS (
-            SELECT 1
-            FROM @NewDetails nd
-            INNER JOIN PRODUCTOS p ON nd.id_producto = p.id_producto
-            WHERE p.stock_actual < nd.cantidad
-        )
+        -- Verificar que la venta existe y está activa
+        IF NOT EXISTS (SELECT 1 FROM VENTAS WHERE id_venta = @id_venta AND activo = 1)
         BEGIN
-            RAISERROR('Stock insuficiente para uno o más productos.', 16, 1);
+            RAISERROR('La venta no existe o está anulada.', 16, 1);
             ROLLBACK TRANSACTION;
             RETURN;
         END
 
-        DECLARE @Total DECIMAL(18,2);
-        SELECT @Total = SUM(cantidad * precio_unitario) FROM @NewDetails;
+        -- Verificar stock suficiente
+        DECLARE @stock_actual INT;
+        SELECT @stock_actual = stock_actual FROM PRODUCTOS WHERE id_producto = @id_producto;
+        IF @stock_actual < @cantidad
+        BEGIN
+            RAISERROR('Stock insuficiente para el producto.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
 
+        -- Insertar detalle
+        INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal)
+        VALUES (@id_venta, @id_producto, @cantidad, @precio_unitario, @cantidad * @precio_unitario);
+
+        -- Descontar stock
+        UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad WHERE id_producto = @id_producto;
+
+        -- Recalcular total de la venta
         UPDATE VENTAS
-        SET fecha = @fecha,
-            id_cliente = @id_cliente,
-            id_usuario = @id_usuario,
-            total = @Total
+        SET total = (SELECT ISNULL(SUM(subtotal), 0) FROM VENTA_DETALLES WHERE id_venta = @id_venta)
         WHERE id_venta = @id_venta;
 
-        DELETE FROM VENTA_DETALLES WHERE id_venta = @id_venta;
-
-        INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal)
-        SELECT @id_venta, id_producto, cantidad, precio_unitario, cantidad * precio_unitario
-        FROM @NewDetails;
-
-        UPDATE p
-        SET stock_actual = p.stock_actual - nd.cantidad
-        FROM PRODUCTOS p
-        INNER JOIN @NewDetails nd ON p.id_producto = nd.id_producto;
-
         COMMIT TRANSACTION;
-
-        SELECT @id_venta AS Id;
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION;
         THROW;
     END CATCH
-END;
+END
+GO
+
+-- ============================================================
+--  ***** MODIFICADO PARA QUE DEVUELVA EL ID *****
+-- ============================================================
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarVenta]
+    @id_venta INT,
+    @id_cliente INT,
+    @fecha DATETIME,
+    @id_usuario INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF NOT EXISTS (SELECT 1 FROM VENTAS WHERE id_venta = @id_venta AND activo = 1)
+    BEGIN
+        RAISERROR('La venta no existe o está anulada.', 16, 1);
+        RETURN;
+    END
+
+    UPDATE VENTAS
+    SET fecha = @fecha,
+        id_cliente = @id_cliente,
+        id_usuario = @id_usuario
+    WHERE id_venta = @id_venta;
+
+    -- Esto permite que el C# use ejecutarEscalar() y obtenga el ID
+    SELECT @id_venta AS id_venta;
+END
+GO
+
+-- ============================================================
+--  ***** REEMPLAZADO PARA QUE ACEPTE LOS PARÁMETROS DE C# *****
+-- ============================================================
+CREATE OR ALTER PROCEDURE [dbo].[storedModificarVentaDetalle]
+    @id_venta INT,
+    @id_producto INT,
+    @cantidad INT,
+    @precio_unitario DECIMAL(10,2)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        DECLARE @id_detalle INT;
+        DECLARE @cantidad_antigua INT;
+
+        -- Obtener el detalle actual
+        SELECT @id_detalle = id_detalle, @cantidad_antigua = cantidad
+        FROM VENTA_DETALLES
+        WHERE id_venta = @id_venta AND id_producto = @id_producto;
+
+        IF @id_detalle IS NULL
+        BEGIN
+            RAISERROR('Detalle no encontrado para esta venta y producto.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+
+        -- Reponer stock antiguo
+        UPDATE PRODUCTOS SET stock_actual = stock_actual + @cantidad_antigua WHERE id_producto = @id_producto;
+
+        -- Verificar stock para nueva cantidad
+        DECLARE @stock_actual INT;
+        SELECT @stock_actual = stock_actual FROM PRODUCTOS WHERE id_producto = @id_producto;
+        IF @stock_actual < @cantidad
+        BEGIN
+            -- Revertir reposición
+            UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad_antigua WHERE id_producto = @id_producto;
+            RAISERROR('Stock insuficiente para la nueva cantidad.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+
+        -- Actualizar detalle
+        UPDATE VENTA_DETALLES
+        SET cantidad = @cantidad,
+            precio_unitario = @precio_unitario,
+            subtotal = @cantidad * @precio_unitario
+        WHERE id_detalle = @id_detalle;
+
+        -- Descontar nuevo stock
+        UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad WHERE id_producto = @id_producto;
+
+        -- Recalcular total de la venta
+        UPDATE VENTAS
+        SET total = (SELECT ISNULL(SUM(subtotal), 0) FROM VENTA_DETALLES WHERE id_venta = @id_venta)
+        WHERE id_venta = @id_venta;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
+
+-- Cambiar estado (activo) de una venta
+CREATE OR ALTER PROCEDURE [dbo].[storedCambiarEstadoVenta]
+    @id_venta INT,
+    @activo BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF NOT EXISTS (SELECT 1 FROM VENTAS WHERE id_venta = @id_venta)
+    BEGIN
+        RAISERROR('La venta no existe.', 16, 1);
+        RETURN;
+    END
+
+    UPDATE VENTAS
+    SET activo = @activo
+    WHERE id_venta = @id_venta;
+END
+GO
+
+-- ============================================================
+--  ***** NUEVO: Obtiene una venta por ID con JOIN a Cliente y Usuario *****
+-- ============================================================
+CREATE OR ALTER PROCEDURE [dbo].[storeVerVenta]
+    @id_venta INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        v.id_venta,
+        v.fecha,
+        v.numero_factura,
+        v.total,
+        v.id_cliente,
+        c.nombre AS nombre_cliente,
+        c.apellido AS apellido_cliente,
+        v.id_usuario,
+        u.nombre AS nombre_usuario,
+        u.activo AS activo_usuario
+    FROM VENTAS v
+    INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
+    INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario
+    WHERE v.id_venta = @id_venta;
+END
+GO
+
+-- ============================================================
+--  ***** NUEVO: Obtiene los detalles de una venta con JOIN a Productos *****
+-- ============================================================
+CREATE OR ALTER PROCEDURE [dbo].[storeDetalleVenta]
+    @id_venta INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        d.id_detalle,
+        d.cantidad,
+        d.subtotal,
+        d.id_producto,
+        d.precio_unitario AS precio,
+        p.nombre
+    FROM VENTA_DETALLES d
+    INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto
+    WHERE d.id_venta = @id_venta;
+END
 GO
 
 -- ========== IMAGENES ==========
@@ -1059,13 +1140,7 @@ WHERE id_imagen = @id_imagen;
 GO
 
 -- ============================================================
--- 6. AJUSTE ADICIONAL: cambio de precisión en PRODUCTOS (por si acaso)
--- ============================================================
-ALTER TABLE PRODUCTOS ALTER COLUMN precio decimal(10,2) NOT NULL;
-GO
-
--- ============================================================
--- 7. EJECUCIÓN DE PROCEDIMIENTOS DE LISTADO (reemplaza los SELECT * )
+-- 6. EJECUCIÓN DE PROCEDIMIENTOS DE LISTADO
 -- ============================================================
 EXEC storedListarMarcas;
 EXEC storedListarCategorias;

@@ -19,28 +19,10 @@ namespace FlexComercio
                 CategoriaNegocio catNegocio = new CategoriaNegocio();
                 MarcaNegocio marcaNegocio = new MarcaNegocio();
                 ProveedorNegocio provNegocio = new ProveedorNegocio();
-
-                if (Session["productoSeleccionado"] != null)
-                {
-                    Dominio.Producto producto = (Dominio.Producto)Session["productoSeleccionado"];
-                    txtNombre.Text = producto.Nombre;
-                    ddlMarca.DataTextField = producto.Marca.Nombre;
-                    ddlCategoria.DataTextField = producto.Categoria.Nombre;
-                    ddlProveedor.DataTextField = producto.Proveedor.Nombre;
-                    txtDescripcion.Text = producto.Descripcion;
-                    txtStockActual.Text = producto.StockActual.ToString();
-                    txtStockMinimo.Text = producto.StockMinimo.ToString();
-                    txtPrecio.Text = producto.Precio.ToString();
-                    txtGanancia.Text = producto.PorcentajeGanancia.ToString();
-                    imgPreview.ImageUrl = producto.Imagen.Url;
-                    ddlEstado.Visible = false;
-                }
-                else
-                {
-                    List<Categoria> listaCategoria = catNegocio.Listar().Where(n => n.Activo).ToList();
-                    List<Marca> listaMarca = marcaNegocio.Listar().Where(n => n.Activo).ToList();
-                    List<Dominio.Proveedor> listaProveedor = provNegocio.Listar().Where(n => n.Activo).ToList();
-
+                    
+                List<Categoria> listaCategoria = catNegocio.Listar().Where(n => n.Activo).ToList();
+                List<Marca> listaMarca = marcaNegocio.Listar().Where(n => n.Activo).ToList();
+                List<Dominio.Proveedor> listaProveedor = provNegocio.Listar().Where(n => n.Activo).ToList();
                     ddlCategoria.DataSource = listaCategoria;
                     ddlCategoria.DataValueField = "Id";
                     ddlCategoria.DataTextField = "Nombre";
@@ -55,8 +37,27 @@ namespace FlexComercio
                     ddlProveedor.DataValueField = "Id";
                     ddlProveedor.DataTextField = "Nombre";
                     ddlProveedor.DataBind();
-                    pnlEstado.Visible = false;
+                    
+
+                if (Session["productoSeleccionado"] != null)
+                {
+                    Dominio.Producto producto = (Dominio.Producto)Session["productoSeleccionado"];
+                    txtNombre.Text = producto.Nombre;
+                    ddlMarca.SelectedValue = producto.Marca.Id.ToString();
+                    ddlCategoria.SelectedValue = producto.Categoria.Id.ToString();
+                    ddlProveedor.SelectedValue = producto.Proveedor.Id.ToString();
+                    txtDescripcion.Text = producto.Descripcion;
+                    txtStockActual.Text = producto.StockActual.ToString();
+                    txtStockMinimo.Text = producto.StockMinimo.ToString();
+                    txtPrecio.Text = producto.Precio.ToString();
+                    txtGanancia.Text = producto.PorcentajeGanancia.ToString();
+                    txtUrlImagen.Text = producto.Imagen.Url;
+
+                    
+                    lblTitulo.Text = "Modificar Producto";
+                    btnGuardar.Text = "Modificar";
                 }
+               
 
             }
         }
@@ -76,8 +77,13 @@ namespace FlexComercio
             ProductoNegocio negocio = new ProductoNegocio();
             Dominio.Producto producto = new Dominio.Producto();
 
+            if (Session["productoSeleccionado"] != null)
+            {
+                producto.Id = ((Dominio.Producto)Session["productoSeleccionado"]).Id;
+            }
+
             bool ok;
-            pnlEstado.Visible = false;
+            
             producto.Nombre = txtNombre.Text;
             producto.Descripcion = txtDescripcion.Text;
             producto.StockActual = int.Parse(txtStockActual.Text);
@@ -98,7 +104,16 @@ namespace FlexComercio
             producto.Imagen = new Imagen();
             producto.Imagen.Url = txtUrlImagen.Text;
 
-            ok = negocio.Agregar(producto);
+            if (Session["productoSeleccionado"] != null)
+            {
+                ok = negocio.Modificar(producto); 
+            }
+            else
+            {
+                ok = negocio.Agregar(producto);
+
+            }
+
 
             if (ok)
             {

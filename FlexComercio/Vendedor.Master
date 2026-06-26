@@ -13,6 +13,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" />
         <!-- HEADER SUPERIOR -->
 <header class="bg-black text-white shadow-sm">
     <div class="container-fluid">

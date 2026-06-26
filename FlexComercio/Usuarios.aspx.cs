@@ -69,7 +69,7 @@ namespace FlexComercio
                 ";
                     ClientScript.RegisterStartupScript(this.GetType(), "SweetAlert", script, true);
 
-                } catch (Exception ex)
+                } catch (Exception)
                 {
 
                     string script = @"

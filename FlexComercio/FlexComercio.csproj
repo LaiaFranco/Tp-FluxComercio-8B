@@ -79,6 +79,7 @@
     <Content Include="DefaultVendedor.aspx" />
     <Content Include="EliminarCategoria.aspx" />
     <Content Include="EliminarMarca.aspx" />
+    <Content Include="EliminarProducto.aspx" />
     <Content Include="EliminarProveedor.aspx" />
     <Content Include="Estados.aspx" />
     <Content Include="FormularioCliente.aspx" />
@@ -142,6 +143,13 @@
     </Compile>
     <Compile Include="Cotizaciones.aspx.designer.cs">
       <DependentUpon>Cotizaciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EliminarProducto.aspx.cs">
+      <DependentUpon>EliminarProducto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EliminarProducto.aspx.designer.cs">
+      <DependentUpon>EliminarProducto.aspx</DependentUpon>
     </Compile>
     <Compile Include="Estados.aspx.cs">
       <DependentUpon>Estados.aspx</DependentUpon>

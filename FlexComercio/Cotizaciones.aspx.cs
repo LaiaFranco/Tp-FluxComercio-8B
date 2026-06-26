@@ -130,5 +130,22 @@ namespace FlexComercio
             lblTotal.InnerText = total.ToString("C2");
             lblCantidadResumen.InnerText = totalCantidad + " producto" + (totalCantidad != 1 ? "s" : "");
         }
+
+        protected void btnImprimir_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
+
+        protected void gvProductos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+
+        }
+
+        protected void gvDetalles_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+
+        }
     }
 }

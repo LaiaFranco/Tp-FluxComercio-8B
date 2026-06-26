@@ -119,18 +119,19 @@ namespace Negocio
             }
         }
 
-        public void Eliminar(int id, bool activo = false)
+        public bool Eliminar(int id, bool activo = false)
         {
             AccesoDatos Datos = new AccesoDatos();
 
             try
             {
-                Datos.setearProcedimiento("storedModificarProducto");
+                Datos.setearProcedimiento("storedEliminarProducto");
 
                 Datos.setearParametro("@id_producto", id);
-                Datos.setearParametro("@activo", activo);
+                
 
                 Datos.ejecutarAccion();
+                return true;
             }
             catch (Exception ex)
             {
@@ -142,7 +143,7 @@ namespace Negocio
             }
         }
 
-        public void Modificar(Producto Producto)
+        public bool Modificar(Dominio.Producto Producto)
         {
             AccesoDatos Datos = new AccesoDatos();
 
@@ -158,11 +159,13 @@ namespace Negocio
                 Datos.setearParametro("@stock_actual", Producto.StockActual);
                 Datos.setearParametro("@stock_minimo", Producto.StockMinimo);
                 Datos.setearParametro("@porcentaje_ganancia", Producto.PorcentajeGanancia);
-                Datos.setearParametro("@id_imagen", Producto.Imagen.Id);
+                Datos.setearParametro("@precio", Math.Round((decimal)Producto.Precio, 2));
+                Datos.setearParametro("@url_imagen", Producto.Imagen.Url);
                 Datos.setearParametro("@id_proveedor", Producto.Proveedor.Id);
-                Datos.setearParametro("@activo", Producto.Activo);
+                
 
                 Datos.ejecutarAccion();
+                return true;
             }
             catch (Exception ex)
             {

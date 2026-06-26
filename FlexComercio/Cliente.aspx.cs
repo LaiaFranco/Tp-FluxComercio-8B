@@ -66,6 +66,17 @@ namespace FlexComercio
             int id = (int)dgvClientes.DataKeys[row.RowIndex].Value;
             Response.Redirect("FormularioCliente.aspx?cliente=" + id);
         }
-    }
 
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int id = Convert.ToInt32(btn.CommandArgument);
+
+            Session["idClienteBorrar"] = id;
+
+            Response.Redirect("FormularioCliente.aspx");
+        }
     }
+   
+
+}

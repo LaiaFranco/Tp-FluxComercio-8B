@@ -146,6 +146,7 @@ namespace Negocio
                             u.nombre,
                             u.email,
                             u.id_rol,
+                            u.password_u,
                             u.activo
                             FROM USUARIOS u
                             INNER JOIN ROLES r ON u.id_rol = r.id_rol
@@ -167,6 +168,7 @@ namespace Negocio
                     NuevoUsuario.Activo = (bool)Datos.Lector["activo"];
                     NuevoUsuario.Email = (string)Datos.Lector["email"];
                     NuevoUsuario.Nombre = (string)Datos.Lector["nombre"];
+                    NuevoUsuario.Password = (string)Datos.Lector["password_u"];
 
 
 

@@ -53,44 +53,9 @@ namespace FlexComercio
             if (int.TryParse(idStr, out int id))
             {
 
-                try
-                {
-                    UsuarioDatos.Eliminar(id);
-                    CargarUsuarios();
-                    string script = @"
-                    Swal.fire({
-                        title: 'Éxito',
-                        text: 'La categoria se elimino ',
-                        icon: 'success',
-                        confirmButtonText: 'Aceptar'
-                    }).then(() => {
-                       
-                    });
-                ";
-                    ClientScript.RegisterStartupScript(this.GetType(), "SweetAlert", script, true);
 
-                } catch (Exception)
-                {
-
-                    string script = @"
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudo eliminar la categoria',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
-                ";
-
-                    ClientScript.RegisterStartupScript(
-                           this.GetType(),
-                           "SweetAlertError",
-                           script,
-                           true
-                    );
-
-                }
-                
-
+                Session["idUsuarioEliminar"] = id;
+                Response.Redirect("FormularioUsuario.aspx");
             }
 
 
@@ -106,7 +71,10 @@ namespace FlexComercio
 
             if (int.TryParse(idStr, out int id))
             {
-                Response.Redirect("FormularioUsuario.aspx?usuario="+id);
+
+
+                Session["idUsuarioModificar"] = id;
+                Response.Redirect("FormularioUsuario.aspx" );
             }
               
         }

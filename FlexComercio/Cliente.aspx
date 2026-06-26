@@ -82,20 +82,20 @@
 
                             <!-- COLUMNA DE BOTONES (más grandes y con iconos) -->
                             <div class="col-md-3 col-lg-3 text-end mt-3 mt-md-0">
-                                <div class="d-flex flex-wrap justify-content-end gap-2">
-                                    <!-- Botón Eliminar (conserva su funcionalidad) -->
-                                    <asp:Button ID="btnEliminar" runat="server"
-                                        Text="Eliminar"
-                                        CssClass="btn btn-outline-danger rounded-pill px-4 py-2"
-                                        OnClientClick='<%# "guardarIdYMostrarModal(" + Eval("Id") + "); return false;" %>'>
-                                    </asp:Button>
-                                    <!-- Botón Modificar (conserva su evento) -->
-                                    <asp:Button ID="btnModificar" runat="server"
-                                        Text="Editar"
-                                        CssClass="btn btn-outline-warning rounded-pill px-4 py-2"
-                                        OnClick="btnModificar_Click">
-                                    </asp:Button>
-                                </div>
+                              <div class="d-flex flex-wrap justify-content-end gap-2">
+    <!-- Botón Eliminar -->
+    <asp:Button ID="btnEliminar" runat="server"
+        Text="Eliminar"
+        CssClass="btn btn-outline-danger rounded-pill px-4 py-2"
+        CommandArgument='<%# Eval("Id") %>'
+        OnClick="btnEliminar_Click" />
+
+    <!-- Botón Modificar -->
+    <asp:Button ID="btnModificar" runat="server"
+        Text="Editar"
+        CssClass="btn btn-outline-warning rounded-pill px-4 py-2"
+        OnClick="btnModificar_Click" />
+</div>
                             </div>
 
                         </div>

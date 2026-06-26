@@ -13,6 +13,7 @@ namespace FlexComercio
     {
         private UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         private int? idUsuarioEdicion = null;
+        private int? idUsuarioEliminar = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,16 +21,34 @@ namespace FlexComercio
             {
                 CargarRoles();
 
+                if (Session["idUsuarioEliminar"] != null)
+                {
+                    idUsuarioEliminar = Convert.ToInt32(Session["idUsuarioEliminar"]);
+                    Session.Remove("idUsuarioEliminar");
+                    CargarUsuarioParaBorrar(idUsuarioEliminar.Value);
+                    return;
+                }
+
+                if (Session["idUsuarioModificar"] != null)
+                {
+                    idUsuarioEdicion = Convert.ToInt32(Session["idUsuarioModificar"]);
+                    Session.Remove("idUsuarioModificar");
+                    CargarUsuarioParaEdicion(idUsuarioEdicion.Value);
+                    return;
+                }
+
                 if (Request.QueryString["usuario"] != null)
                 {
                     int id;
                     if (int.TryParse(Request.QueryString["usuario"], out id))
                     {
                         idUsuarioEdicion = id;
-                        CargarUsuario(id);
-                        ConfigurarModoEdicion();
+                        CargarUsuarioParaEdicion(id);
+                        return;
                     }
                 }
+
+                ConfigurarModoCreacion();
             }
         }
 
@@ -43,7 +62,27 @@ namespace FlexComercio
             ddlRol.Items.Insert(0, new ListItem("-- Seleccione --", ""));
         }
 
-        private void CargarUsuario(int id)
+        private void CargarUsuarioParaBorrar(int id)
+        {
+            Usuario usuario = usuarioNegocio.GetUsuario(id);
+            if (usuario == null)
+            {
+                MostrarMensaje("Usuario no encontrado.", "danger");
+                return;
+            }
+
+            divFormulario.Visible = false;
+            divConfirmarEliminar.Visible = true;
+            lblTitulo.Text = "Eliminar Usuario";
+
+            lblConfirmNombre.Text = usuario.Nombre;
+            lblConfirmEmail.Text = usuario.Email;
+            lblConfirmRol.Text = usuario.Rol?.Nombre ?? "Sin rol";
+
+            ViewState["UsuarioIdBorrar"] = id;
+        }
+
+        private void CargarUsuarioParaEdicion(int id)
         {
             Usuario usuario = usuarioNegocio.GetUsuario(id);
             if (usuario != null)
@@ -52,25 +91,41 @@ namespace FlexComercio
                 txtEmail.Text = usuario.Email;
                 txtPassword.Text = usuario.Password;
                 ddlRol.SelectedValue = usuario.Rol.Id.ToString();
-            }
-            else
-            {
-                MostrarMensaje("Usuario no encontrado.", "danger");
+
+                ViewState["UsuarioId"] = id;
+                btnGuardar.Text = "Actualizar usuario";
+                lblTitulo.Text = "Editar Usuario";
+                lblPassword.Text = "Contraseña (dejar en blanco para mantener)";
+                txtPassword.Attributes["placeholder"] = "Dejar en blanco para mantener la actual";
+
+                txtPassword.Enabled = true;
+                rfvPassword.Enabled = false;
+                revPassword.Enabled = false;
+
+                divFormulario.Visible = true;
+                divConfirmarEliminar.Visible = false;
             }
         }
 
-        private void ConfigurarModoEdicion()
+        private void ConfigurarModoCreacion()
         {
-            lblPassword.Text = "Contraseña (dejar en blanco para mantener)";
-            txtPassword.Attributes["placeholder"] = "Dejar en blanco para mantener la actual";
-            txtPassword.Enabled = false;
-            rfvPassword.Enabled = false;
-            revPassword.Enabled = false;
+            txtPassword.Enabled = true;
+            rfvPassword.Enabled = true;
+            revPassword.Enabled = true;
+            lblPassword.Text = "Contraseña";
+            txtPassword.Attributes["placeholder"] = "";
+
+            btnGuardar.Text = "Guardar usuario";
+            lblTitulo.Text = "Nuevo Usuario";
+
+            divFormulario.Visible = true;
+            divConfirmarEliminar.Visible = false;
+            ViewState["UsuarioId"] = null;
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (!Page.IsValid)
+            if (!Page.IsValid && rfvPassword.Enabled)
             {
                 MostrarMensaje("Por favor, corrija los errores marcados.", "danger");
                 return;
@@ -100,12 +155,18 @@ namespace FlexComercio
 
             try
             {
-                if (idUsuarioEdicion.HasValue)
+                bool esEdicion = ViewState["UsuarioId"] != null;
+
+                Usuario usuario = new Usuario();
+                usuario.Nombre = nombre;
+                usuario.Email = email;
+                Rol rol = new Rol { Id = idRol };
+                usuario.Rol = rol;
+                usuario.Activo = true;
+
+                if (esEdicion)
                 {
-                    Usuario usuario = new Usuario();
-                    usuario.Id = idUsuarioEdicion.Value;
-                    usuario.Nombre = nombre;
-                    usuario.Email = email;
+                    usuario.Id = (int)ViewState["UsuarioId"];
 
                     if (!string.IsNullOrEmpty(password))
                     {
@@ -118,17 +179,13 @@ namespace FlexComercio
                     }
                     else
                     {
-                        Usuario existente = usuarioNegocio.GetUsuario(idUsuarioEdicion.Value);
+                        Usuario existente = usuarioNegocio.GetUsuario(usuario.Id);
                         usuario.Password = existente.Password;
                     }
 
-                    Rol NuevoRol = new Rol();
-                    NuevoRol.Id = idRol;
-                    usuario.Rol = NuevoRol;
-                    usuario.Activo = true;
-
                     usuarioNegocio.Modificar(usuario);
                     MostrarMensaje("Usuario actualizado correctamente.", "success");
+                    Response.Redirect("Usuarios.aspx");
                 }
                 else
                 {
@@ -137,32 +194,34 @@ namespace FlexComercio
                         MostrarMensaje("La contraseña es obligatoria y debe tener al menos 6 caracteres.", "danger");
                         return;
                     }
-
-                    Usuario nuevo = new Usuario();
-                    nuevo.Nombre = nombre;
-                    nuevo.Email = email;
-                    nuevo.Password = password;
-                    Rol NuevaRol = new Rol();
-                    NuevaRol.Id = idRol;
-                    nuevo.Rol = NuevaRol;
-                    nuevo.Activo = true;
-
-                    usuarioNegocio.Agregar(nuevo);
-                    MostrarMensaje($"Usuario creado exitosamente", "success");
+                    usuario.Password = password;
+                    usuarioNegocio.Agregar(usuario);
+                    MostrarMensaje("Usuario creado exitosamente.", "success");
                     LimpiarCampos();
                 }
             }
             catch (Exception ex)
             {
                 if (ex.Message.Contains("duplicate") || ex.Message.Contains("UNIQUE"))
-                {
                     MostrarMensaje("El email ya está registrado. Por favor, use otro.", "danger");
-                }
                 else
-                {
                     MostrarMensaje("Error al guardar: " + ex.Message, "danger");
-                }
             }
+        }
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (ViewState["UsuarioIdBorrar"] != null)
+            {
+                int id = (int)ViewState["UsuarioIdBorrar"];
+                usuarioNegocio.Eliminar(id);
+                Response.Redirect("Usuarios.aspx");
+            }
+        }
+
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Usuarios.aspx");
         }
 
         private bool IsValidEmail(string email)
@@ -191,6 +250,9 @@ namespace FlexComercio
             txtEmail.Text = "";
             txtPassword.Text = "";
             ddlRol.SelectedIndex = 0;
+            ViewState["UsuarioId"] = null;
+            btnGuardar.Text = "Guardar usuario";
+            lblTitulo.Text = "Nuevo Usuario";
         }
     }
 }

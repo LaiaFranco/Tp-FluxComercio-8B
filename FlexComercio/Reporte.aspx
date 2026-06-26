@@ -28,12 +28,17 @@
 
                         <div>
                             <h4 class="fw-semibold mb-1">Ventas Totales</h4>
-                            <p class="text-secondary mb-0">Período actual</p>
+                            <p class="text-secondary mb-0">Mes Actual</p>
                         </div>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
-                    <p class="text-secondary mb-0">0 ventas realizadas</p>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblVentasTotales" runat="server" Text="0" />
+                    </h1>
+
+                    <p class="text-secondary mb-0">
+                        <asp:Label ID="lblCantidadVentas" runat="server" Text="0 ventas realizadas" />
+                    </p>
 
                 </div>
             </div>
@@ -55,8 +60,13 @@
                         </div>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
-                    <p class="text-secondary mb-0">Productos registrados</p>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblProductos" runat="server" Text="0" />
+                    </h1>
+
+                    <p class="text-secondary mb-0">
+                        Productos registrados
+                    </p>
 
                 </div>
             </div>
@@ -78,8 +88,13 @@
                         </div>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
-                    <p class="text-secondary mb-0">Clientes activos</p>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblClientes" runat="server" Text="0" />
+                    </h1>
+
+                    <p class="text-secondary mb-0">
+                        Clientes activos
+                    </p>
 
                 </div>
             </div>
@@ -101,8 +116,13 @@
                         </div>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
-                    <p class="text-secondary mb-0">0% de margen promedio</p>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblGananciaTotal" runat="server" Text="$0.00" />
+                    </h1>
+
+                    <p class="text-secondary mb-0">
+                        <asp:Label ID="lblMargenPromedio" runat="server" Text="0% de margen promedio" />
+                    </p>
 
                 </div>
             </div>
@@ -110,7 +130,7 @@
 
     </div>
 
-    <!-- Productos con stock bajo -->
+    <!-- Stock bajo -->
     <div class="card shadow-sm border-0 rounded-4 mb-4">
         <div class="card-body">
 
@@ -118,11 +138,9 @@
                 Productos con Stock Bajo
             </h4>
 
-            <div class="d-flex justify-content-center align-items-center"
-                 style="height:120px;">
-                <p class="text-secondary fs-5 mb-0">
-                    No hay productos con stock bajo
-                </p>
+            <div class="d-flex justify-content-center align-items-center" style="height:120px;">
+                <asp:Label ID="lblStockBajo" runat="server" CssClass="text-secondary fs-5"
+                    Text="No hay productos con stock bajo" />
             </div>
 
         </div>
@@ -136,11 +154,9 @@
                 Últimas Ventas
             </h4>
 
-            <div class="d-flex justify-content-center align-items-center"
-                 style="height:120px;">
-                <p class="text-secondary fs-5 mb-0">
-                    No hay ventas registradas
-                </p>
+            <div class="d-flex justify-content-center align-items-center" style="height:120px;">
+                <asp:Label ID="lblUltimasVentas" runat="server" CssClass="text-secondary fs-5"
+                    Text="No hay ventas registradas" />
             </div>
 
         </div>

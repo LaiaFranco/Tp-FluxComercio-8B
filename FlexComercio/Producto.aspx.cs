@@ -32,21 +32,36 @@ namespace FlexComercio
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            int indice = int.Parse(btn.CommandArgument);
+            int id = int.Parse(btn.CommandArgument);
+
             List<Dominio.Producto> listaProducto = (List<Dominio.Producto>)Session["listaProductos"];
-            
-            Dominio.Producto producto = listaProducto[indice];
+
+            if (listaProducto == null)
+                return;
+
+            Dominio.Producto producto = listaProducto.FirstOrDefault(p => p.Id == id);
+
+            if (producto == null)
+                return;
             Session["productoSeleccionado"] = producto;
-            Response.Redirect("");
+            Response.Redirect("EliminarProducto.aspx");
         }
 
         protected void btnModificar_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            int indice = int.Parse(btn.CommandArgument);
+            int id = int.Parse(btn.CommandArgument);
+
             List<Dominio.Producto> listaProducto = (List<Dominio.Producto>)Session["listaProductos"];
 
-            Dominio.Producto producto = listaProducto[indice];
+            if (listaProducto == null)
+                return;
+
+            Dominio.Producto producto = listaProducto.FirstOrDefault(p => p.Id == id);
+
+            if (producto == null)
+                return;
+
             Session["productoSeleccionado"] = producto;
             Response.Redirect("AgregarProducto.aspx");
         }

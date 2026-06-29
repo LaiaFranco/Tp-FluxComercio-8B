@@ -49,7 +49,7 @@ namespace FlexComercio
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
-
+           
         }
 
         protected void btnEditar_Click(object sender, EventArgs e)

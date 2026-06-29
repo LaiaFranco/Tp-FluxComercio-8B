@@ -2,95 +2,78 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="container-fluid mt-4" style="min-height: 100vh; background-color: #ffffff; padding: 20px;">
-
+   <div class="container-fluid mt-4" style="min-height: 100vh; background-color: #ffffff; padding: 20px;">
     <div class="row justify-content-center">
-
         <div class="col-md-8 col-lg-6">
 
             <div style="background-color: #ffffff; border-radius: 10px; padding: 30px;">
 
-                <!-- TITULO -->
-                <h2 class="mb-4"
-                    style="color: #1a1a1a; border-bottom: 2px solid #dc3545; padding-bottom: 10px; font-weight: 600;">
-                    Eliminar Producto
-                </h2>
+                <div class="card p-4 border-0 shadow-sm">
 
-                <!-- ALERTA -->
-                <div class="alert alert-warning">
-                    ¿Estás seguro que querés desactivar este producto?
-                </div>
+                    <h3 class="text-danger mb-3">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Producto
+                    </h3>
 
-                <!-- NOMBRE -->
-                <div class="mb-3">
-                    <label class="form-label"
-                        style="color: #1a1a1a; font-weight: 500;">
-                        Nombre
-                    </label>
+                    <p class="fs-5">¿Estás seguro de que deseas desactivar este producto?</p>
 
-                    <asp:TextBox
-                        ID="txtNombre"
-                        runat="server"
-                        CssClass="form-control"
-                        Enabled="false"
-                        style="border-color: #dcdcdc; border-width: 2px;" />
-                </div>
+                    <hr />
 
-                <!-- DESCRIPCION -->
-                <div class="mb-3">
-                    <label class="form-label"
-                        style="color: #1a1a1a; font-weight: 500;">
-                        Descripción
-                    </label>
+                    <dl class="row mt-3">
 
-                    <asp:TextBox
-                        ID="txtDescripcion"
-                        runat="server"
-                        CssClass="form-control"
-                        TextMode="MultiLine"
-                        Rows="4"
-                        Enabled="false"
-                        style="border-color: #dcdcdc; border-width: 2px;" />
-                </div>
+                        <dt class="col-sm-3 fw-bold">Nombre</dt>
+                        <dd class="col-sm-9">
+                            <asp:TextBox
+                                ID="txtNombre"
+                                runat="server"
+                                CssClass="form-control"
+                                Enabled="false" />
+                        </dd>
 
-                <!-- STOCK -->
-                <div class="mb-3">
-                    <label class="form-label"
-                        style="color: #1a1a1a; font-weight: 500;">
-                        Estado
-                    </label>
+                        <dt class="col-sm-3 fw-bold">Descripción</dt>
+                        <dd class="col-sm-9">
+                            <asp:TextBox
+                                ID="txtDescripcion"
+                                runat="server"
+                                CssClass="form-control"
+                                TextMode="MultiLine"
+                                Rows="4"
+                                Enabled="false" />
+                        </dd>
 
-                    <asp:TextBox
-                        ID="txtEstado"
-                        runat="server"
-                        CssClass="form-control"
-                        Enabled="false"
-                        style="border-color: #dcdcdc; border-width: 2px;" />
-                </div>
+                        <dt class="col-sm-3 fw-bold">Estado</dt>
+                        <dd class="col-sm-9">
+                            <asp:TextBox
+                                ID="txtEstado"
+                                runat="server"
+                                CssClass="form-control"
+                                Enabled="false" />
+                        </dd>
 
-                <!-- BOTONES -->
-                <div class="d-flex gap-2">
+                    </dl>
 
-                    <asp:Button
-                        ID="btnEliminar"
-                        runat="server"
-                        Text="Eliminar producto"
-                        CssClass="btn"
-                        style="background-color:#dc3545; color:white; font-weight:600; padding:10px 25px;"
-                        OnClick="btnEliminar_Click" />
+                    <div class="d-flex gap-3 mt-4">
 
-                    <asp:Button
-                        ID="btnCancelar"
-                        runat="server"
-                        Text="Cancelar"
-                        CssClass="btn"
-                        PostBackUrl="~/Producto.aspx"
-                        CausesValidation="false"
-                        style="background-color:#f5f5f5; border:2px solid #dcdcdc; color:#1a1a1a; font-weight:500; padding:10px 25px;" />
+                        <asp:Button
+                            ID="btnEliminar"
+                            runat="server"
+                            Text="Eliminar producto"
+                            CssClass="btn btn-danger btn-lg rounded-pill px-5"
+                            OnClick="btnEliminar_Click" />
+
+                        <asp:Button
+                            ID="btnCancelar"
+                            runat="server"
+                            Text="Cancelar"
+                            CssClass="btn btn-secondary btn-lg rounded-pill px-5"
+                            PostBackUrl="~/Producto.aspx"
+                            CausesValidation="false" />
+
+                    </div>
 
                 </div>
 
             </div>
+
         </div>
     </div>
 </div>

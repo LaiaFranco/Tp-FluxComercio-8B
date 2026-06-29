@@ -110,7 +110,7 @@
                                                 CommandName="EliminarProveedor"
                                                 CommandArgument='<%# Eval("id") %>'
                                                 CssClass="btn btn-outline-danger rounded-pill px-4 py-2"
-                                                OnClientClick="return confirm('¿Deseas eliminar este proveedor?');" />
+                                                />
 
                                             <asp:Button ID="btnModificar" runat="server"
                                                 Text="Editar"

@@ -5,148 +5,151 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="container mt-5">
+    <div class="container-fluid mt-4" style="min-height: 100vh; background-color: #ffffff; padding: 20px;">
 
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
 
-            <div class="col-md-8 col-lg-6">
+        <div class="col-md-10 col-lg-8">
 
-                <div class="card shadow border-0 rounded-4">
+            <div style="background-color:#ffffff; border-radius:10px; padding:30px;">
 
-                    <div class="card-header bg-dark text-white rounded-top-4">
-                        <h3 class="mb-0">Nuevo Proveedor</h3>
-                    </div>
+                <!-- TITULO -->
+               <h2 class="mb-4"
+                    style="color:#1a1a1a; border-bottom:2px solid #32CD32; padding-bottom:10px; font-weight:600;">
 
-                    <div class="card-body p-4">
+                    <asp:Label ID="lblTitulo" runat="server" Text="Nuevo Proveedor"></asp:Label>
 
-                        <div class="alert alert-secondary">
-                            Complete los datos del proveedor.
-                        </div>
+                </h2>
 
-                        <!-- CUIL -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                CUIL <span class="text-danger">*</span>
-                            </label>
+                <!-- CUIL -->
+                <div class="mb-3">
+                    <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                        CUIL <span class="text-danger">*</span>
+                    </label>
 
-                            <asp:TextBox
-                                ID="txtCuil"
-                                runat="server"
-                                CssClass="form-control" />
+                    <asp:TextBox
+                        ID="txtCuil"
+                        runat="server"
+                        CssClass="form-control"
+                        style="border-color:#dcdcdc; border-width:2px;" />
 
-                            <asp:RequiredFieldValidator
-                                ID="rfvCuil"
-                                runat="server"
-                                ErrorMessage="Campo obligatorio"
-                                ControlToValidate="txtCuil"
-                                CssClass="text-danger"
-                                Display="Dynamic" />
-                        </div>
+                    <asp:RequiredFieldValidator
+                        ID="rfvCuil"
+                        runat="server"
+                        ErrorMessage="Campo obligatorio"
+                        ControlToValidate="txtCuil"
+                        CssClass="text-danger"
+                        Display="Dynamic" />
+                </div>
 
-                        <!-- Nombre -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                Nombre <span class="text-danger">*</span>
-                            </label>
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                        Nombre <span class="text-danger">*</span>
+                    </label>
 
-                            <asp:TextBox
-                                ID="txtNombre"
-                                runat="server"
-                                CssClass="form-control" />
+                    <asp:TextBox
+                        ID="txtNombre"
+                        runat="server"
+                        CssClass="form-control"
+                        style="border-color:#dcdcdc; border-width:2px;" />
 
-                            <asp:RequiredFieldValidator
-                                ID="rfvNombre"
-                                runat="server"
-                                ErrorMessage="Campo obligatorio"
-                                ControlToValidate="txtNombre"
-                                CssClass="text-danger"
-                                Display="Dynamic" />
-                        </div>
+                    <asp:RequiredFieldValidator
+                        ID="rfvNombre"
+                        runat="server"
+                        ErrorMessage="Campo obligatorio"
+                        ControlToValidate="txtNombre"
+                        CssClass="text-danger"
+                        Display="Dynamic" />
+                </div>
 
-                        <!-- Email -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                Email <span class="text-danger">*</span>
-                            </label>
+                <!-- Email -->
+                <div class="mb-3">
+                    <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                        Email <span class="text-danger">*</span>
+                    </label>
 
-                            <asp:TextBox
-                                ID="txtEmail"
-                                runat="server"
-                                CssClass="form-control" />
+                    <asp:TextBox
+                        ID="txtEmail"
+                        runat="server"
+                        CssClass="form-control"
+                        style="border-color:#dcdcdc; border-width:2px;" />
 
-                            <asp:RequiredFieldValidator
-                                ID="rfvEmail"
-                                runat="server"
-                                ErrorMessage="Campo obligatorio"
-                                ControlToValidate="txtEmail"
-                                CssClass="text-danger"
-                                Display="Dynamic" />
-                        </div>
+                    <asp:RequiredFieldValidator
+                        ID="rfvEmail"
+                        runat="server"
+                        ErrorMessage="Campo obligatorio"
+                        ControlToValidate="txtEmail"
+                        CssClass="text-danger"
+                        Display="Dynamic" />
+                </div>
 
-                        <!-- Teléfono -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                Teléfono <span class="text-danger">*</span>
-                            </label>
+                <!-- Teléfono -->
+                <div class="mb-3">
+                    <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                        Teléfono <span class="text-danger">*</span>
+                    </label>
 
-                            <asp:TextBox
-                                ID="txtTelefono"
-                                runat="server"
-                                CssClass="form-control" />
+                    <asp:TextBox
+                        ID="txtTelefono"
+                        runat="server"
+                        CssClass="form-control"
+                        style="border-color:#dcdcdc; border-width:2px;" />
 
-                            <asp:RequiredFieldValidator
-                                ID="rfvTelefono"
-                                runat="server"
-                                ErrorMessage="Campo obligatorio"
-                                ControlToValidate="txtTelefono"
-                                CssClass="text-danger"
-                                Display="Dynamic" />
-                        </div>
+                    <asp:RequiredFieldValidator
+                        ID="rfvTelefono"
+                        runat="server"
+                        ErrorMessage="Campo obligatorio"
+                        ControlToValidate="txtTelefono"
+                        CssClass="text-danger"
+                        Display="Dynamic" />
+                </div>
 
-                        <!-- Dirección -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Dirección</label>
+                <!-- Dirección -->
+                <div class="mb-3">
+                    <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                        Dirección
+                    </label>
 
-                            <asp:TextBox
-                                ID="txtDireccion"
-                                runat="server"
-                                CssClass="form-control" />
-                        </div>
+                    <asp:TextBox
+                        ID="txtDireccion"
+                        runat="server"
+                        CssClass="form-control"
+                        style="border-color:#dcdcdc; border-width:2px;" />
+                </div>
 
-                        <asp:Label
-                            ID="lblMensaje"
-                            runat="server"
-                            CssClass="text-danger d-block mb-3" />
+                <!-- Mensajes -->
+                <asp:Label
+                    ID="lblMensaje"
+                    runat="server"
+                    CssClass="text-danger d-block mb-3" />
 
-                        <!-- ETIQUETA ERROR -->
-                           <asp:Label
-                               ID="lblError"
-                               runat="server"
-                               CssClass="text-danger"
-                               Visible="false">
-                           </asp:Label>
+                <asp:Label
+                    ID="lblError"
+                    runat="server"
+                    CssClass="text-danger"
+                    Visible="false">
+                </asp:Label>
 
-                        <!-- Botones -->
-                        <div class="d-flex justify-content-end">
+                <!-- BOTONES -->
+                <div class="d-flex gap-2 mt-4">
 
-                            <asp:Button
-                                ID="btnAceptar"
-                                runat="server"
-                                Text="Aceptar"
-                                CssClass="btn btn-dark rounded-pill px-4"
-                                OnClick="btnAceptar_Click" />
+                    <asp:Button
+                        ID="btnAceptar"
+                        runat="server"
+                        Text="Aceptar"
+                        CssClass="btn"
+                        style="background-color:#32CD32; color:white; font-weight:600; padding:10px 25px;"
+                        OnClick="btnAceptar_Click" />
 
-                            <asp:Button
-                                ID="btnCancelar"
-                                runat="server"
-                                Text="Cancelar"
-                                CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
-                                OnClick="btnCancelar_Click"
-                                CausesValidation="false" />
-
-                        </div>
-
-                    </div>
+                    <asp:Button
+                        ID="btnCancelar"
+                        runat="server"
+                        Text="Cancelar"
+                        CssClass="btn"
+                        style="background-color:#f5f5f5; border:2px solid #dcdcdc; color:#1a1a1a; font-weight:500; padding:10px 25px;"
+                        OnClick="btnCancelar_Click"
+                        CausesValidation="false" />
 
                 </div>
 
@@ -155,5 +158,7 @@
         </div>
 
     </div>
+
+</div>
 
 </asp:Content>

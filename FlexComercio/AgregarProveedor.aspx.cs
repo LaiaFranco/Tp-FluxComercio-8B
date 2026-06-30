@@ -31,6 +31,7 @@ namespace FlexComercio
                         txtEmail.Text = seleccionado.Email;
                         txtTelefono.Text = seleccionado.Telefono;
                         txtDireccion.Text = seleccionado.Direccion;
+                        lblTitulo.Text = "Modificar Proveedor"; 
                     }
                 }
             }

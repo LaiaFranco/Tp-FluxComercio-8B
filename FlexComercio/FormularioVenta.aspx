@@ -12,25 +12,22 @@
             <asp:Label ID="lblMensaje" runat="server" CssClass="alert d-none" Role="alert" />
 
             <!-- Datos de cabecera -->
-            <div class="row g-3 mb-4">
+            <div class="row g-3 mb-4">z
                 <div class="col-md-4">
                     <label class="form-label fw-bold text-dark">Cliente *</label>
                     <asp:DropDownList ID="ddlCliente" runat="server" CssClass="form-select border-secondary" required="true">
                         <asp:ListItem Text="-- Seleccionar cliente --" Value="" />
                     </asp:DropDownList>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label fw-bold text-dark">Fecha</label>
-                    <asp:TextBox ID="txtFecha" runat="server" CssClass="form-control bg-white border-secondary" TextMode="Date" />
+                    <asp:TextBox ID="txtFecha" runat="server" CssClass="form-control bg-light border-secondary" 
+                                 TextMode="Date" ReadOnly="true" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label fw-bold text-dark">Vendedor</label>
-                    <asp:TextBox ID="txtVendedor" runat="server" CssClass="form-control bg-white border-secondary" ReadOnly="true" />
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label fw-bold text-dark">N° Factura</label>
-                    <asp:TextBox ID="txtNumFactura" runat="server" CssClass="form-control bg-light border-secondary" 
-                                 placeholder="Se genera al guardar" ReadOnly="true" />
+                    <asp:TextBox ID="txtVendedor" runat="server" CssClass="form-control bg-light border-secondary" 
+                                 ReadOnly="true" />
                 </div>
             </div>
 

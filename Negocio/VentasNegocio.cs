@@ -55,79 +55,80 @@
             }
 
 
-            public List<DetalleVenta> VerDetallesPorVenta(int id)
+        public List<DetalleVenta> VerDetallesPorVenta(int id)
+        {
+            List<DetalleVenta> detalles = new List<DetalleVenta>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
             {
-                List<DetalleVenta> detalles = new List<DetalleVenta>();
-                AccesoDatos datos = new AccesoDatos();
+                string consulta = @"
+            SELECT 
+                d.id_detalle,
+                d.id_venta,
+                d.id_producto,
+                d.cantidad,
+                d.precio_unitario,
+                d.subtotal,
+                p.nombre AS nombre_producto,
+                p.precio,
+                p.stock_actual,
+                c.nombre AS nombre_categoria,
+                i.url AS url_imagen
+            FROM VENTA_DETALLES d
+            INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto
+            INNER JOIN CATEGORIAS c ON p.id_categoria = c.id_categoria
+            LEFT JOIN IMAGENES i ON p.id_producto = i.id_entidad
+                                AND i.tipo_entidad = 'PRODUCTO'
+                                AND i.activo = 1
+            WHERE d.id_venta = @idVenta";
 
-                try
+                datos.setearConsulta(consulta);
+                datos.setearParametro("@idVenta", id);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
                 {
+                    DetalleVenta detalle = new DetalleVenta();
+                    detalle.Id = Convert.ToInt32(datos.Lector["id_detalle"]);
+                    detalle.Cantidad = Convert.ToInt32(datos.Lector["cantidad"]);
 
-                    string consulta = @"
-                SELECT 
-                    d.id_detalle,
-                    d.id_venta,
-                    d.id_producto,
-                    d.cantidad,
-                    d.precio_unitario,
-                    d.subtotal,
-                    p.nombre AS nombre_producto,
-                    p.precio_actual,
-                    p.stock_actual,
-                    c.nombre AS nombre_categoria,
-                    i.url AS url_imagen
-                FROM VENTA_DETALLES d
-                INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto
-                INNER JOIN CATEGORIAS c ON p.id_categoria = c.id_categoria
-                LEFT JOIN IMAGENES i ON p.id_producto = i.id_producto AND i.es_principal = 1
-                WHERE d.id_venta = @idVenta";   
+                    // Conversión explícita de decimal a float
+                    detalle.PrecioUnitario = (float)Convert.ToDecimal(datos.Lector["precio_unitario"]);
+                    detalle.Subtotal = (float)Convert.ToDecimal(datos.Lector["subtotal"]);
 
-                    datos.setearConsulta(consulta);
-                    datos.setearParametro("@idVenta", id);
-                    datos.ejecutarLectura();
+                    Producto producto = new Producto();
+                    producto.Id = Convert.ToInt32(datos.Lector["id_producto"]);      // ← corregido
+                    producto.Nombre = datos.Lector["nombre_producto"].ToString();
+                    producto.Precio = (float)Convert.ToDecimal(datos.Lector["precio"]);  // ← conversión explícita
+                    producto.StockActual = Convert.ToInt32(datos.Lector["stock_actual"]); // ← corregido
 
-                    while (datos.Lector.Read())
-                    {
-                        DetalleVenta detalle = new DetalleVenta();
-                        detalle.Id = (int)datos.Lector["id_detalle"];
-                        detalle.Cantidad = (int)datos.Lector["cantidad"];
-                        detalle.PrecioUnitario = (float)datos.Lector["precio_unitario"];
-                        detalle.Subtotal = (float)datos.Lector["subtotal"];
+                    // Categoría
+                    producto.Categoria = new Categoria();  // ← instancia necesaria
+                    producto.Categoria.Nombre = datos.Lector["nombre_categoria"].ToString();
 
-                        // Producto
-                        Producto producto = new Producto();
-                        producto.Id = (int)datos.Lector["id_producto"];
-                        producto.Nombre = (string)datos.Lector["nombre_producto"];
-                        producto.Precio = (float)datos.Lector["precio_actual"];
-                        producto.StockActual = (int)datos.Lector["stock_actual"];
+                    // Imagen
+                    producto.Imagen = new Imagen();
+                    producto.Imagen.Url = datos.Lector["url_imagen"] != DBNull.Value
+                        ? datos.Lector["url_imagen"].ToString()
+                        : string.Empty;
 
-                        // Categoría
-                        producto.Categoria = new Categoria();
-                        producto.Categoria.Nombre = (string)datos.Lector["nombre_categoria"];
-
-                        // Imagen 
-                        producto.Imagen = new Imagen();
-                        producto.Imagen.Url = datos.Lector["url_imagen"] != DBNull.Value
-                            ? (string)datos.Lector["url_imagen"]
-                            : string.Empty;
-
-                        detalle.Producto = producto;
-                        detalles.Add(detalle);
-                    }
-
-                    return detalles;
+                    detalle.Producto = producto;
+                    detalles.Add(detalle);
                 }
-                catch (Exception ex)
-                {
-                    throw  ex;
-                }
-                finally
-                {
-                    datos.cerrarConexion();
-                }
+                return detalles;
             }
+            catch (Exception ex)
+            {
+                throw;   // ← preserva la pila de llamadas original
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
-            public Venta VerVenta(int id)
+        public Venta VerVenta(int id)
             {
                 AccesoDatos datos = new AccesoDatos();
                 Venta venta = new Venta();

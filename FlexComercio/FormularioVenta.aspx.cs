@@ -15,14 +15,15 @@ namespace FlexComercio
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
         private VentasNegocio VentasDatos = new VentasNegocio();
 
-        public List<DetalleVenta> ListaDetalles
+        // Ahora usamos explícitamente Dominio.DetalleVenta para evitar ambigüedad
+        public List<Dominio.DetalleVenta> ListaDetalles
         {
             get
             {
-                List<DetalleVenta> lista = Session["listaDetalles"] as List<DetalleVenta>;
+                List<Dominio.DetalleVenta> lista = Session["listaDetalles"] as List<Dominio.DetalleVenta>;
                 if (lista == null)
                 {
-                    lista = new List<DetalleVenta>();
+                    lista = new List<Dominio.DetalleVenta>();
                     Session["listaDetalles"] = lista;
                 }
                 return lista;
@@ -37,6 +38,8 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
+                txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                CargarVendedor();
                 CargarClientes();
                 CargarProductos();
                 CargarDetallesGvProductos();
@@ -54,6 +57,19 @@ namespace FlexComercio
                         Session.Remove("idVenta");
                     }
                 }
+            }
+        }
+
+        private void CargarVendedor()
+        {
+            if (Session["usuarioIngresado"] != null)
+            {
+                Usuario usuario = (Usuario)Session["usuarioIngresado"];
+                txtVendedor.Text = $"{usuario.Nombre}";
+            }
+            else
+            {
+                txtVendedor.Text = "No autenticado";
             }
         }
 
@@ -89,7 +105,6 @@ namespace FlexComercio
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            // Ocultar mensaje de error previo
             lblErrorStock.Visible = false;
 
             Button btn = (Button)sender;
@@ -110,7 +125,6 @@ namespace FlexComercio
             Dominio.Producto producto = productos.FirstOrDefault(p => p.Id == id);
             if (producto == null) return;
 
-            // ========== VALIDACIÓN DE STOCK ==========
             int stockDisponible = producto.StockActual;
             var existente = ListaDetalles.FirstOrDefault(d => d.Producto.Id == id);
             int cantidadActualEnDetalle = existente != null ? existente.Cantidad : 0;
@@ -120,16 +134,15 @@ namespace FlexComercio
             {
                 lblErrorStock.Text = $"Stock insuficiente. Solo hay {stockDisponible} unidad(es) disponible(s).";
                 lblErrorStock.Visible = true;
-                // Refrescamos el panel del modal para mostrar el error
                 upProductos.Update();
                 return;
             }
-            // =========================================
 
             float precioUnitario = (float)producto.Precio;
             float subtotal = cantidad * precioUnitario;
 
-            DetalleVenta detalle = new DetalleVenta
+            // Usar nombre completo
+            Dominio.DetalleVenta detalle = new Dominio.DetalleVenta
             {
                 Producto = producto,
                 Cantidad = cantidad,
@@ -150,9 +163,7 @@ namespace FlexComercio
             Session["listaDetalles"] = ListaDetalles;
             CargarDetallesGvProductos();
 
-            // Actualizar el panel de detalles (fuera del modal)
             upDetalles.Update();
-            // También actualizar el panel del modal (por si se modificó la tabla de productos, aunque no sea necesario)
             upProductos.Update();
         }
 
@@ -210,7 +221,7 @@ namespace FlexComercio
             Usuario usuario = (Usuario)Session["usuarioIngresado"];
             venta.Usuario = new Dominio.Usuario();
             venta.Usuario.Id = usuario.Id;
-            venta.Detalle = ListaDetalles;
+            venta.Detalle = ListaDetalles;   // ahora ListaDetalles es List<Dominio.DetalleVenta>
             venta.Fecha = fecha;
 
             try
@@ -255,7 +266,6 @@ namespace FlexComercio
         {
             ddlCliente.SelectedIndex = 0;
             txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
-            txtNumFactura.Text = "";
             ListaDetalles.Clear();
             Session["listaDetalles"] = ListaDetalles;
             CargarDetallesGvProductos();
@@ -277,7 +287,7 @@ namespace FlexComercio
             ddlCliente.SelectedValue = venta.Cliente.Id.ToString();
             txtFecha.Text = venta.Fecha.ToString("yyyy-MM-dd");
 
-            List<DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
+            List<Dominio.DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
             Session["listaDetalles"] = detalles;
             CargarDetallesGvProductos();
             upDetalles.Update();

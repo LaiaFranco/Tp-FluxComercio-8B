@@ -1,55 +1,53 @@
-﻿
+﻿using Dominio;
+using Negocio;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using Negocio;
-using Dominio;
 
 namespace FlexComercio
 {
     public partial class Ventas : System.Web.UI.Page
     {
-        private VentasNegocio VentaNegocio = new VentasNegocio();
-
-        public List<Venta> ListaVentas { get; set; }
+        private VentasNegocio VentasDatos = new VentasNegocio();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                ListaVentas = VentaNegocio.Listar();
+                CargarVentas();
+            }
+        }
 
-                if (ListaVentas == null)
-                {
-                    ListaVentas = new List<Venta>();
+        private void CargarVentas()
+        {
+            List<Venta> lista = VentasDatos.Listar(); // Asegúrate de tener este método
+            if (lista != null && lista.Count > 0)
+            {
+                gvVentas.DataSource = lista;
+                gvVentas.DataBind();
+                phSinVentas.Visible = false;
+                gvVentas.Visible = true;
+            }
+            else
+            {
+                gvVentas.Visible = false;
+                phSinVentas.Visible = true;
+            }
+        }
 
-                }
+        protected void gvVentas_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "VerDetalle")
+            {
+                int idVenta = Convert.ToInt32(e.CommandArgument);
+                Session["idVenta"] = idVenta;
+                Response.Redirect("VerDetalleVenta.aspx");
             }
         }
 
         protected void btnPuntoVenta_Click(object sender, EventArgs e)
         {
             Response.Redirect("FormularioVenta.aspx");
-        }
-
-        protected void Unnamed_Click(object sender, EventArgs e)
-        {
-            Button btn = (Button)sender;
-            string id = btn.CommandArgument;
-
-            if (!string.IsNullOrEmpty(id) || id != null)
-            {
-                Session["idVenta"] = id;
-                Response.Redirect("FormularioVenta.aspx");
-            }
-            else
-            {
-                // Manejar error: mostrar mensaje o redirigir
-                Response.Redirect("Ventas.aspx");
-            }
         }
     }
 }

@@ -21,14 +21,14 @@ namespace FlexComercio
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
         private VentasNegocio VentasDatos = new VentasNegocio();
 
-        public List<DetalleVenta> ListaDetalles
+        public List<Dominio.DetalleVenta> ListaDetalles
         {
             get
             {
-                List<DetalleVenta> lista = Session["listaDetalles"] as List<DetalleVenta>;
+                List<Dominio.DetalleVenta> lista = Session["listaDetalles"] as List<Dominio.DetalleVenta>;
                 if (lista == null)
                 {
-                    lista = new List<DetalleVenta>();
+                    lista = new List<Dominio.DetalleVenta>();
                     Session["listaDetalles"] = lista;
                 }
                 return lista;
@@ -102,7 +102,7 @@ namespace FlexComercio
             float precioUnitario = (float)producto.Precio;
             float subtotal = cantidad * precioUnitario;
 
-            DetalleVenta detalle = new DetalleVenta
+            Dominio.DetalleVenta detalle = new Dominio.DetalleVenta
             {
                                                                                                                                                     
                 Producto = producto,

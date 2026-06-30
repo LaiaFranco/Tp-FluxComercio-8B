@@ -78,6 +78,7 @@
     <Content Include="Cotizaciones.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultVendedor.aspx" />
+    <Content Include="VerDetalleVenta.aspx" />
     <Content Include="EliminarCategoria.aspx" />
     <Content Include="EliminarMarca.aspx" />
     <Content Include="EliminarProducto.aspx" />
@@ -151,6 +152,13 @@
     </Compile>
     <Compile Include="Cotizaciones.aspx.designer.cs">
       <DependentUpon>Cotizaciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VerDetalleVenta.aspx.cs">
+      <DependentUpon>VerDetalleVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VerDetalleVenta.aspx.designer.cs">
+      <DependentUpon>VerDetalleVenta.aspx</DependentUpon>
     </Compile>
     <Compile Include="EliminarProducto.aspx.cs">
       <DependentUpon>EliminarProducto.aspx</DependentUpon>

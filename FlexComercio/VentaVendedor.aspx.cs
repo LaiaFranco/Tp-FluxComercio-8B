@@ -14,14 +14,14 @@ namespace FlexComercio
         private ClienteNegocio ClienteDatos = new ClienteNegocio();
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
         private VentasNegocio VentasDatos = new VentasNegocio();
-        public List<DetalleVenta> ListaDetalles
+        public List<Dominio.DetalleVenta> ListaDetalles
         {
             get
             {
-                List<DetalleVenta> lista = Session["listaDetalles"] as List<DetalleVenta>;
+                List<Dominio.DetalleVenta> lista = Session["listaDetalles"] as List<Dominio.DetalleVenta>;
                 if (lista == null)
                 {
-                    lista = new List<DetalleVenta>();
+                    lista = new List<Dominio.DetalleVenta>();
                     Session["listaDetalles"] = lista;
                 }
                 return lista;
@@ -186,7 +186,7 @@ namespace FlexComercio
             float precioUnitario = (float)producto.Precio;
             float subtotal = cantidad * precioUnitario;
 
-            DetalleVenta detalle = new DetalleVenta
+            Dominio.DetalleVenta detalle = new Dominio.DetalleVenta
             {
 
                 Producto = producto,
@@ -248,7 +248,7 @@ namespace FlexComercio
             txtFecha.Text = venta.Fecha.ToString("yyyy-MM-dd");
 
             // Cargar detalles en la sesión
-            List<DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
+            List<Dominio.DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
             Session["listaDetalles"] = detalles;
             CargarDetallesGvProductos();
 

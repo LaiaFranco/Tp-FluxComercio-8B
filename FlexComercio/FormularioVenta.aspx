@@ -86,49 +86,61 @@
     </div>
 
     <!-- Modal para seleccionar producto -->
-    <div class="modal fade" id="modalProductos" tabindex="-1" aria-labelledby="modalProductosLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="modalProductosLabel">
-                        <i class="bi bi-box-seam me-2"></i>Seleccionar Producto
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <asp:TextBox ID="txtBuscarProducto" runat="server" CssClass="form-control" placeholder="Buscar producto..." />
-                    </div>
-                    <asp:GridView ID="gvProductos" runat="server" AutoGenerateColumns="False" 
-                                  CssClass="table table-bordered table-hover" 
-                                  DataKeyNames="Id">
-                        <Columns>
-                            <asp:BoundField DataField="Id" HeaderText="ID" Visible="false" />
-                            <asp:BoundField DataField="Nombre" HeaderText="Producto" />
-                            <asp:BoundField DataField="Precio" HeaderText="Precio" DataFormatString="{0:C2}" />
-                            <asp:TemplateField HeaderText="Cantidad">
-                                <ItemTemplate>
-                                    <asp:TextBox ID="txtCantidad" runat="server" Text="1" Width="60px" CssClass="form-control form-control-sm" TextMode="Number" min="1" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField>
-                                <ItemTemplate>
-                                    <asp:Button ID="btnAgregar" runat="server" 
-                                                CommandName="AgregarProducto" 
-                                                CommandArgument='<%# Eval("Id") %>'
-                                                CssClass="btn btn-sm btn-success" 
-                                                Text="Agregar" 
-                                                OnClick="btnAgregar_Click" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
-                </div>
-                <div class="modal-footer">
-                </div>
+   
+<div class="modal fade" id="modalProductos" tabindex="-1" aria-labelledby="modalProductosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalProductosLabel">
+                    <i class="bi bi-box-seam me-2"></i>Seleccionar Producto
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <asp:UpdatePanel ID="upProductos" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <div class="mb-3">
+                            <asp:TextBox ID="txtBuscarProducto" runat="server" CssClass="form-control" 
+                                         placeholder="Buscar producto..." 
+                                         OnTextChanged="txtBuscarProducto_TextChanged" 
+                                         AutoPostBack="true" />
+                        </div>
+                        <asp:GridView ID="gvProductos" runat="server" AutoGenerateColumns="False" 
+                                      CssClass="table table-bordered table-hover" 
+                                      DataKeyNames="Id">
+                            <Columns>
+                                <asp:BoundField DataField="Id" HeaderText="ID" Visible="false" />
+                                <asp:BoundField DataField="Nombre" HeaderText="Producto" />
+                                <asp:BoundField DataField="Precio" HeaderText="Precio" DataFormatString="{0:C2}" />
+                                <asp:TemplateField HeaderText="Cantidad">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="txtCantidad" runat="server" Text="1" Width="60px" 
+                                                     CssClass="form-control form-control-sm" TextMode="Number" min="1" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnAgregar" runat="server" 
+                                                    CommandName="AgregarProducto" 
+                                                    CommandArgument='<%# Eval("Id") %>'
+                                                    CssClass="btn btn-sm btn-success" 
+                                                    Text="Agregar" 
+                                                    OnClick="btnAgregar_Click" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="txtBuscarProducto" EventName="TextChanged" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
     </div>
+</div>
 
     <script type="text/javascript">
         function abrirModalProductos(e) {

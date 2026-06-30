@@ -857,13 +857,13 @@ BEGIN
         c.nombre AS nombre_cliente,
         c.apellido AS apellido_cliente,
         v.id_usuario,
-        u.nombre AS nombre_usuario,  -- <-- NUEVO CAMPO
+        u.nombre AS nombre_usuario,
         v.total,
         v.numero_factura,
         v.activo
     FROM VENTAS v
     INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
-    INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario  -- <-- NUEVO JOIN
+    INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario
     ORDER BY v.id_venta DESC;
 END
 GO
@@ -922,7 +922,8 @@ BEGIN
         SELECT @stock_actual = stock_actual FROM PRODUCTOS WHERE id_producto = @id_producto;
         IF @stock_actual < @cantidad
         BEGIN
-            RAISERROR('Stock insuficiente para el producto.', 16, 1);
+            -- CORREGIDO: uso de formato con parámetro en RAISERROR
+            RAISERROR('Stock insuficiente para el producto. Stock disponible: %d', 16, 1, @stock_actual);
             ROLLBACK TRANSACTION;
             RETURN;
         END
@@ -931,7 +932,7 @@ BEGIN
         INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal)
         VALUES (@id_venta, @id_producto, @cantidad, @precio_unitario, @cantidad * @precio_unitario);
 
-        -- Descontar stock
+        -- Descontar stock del producto
         UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad WHERE id_producto = @id_producto;
 
         -- Recalcular total de la venta
@@ -948,9 +949,7 @@ BEGIN
 END
 GO
 
--- ============================================================
---  ***** MODIFICADO PARA QUE DEVUELVA EL ID *****
--- ============================================================
+-- ========== VENTAS MODIFICAR ==========
 CREATE OR ALTER PROCEDURE [dbo].[storedModificarVenta]
     @id_venta INT,
     @id_cliente INT,
@@ -971,14 +970,11 @@ BEGIN
         id_usuario = @id_usuario
     WHERE id_venta = @id_venta;
 
-    -- Esto permite que el C# use ejecutarEscalar() y obtenga el ID
     SELECT @id_venta AS id_venta;
 END
 GO
 
--- ============================================================
---  ***** REEMPLAZADO PARA QUE ACEPTE LOS PARÁMETROS DE C# *****
--- ============================================================
+-- Modificar detalle de venta (actualiza stock y total)
 CREATE OR ALTER PROCEDURE [dbo].[storedModificarVentaDetalle]
     @id_venta INT,
     @id_producto INT,
@@ -1015,7 +1011,8 @@ BEGIN
         BEGIN
             -- Revertir reposición
             UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad_antigua WHERE id_producto = @id_producto;
-            RAISERROR('Stock insuficiente para la nueva cantidad.', 16, 1);
+            -- CORREGIDO: uso de formato con parámetro en RAISERROR
+            RAISERROR('Stock insuficiente para la nueva cantidad. Stock disponible: %d', 16, 1, @stock_actual);
             ROLLBACK TRANSACTION;
             RETURN;
         END
@@ -1063,9 +1060,7 @@ BEGIN
 END
 GO
 
--- ============================================================
---  ***** NUEVO: Obtiene una venta por ID con JOIN a Cliente y Usuario *****
--- ============================================================
+-- Obtener una venta por ID
 CREATE OR ALTER PROCEDURE [dbo].[storeVerVenta]
     @id_venta INT
 AS
@@ -1089,9 +1084,7 @@ BEGIN
 END
 GO
 
--- ============================================================
---  ***** NUEVO: Obtiene los detalles de una venta con JOIN a Productos *****
--- ============================================================
+-- Obtener los detalles de una venta
 CREATE OR ALTER PROCEDURE [dbo].[storeDetalleVenta]
     @id_venta INT
 AS

@@ -203,9 +203,11 @@ namespace FlexComercio
                 else
                 {
                     VentasDatos.Agregar(venta);
+
                     MostrarMensaje("Venta registrada con éxito.", "success");
                 }
 
+                CargarProductos();
                 LimpiarFormulario();
             }
             catch (Exception ex)
@@ -267,6 +269,26 @@ namespace FlexComercio
 
             // Cambiar el texto del botón (opcional, si tienes un botón guardar)
             // btnRegistrar.Text = "Actualizar Venta";
+        }
+
+        protected void txtBuscarProducto_TextChanged(object sender, EventArgs e)
+        {
+            List<Dominio.Producto> productos = ProductoDatos.Listar().Where(c => c.Activo && c.StockActual > 0).ToList();
+            string filtro = txtBuscarProducto.Text.Trim();
+            List<Dominio.Producto> filtrados = productos;
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                filtrados = productos.Where(p => p.Nombre.ToLower().Contains(filtro.ToLower()))
+                       .ToList();
+
+
+              
+            }
+
+
+            gvProductos.DataSource = filtrados;
+            gvProductos.DataBind();
         }
     }
 }

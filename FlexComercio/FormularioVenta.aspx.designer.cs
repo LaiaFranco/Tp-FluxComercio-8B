@@ -69,6 +69,15 @@ namespace FlexComercio
         protected global::System.Web.UI.WebControls.Button btnAgregarProducto;
 
         /// <summary>
+        /// Control upDetalles.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upDetalles;
+
+        /// <summary>
         /// Control pnlDetalles.
         /// </summary>
         /// <remarks>
@@ -139,5 +148,14 @@ namespace FlexComercio
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvProductos;
+
+        /// <summary>
+        /// Control lblErrorStock.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorStock;
     }
 }

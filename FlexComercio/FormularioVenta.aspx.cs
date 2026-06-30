@@ -35,7 +35,7 @@ namespace FlexComercio
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)  
+            if (!IsPostBack)
             {
                 CargarClientes();
                 CargarProductos();
@@ -56,7 +56,6 @@ namespace FlexComercio
                 }
             }
         }
-
 
         private void CargarClientes()
         {
@@ -90,11 +89,15 @@ namespace FlexComercio
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            // Ocultar mensaje de error previo
+            lblErrorStock.Visible = false;
+
             Button btn = (Button)sender;
             int id = Convert.ToInt32(btn.CommandArgument);
             GridViewRow row = (GridViewRow)btn.NamingContainer;
             TextBox txtCantidad = (TextBox)row.FindControl("txtCantidad");
             int cantidad = Convert.ToInt32(txtCantidad.Text);
+
             if (cantidad <= 0) cantidad = 1;
 
             List<Dominio.Producto> productos = Session["Productos"] as List<Dominio.Producto>;
@@ -105,22 +108,35 @@ namespace FlexComercio
             }
 
             Dominio.Producto producto = productos.FirstOrDefault(p => p.Id == id);
-            producto.Id = id;
             if (producto == null) return;
+
+            // ========== VALIDACIÓN DE STOCK ==========
+            int stockDisponible = producto.StockActual;
+            var existente = ListaDetalles.FirstOrDefault(d => d.Producto.Id == id);
+            int cantidadActualEnDetalle = existente != null ? existente.Cantidad : 0;
+            int cantidadTotalSolicitada = cantidadActualEnDetalle + cantidad;
+
+            if (cantidadTotalSolicitada > stockDisponible)
+            {
+                lblErrorStock.Text = $"Stock insuficiente. Solo hay {stockDisponible} unidad(es) disponible(s).";
+                lblErrorStock.Visible = true;
+                // Refrescamos el panel del modal para mostrar el error
+                upProductos.Update();
+                return;
+            }
+            // =========================================
 
             float precioUnitario = (float)producto.Precio;
             float subtotal = cantidad * precioUnitario;
 
             DetalleVenta detalle = new DetalleVenta
             {
-
                 Producto = producto,
                 Cantidad = cantidad,
                 PrecioUnitario = precioUnitario,
                 Subtotal = subtotal
             };
 
-            var existente = ListaDetalles.FirstOrDefault(d => d.Producto.Id == id);
             if (existente != null)
             {
                 existente.Cantidad += cantidad;
@@ -133,6 +149,11 @@ namespace FlexComercio
 
             Session["listaDetalles"] = ListaDetalles;
             CargarDetallesGvProductos();
+
+            // Actualizar el panel de detalles (fuera del modal)
+            upDetalles.Update();
+            // También actualizar el panel del modal (por si se modificó la tabla de productos, aunque no sea necesario)
+            upProductos.Update();
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
@@ -145,6 +166,8 @@ namespace FlexComercio
                 ListaDetalles.Remove(itemAEliminar);
                 Session["listaDetalles"] = ListaDetalles;
                 CargarDetallesGvProductos();
+
+                upDetalles.Update();
             }
         }
 
@@ -192,7 +215,6 @@ namespace FlexComercio
 
             try
             {
-                // Verificar si hay un ID en sesión (modo edición)
                 if (Session["idVenta"] != null)
                 {
                     venta.Id = Convert.ToInt32(Session["idVenta"]);
@@ -203,7 +225,6 @@ namespace FlexComercio
                 else
                 {
                     VentasDatos.Agregar(venta);
-
                     MostrarMensaje("Venta registrada con éxito.", "success");
                 }
 
@@ -215,8 +236,6 @@ namespace FlexComercio
                 MostrarMensaje("Error al procesar la venta: " + ex.Message, "danger");
             }
         }
-
-        // ===== NUEVOS MÉTODOS =====
 
         private void MostrarMensaje(string texto, string tipo)
         {
@@ -246,29 +265,22 @@ namespace FlexComercio
         protected void btnLimpiar_Click(object sender, EventArgs e)
         {
             LimpiarFormulario();
-            MostrarMensaje("", ""); // oculta cualquier mensaje
+            MostrarMensaje("", "");
+            upDetalles.Update();
         }
-
 
         private void CargarCampos(int idVenta)
         {
             Venta venta = VentasDatos.VerVenta(idVenta);
-
             if (venta == null) return;
 
-            // Cargar cliente
             ddlCliente.SelectedValue = venta.Cliente.Id.ToString();
-
-            // Cargar fecha
             txtFecha.Text = venta.Fecha.ToString("yyyy-MM-dd");
 
-            // Cargar detalles en la sesión
             List<DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
             Session["listaDetalles"] = detalles;
             CargarDetallesGvProductos();
-
-            // Cambiar el texto del botón (opcional, si tienes un botón guardar)
-            // btnRegistrar.Text = "Actualizar Venta";
+            upDetalles.Update();
         }
 
         protected void txtBuscarProducto_TextChanged(object sender, EventArgs e)
@@ -279,13 +291,8 @@ namespace FlexComercio
 
             if (!string.IsNullOrEmpty(filtro))
             {
-                filtrados = productos.Where(p => p.Nombre.ToLower().Contains(filtro.ToLower()))
-                       .ToList();
-
-
-              
+                filtrados = productos.Where(p => p.Nombre.ToLower().Contains(filtro.ToLower())).ToList();
             }
-
 
             gvProductos.DataSource = filtrados;
             gvProductos.DataBind();

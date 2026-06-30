@@ -16,6 +16,48 @@
         </p>
 
     </div>
+  
+        <!-- Buscador y filtro -->
+        <div class="card-header bg-white border-bottom p-4">
+            <div class="row g-3">
+
+                <!-- Buscador -->
+                <div class="col-md-8">
+                    <div class="input-group">
+
+                        <span class="input-group-text bg-white border-end-0 rounded-start-4">
+                            <i class="bi bi-search text-secondary fs-4"></i>
+                        </span>
+
+                        <asp:TextBox
+                            ID="txtBuscar"
+                            runat="server"
+                            CssClass="form-control border-start-0 rounded-end-4 py-3"
+                            placeholder="Buscar marcas o categorías..."
+                            AutoPostBack="true"
+                            OnTextChanged="txtBuscar_TextChanged" />
+
+                    </div>
+                </div>
+
+                <!-- Filtro -->
+                <div class="col-md-4">
+                    <asp:DropDownList
+                        ID="ddlFiltro"
+                        runat="server"
+                        CssClass="form-select py-3"
+                        AutoPostBack="true"
+                        OnSelectedIndexChanged="ddlFiltro_SelectedIndexChanged">
+
+                        <asp:ListItem Text="Mostrar todo" Value="Todos" Selected="True" />
+                        <asp:ListItem Text="Solo Marcas" Value="Marca" />
+                        <asp:ListItem Text="Solo Categorías" Value="Categoria" />
+
+                    </asp:DropDownList>
+                </div>
+
+            </div>
+        </div>
 
     <!-- ================= MARCAS ================= -->
     <div class="card shadow-sm border-0 rounded-4 mb-5">
@@ -42,6 +84,7 @@
                 OnClick="btnNuevaMarca_Click" />
 
         </div>
+        
 
         <!-- GRID MARCAS -->
         <div class="container-fluid mt-4">

@@ -65,5 +65,28 @@ namespace FlexComercio
             Session["productoSeleccionado"] = producto;
             Response.Redirect("AgregarProducto.aspx");
         }
+
+        protected void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = txtBuscar.Text.Trim().ToUpper();
+
+            ProductoNegocio negocio = new ProductoNegocio();
+            List<Dominio.Producto> lista = negocio.Listar();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                lista = lista.Where(p =>
+                    p.Nombre.ToUpper().Contains(filtro) ||
+                    p.Descripcion.ToUpper().Contains(filtro) ||
+                    p.Marca.Nombre.ToUpper().Contains(filtro) ||
+                    p.Categoria.Nombre.ToUpper().Contains(filtro) ||
+                    p.Proveedor.Nombre.ToUpper().Contains(filtro)
+                ).ToList();
+            }
+
+            dgvProductos.DataSource = lista;
+            dgvProductos.DataBind();
+        }
+
     }
 }

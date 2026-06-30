@@ -56,6 +56,28 @@ namespace FlexComercio
         {
 
         }
+
+        protected void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = txtBuscar.Text.Trim();
+
+            ProveedorNegocio negocio = new ProveedorNegocio();
+
+            List<Dominio.Proveedor> lista = negocio.Listar();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                lista = lista.Where(p =>
+                    p.Nombre.ToUpper().Contains(filtro.ToUpper()) ||
+                    p.Email.ToUpper().Contains(filtro.ToUpper()) ||
+                    p.Cuil.ToUpper().Contains(filtro.ToUpper())
+                ).ToList();
+            }
+
+            dgvProveedores.DataSource = lista;
+            dgvProveedores.DataBind();
+        }
+
     }
 
 }

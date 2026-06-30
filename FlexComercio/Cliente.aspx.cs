@@ -76,6 +76,28 @@ namespace FlexComercio
 
             Response.Redirect("FormularioCliente.aspx");
         }
+
+        protected void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = txtBuscar.Text.Trim();
+
+            ClienteNegocio negocio = new ClienteNegocio();
+
+            List < Dominio. Cliente> lista = negocio.Listar();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                lista = lista.Where(x =>
+                    x.Nombre.ToUpper().Contains(filtro.ToUpper()) ||
+                    x.Apellido.ToUpper().Contains(filtro.ToUpper()) ||
+                    x.Email.ToUpper().Contains(filtro.ToUpper()) ||
+                    x.Dni.ToString().Contains(filtro)
+                ).ToList();
+            }
+
+            dgvClientes.DataSource = lista;
+            dgvClientes.DataBind();
+        }
     }
    
 

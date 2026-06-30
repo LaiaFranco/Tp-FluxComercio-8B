@@ -21,16 +21,23 @@
     <div class="card shadow-sm border-0 rounded-4">
 
         <!-- Buscador -->
-        <div class="card-header bg-white border-bottom p-4">
-            <div class="input-group">
-                <span class="input-group-text bg-white border-end-0 rounded-start-4">
-                    <i class="bi bi-search text-secondary fs-4"></i>
-                </span>
-                <input type="text"
-                       class="form-control border-start-0 rounded-end-4 py-3"
-                       placeholder="Buscar por nombre, email o CUIT..." />
+            <div class="card-header bg-white border-bottom p-4">
+                <div class="input-group">
+
+                    <span class="input-group-text bg-white border-end-0 rounded-start-4">
+                        <i class="bi bi-search text-secondary fs-4"></i>
+                    </span>
+
+                    <asp:TextBox
+                        ID="txtBuscar"
+                        runat="server"
+                        CssClass="form-control border-start-0 rounded-end-4 py-3"
+                        placeholder="Buscar por nombre, email o CUIT..."
+                        AutoPostBack="true"
+                        OnTextChanged="txtBuscar_TextChanged" />
+
+                </div>
             </div>
-        </div>
 
         <!-- Lista Proveedores (MISMO ESTILO CLIENTES) -->
         <div class="container-fluid mt-4">

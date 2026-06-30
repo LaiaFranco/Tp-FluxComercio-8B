@@ -94,5 +94,62 @@ namespace FlexComercio
             Session["categoriaSeleccionada"] = categoria;
             Response.Redirect("EliminarCategoria.aspx");
         }
+
+        protected void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            AplicarFiltros();
+        }
+
+        protected void ddlFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AplicarFiltros();
+        }
+
+        private void AplicarFiltros()
+        {
+            string texto = txtBuscar.Text.Trim().ToUpper();
+
+            List<Marca> marcas = (List<Marca>)Session["listaMarcas"];
+            List<Categoria> categorias = (List<Categoria>)Session["listaCategorias"];
+
+            // Filtrar por texto
+            if (!string.IsNullOrEmpty(texto))
+            {
+                marcas = marcas.Where(x =>
+                    x.Nombre.ToUpper().Contains(texto) ||
+                    x.Descripcion.ToUpper().Contains(texto)).ToList();
+
+                categorias = categorias.Where(x =>
+                    x.Nombre.ToUpper().Contains(texto) ||
+                    x.Descripcion.ToUpper().Contains(texto)).ToList();
+            }
+
+            // Mostrar según el ddl
+            switch (ddlFiltro.SelectedValue)
+            {
+                case "Marca":
+                    dgvMarcas.Visible = true;
+                    dgvCategorias.Visible = false;
+                    break;
+
+                case "Categoria":
+                    dgvMarcas.Visible = false;
+                    dgvCategorias.Visible = true;
+                    break;
+
+                default:
+                    dgvMarcas.Visible = true;
+                    dgvCategorias.Visible = true;
+                    break;
+            }
+
+            dgvMarcas.DataSource = marcas;
+            dgvMarcas.DataBind();
+
+            dgvCategorias.DataSource = categorias;
+            dgvCategorias.DataBind();
+        }
+
+
     }
 }

@@ -3,134 +3,201 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4" style="min-height: 100vh; background-color: #ffffff; padding: 20px;">
+
     <div class="row justify-content-center">
-        <div class="col-12 col-xl-10">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-lima text-black rounded-top-4" style="background-color: #bfff00 !important; border-bottom: 3px solid #9acd32;">
-                    <h4 class="mb-0 fw-bold">
-                        <i class="bi bi-person-plus me-2"></i>
-                        <asp:Label ID="lblTitulo" runat="server" Text="Registro de Cliente" />
-                    </h4>
-                </div>
-                <div class="card-body p-4 p-lg-5">
 
-                    <asp:Label ID="lblMensaje" runat="server" CssClass="alert alert-info w-100" Visible="false" />
+        <div class="col-md-8 col-lg-6">
 
-                    <!-- ========== PANEL DE CONFIRMACIÓN PARA ELIMINAR ========== -->
-                    <div id="divConfirmarEliminar" runat="server" visible="false">
-                        <div class="card p-4 border-0 shadow-sm">
-                            <h3 class="text-danger mb-3">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Cliente
-                            </h3>
-                            <p class="fs-5">¿Estás seguro de que deseas eliminar este cliente?</p>
-                            <hr />
-                            <dl class="row mt-3">
-                                <dt class="col-sm-3 fw-bold">Nombre</dt>
-                                <dd class="col-sm-9"><asp:Label ID="lblConfirmNombre" runat="server" CssClass="fw-semibold" /></dd>
+            <div style="background-color: #ffffff; border-radius: 10px; padding: 30px;">
 
-                                <dt class="col-sm-3 fw-bold">Apellido</dt>
-                                <dd class="col-sm-9"><asp:Label ID="lblConfirmApellido" runat="server" CssClass="fw-semibold" /></dd>
+                <!-- TITULO -->
+                <h2 class="mb-4"
+                    style="color: #1a1a1a; border-bottom: 2px solid #32CD32; padding-bottom: 10px; font-weight: 600;">
+                    <asp:Label ID="lblTitulo" runat="server" Text="Registro de Cliente" />
+                </h2>
 
-                                <dt class="col-sm-3 fw-bold">DNI</dt>
-                                <dd class="col-sm-9"><asp:Label ID="lblConfirmDNI" runat="server" CssClass="fw-semibold" /></dd>
+                <asp:Label ID="lblMensaje" runat="server" CssClass="alert alert-info w-100" Visible="false" />
 
-                                <dt class="col-sm-3 fw-bold">Email</dt>
-                                <dd class="col-sm-9"><asp:Label ID="lblConfirmEmail" runat="server" CssClass="fw-semibold" /></dd>
+                <!-- ========== PANEL ELIMINAR ========== -->
+                <div id="divConfirmarEliminar" runat="server" visible="false">
 
-                                <dt class="col-sm-3 fw-bold">Teléfono</dt>
-                                <dd class="col-sm-9"><asp:Label ID="lblConfirmTelefono" runat="server" CssClass="fw-semibold" /></dd>
+                    <div class="card p-4 border-0 shadow-sm">
 
-                                <dt class="col-sm-3 fw-bold">Dirección</dt>
-                                <dd class="col-sm-9"><asp:Label ID="lblConfirmDireccion" runat="server" CssClass="fw-semibold" /></dd>
-                            </dl>
-                            <div class="d-flex gap-3 mt-4">
-                                <asp:Button ID="btnEliminarConfirm" runat="server" Text="Eliminar"
-                                    CssClass="btn btn-danger btn-lg rounded-pill px-5"
-                                    OnClick="btnBorrar_Click" />
-                                <asp:Button ID="btnCancelarConfirm" runat="server" Text="Cancelar"
-                                    CssClass="btn btn-secondary btn-lg rounded-pill px-5"
-                                    OnClick="btnCancelar_Click" />
-                            </div>
-                        </div>
-                    </div>
+                        <h3 class="text-danger mb-3">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Cliente
+                        </h3>
 
-                    <!-- ========== FORMULARIO DE EDICIÓN / CREACIÓN ========== -->
-                    <div id="divFormulario" runat="server" visible="true">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="txtDNI" class="form-label fw-semibold">
-                                        DNI <span class="text-danger">*</span>
-                                    </label>
-                                    <asp:TextBox ID="txtDNI" runat="server" CssClass="form-control form-control-lg rounded-pill" placeholder="Ej: 12345678" MaxLength="20"  />
-                                    <asp:RequiredFieldValidator ID="rfvDNI" runat="server"
-                                        ControlToValidate="txtDNI"
-                                        ErrorMessage="El DNI es obligatorio."
-                                        CssClass="text-danger small"
-                                        Display="Dynamic"  />
-                                    <asp:RegularExpressionValidator ID="revDNI" runat="server"
-                                        ControlToValidate="txtDNI"
-                                        ValidationExpression="^\d{7,8}$"
-                                        ErrorMessage="Debe tener 7 u 8 dígitos numéricos."
-                                        CssClass="text-danger small"
-                                        Display="Dynamic"  />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="txtNombre" class="form-label fw-semibold">
-                                        Nombre <span class="text-danger">*</span>
-                                    </label>
-                                    <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control form-control-lg rounded-pill" placeholder="Ingrese su nombre" MaxLength="255" />
-                                    <asp:RequiredFieldValidator ID="rfvNombre" runat="server"
-                                        ControlToValidate="txtNombre"
-                                        ErrorMessage="El nombre es obligatorio."
-                                        CssClass="text-danger small"
-                                        Display="Dynamic" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="txtApellido" class="form-label fw-semibold">Apellido</label>
-                                    <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control form-control-lg rounded-pill" placeholder="Ingrese su apellido" MaxLength="255" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="txtEmail" class="form-label fw-semibold">Email</label>
-                                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control form-control-lg rounded-pill" placeholder="ejemplo@correo.com" MaxLength="255" TextMode="Email" />
-                                    <asp:RegularExpressionValidator ID="revEmail" runat="server"
-                                        ControlToValidate="txtEmail"
-                                        ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                                        ErrorMessage="Ingrese un correo electrónico válido."
-                                        CssClass="text-danger small"
-                                        Display="Dynamic" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="txtTelefono" class="form-label fw-semibold">Teléfono</label>
-                                    <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control form-control-lg rounded-pill" placeholder="Ej: 555-123456" MaxLength="255" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="txtDireccion" class="form-label fw-semibold">Dirección</label>
-                                    <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control form-control-lg rounded-pill" placeholder="Calle, número, ciudad" MaxLength="255" />
-                                </div>
-                            </div>
+                        <p class="fs-5">¿Estás seguro de que deseas eliminar este cliente?</p>
+
+                        <hr />
+
+                        <dl class="row mt-3">
+
+                            <dt class="col-sm-3 fw-bold">Nombre</dt>
+                            <dd class="col-sm-9">
+                                <asp:Label ID="lblConfirmNombre" runat="server" CssClass="fw-semibold" />
+                            </dd>
+
+                            <dt class="col-sm-3 fw-bold">Apellido</dt>
+                            <dd class="col-sm-9">
+                                <asp:Label ID="lblConfirmApellido" runat="server" CssClass="fw-semibold" />
+                            </dd>
+
+                            <dt class="col-sm-3 fw-bold">DNI</dt>
+                            <dd class="col-sm-9">
+                                <asp:Label ID="lblConfirmDNI" runat="server" CssClass="fw-semibold" />
+                            </dd>
+
+                            <dt class="col-sm-3 fw-bold">Email</dt>
+                            <dd class="col-sm-9">
+                                <asp:Label ID="lblConfirmEmail" runat="server" CssClass="fw-semibold" />
+                            </dd>
+
+                            <dt class="col-sm-3 fw-bold">Teléfono</dt>
+                            <dd class="col-sm-9">
+                                <asp:Label ID="lblConfirmTelefono" runat="server" CssClass="fw-semibold" />
+                            </dd>
+
+                            <dt class="col-sm-3 fw-bold">Dirección</dt>
+                            <dd class="col-sm-9">
+                                <asp:Label ID="lblConfirmDireccion" runat="server" CssClass="fw-semibold" />
+                            </dd>
+
+                        </dl>
+
+                        <div class="d-flex gap-3 mt-4">
+
+                            <asp:Button ID="btnEliminarConfirm" runat="server"
+                                Text="Eliminar"
+                                CssClass="btn btn-danger btn-lg rounded-pill px-5"
+                                OnClick="btnBorrar_Click" />
+
+                            <asp:Button ID="btnCancelarConfirm" runat="server"
+                                Text="Cancelar"
+                                CssClass="btn btn-secondary btn-lg rounded-pill px-5"
+                                OnClick="btnCancelar_Click" />
+
                         </div>
 
-                        <asp:ValidationSummary ID="vsResumen" runat="server"
-                            CssClass="alert alert-danger mt-3"
-                            HeaderText="<strong>Por favor, corrija los siguientes errores:</strong>"
-                            DisplayMode="BulletList" />
-
-                        <div class="d-grid mt-4">
-                            <asp:Button ID="btnGuardar" runat="server" Text="Guardar Cliente"
-                                CssClass="btn btn-lg rounded-pill fw-bold text-black"
-                                style="background-color: #bfff00; border: 2px solid #9acd32;"
-                                OnClick="btnGuardar_Click" />
-                        </div>
                     </div>
 
                 </div>
+
+                <!-- ========== FORMULARIO ========== -->
+                <div id="divFormulario" runat="server" visible="true">
+
+                    <!-- DNI -->
+                    <div class="mb-3">
+                        <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                            DNI *
+                        </label>
+
+                        <asp:TextBox ID="txtDNI" runat="server"
+                            CssClass="form-control"
+                            style="border-color:#dcdcdc; border-width:2px;" />
+
+                        <asp:RequiredFieldValidator runat="server"
+                            ControlToValidate="txtDNI"
+                            ErrorMessage="El DNI es obligatorio."
+                            CssClass="text-danger"
+                            Display="Dynamic" />
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="mb-3">
+                        <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                            Nombre *
+                        </label>
+
+                        <asp:TextBox ID="txtNombre" runat="server"
+                            CssClass="form-control"
+                            style="border-color:#dcdcdc; border-width:2px;" />
+
+                        <asp:RequiredFieldValidator runat="server"
+                            ControlToValidate="txtNombre"
+                            ErrorMessage="El nombre es obligatorio."
+                            CssClass="text-danger"
+                            Display="Dynamic" />
+                    </div>
+
+                    <!-- Apellido -->
+                    <div class="mb-3">
+                        <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                            Apellido
+                        </label>
+
+                        <asp:TextBox ID="txtApellido" runat="server"
+                            CssClass="form-control"
+                            style="border-color:#dcdcdc; border-width:2px;" />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                            Email
+                        </label>
+
+                        <asp:TextBox ID="txtEmail" runat="server"
+                            CssClass="form-control"
+                            TextMode="Email"
+                            style="border-color:#dcdcdc; border-width:2px;" />
+
+                        <asp:RegularExpressionValidator runat="server"
+                            ControlToValidate="txtEmail"
+                            ValidationExpression="^[\w\.-]+@[\w\.-]+\.\w+$"
+                            ErrorMessage="Email inválido."
+                            CssClass="text-danger"
+                            Display="Dynamic" />
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="mb-3">
+                        <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                            Teléfono
+                        </label>
+
+                        <asp:TextBox ID="txtTelefono" runat="server"
+                            CssClass="form-control"
+                            style="border-color:#dcdcdc; border-width:2px;" />
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="mb-3">
+                        <label class="form-label" style="color:#1a1a1a; font-weight:500;">
+                            Dirección
+                        </label>
+
+                        <asp:TextBox ID="txtDireccion" runat="server"
+                            CssClass="form-control"
+                            style="border-color:#dcdcdc; border-width:2px;" />
+                    </div>
+
+                    <!-- BOTONES -->
+                    <div class="d-flex gap-2">
+
+                        <asp:Button ID="btnGuardar" runat="server"
+                            Text="Guardar Cliente"
+                            CssClass="btn"
+                            style="background-color:#32CD32; color:#fff; border:none; padding:10px 25px; font-weight:600;"
+                            OnClick="btnGuardar_Click" />
+
+                        <a href="javascript:history.back()"
+                            class="btn"
+                            style="background-color:#f5f5f5; color:#1a1a1a; border:2px solid #dcdcdc; padding:10px 25px;">
+                            Cancelar
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
 <style>

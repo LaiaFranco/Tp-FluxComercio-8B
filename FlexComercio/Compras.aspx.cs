@@ -27,5 +27,10 @@ namespace FlexComercio
             string id = dgvCompras.SelectedDataKey.Value.ToString();
             Response.Redirect("CompraDetalle.aspx?id=" + id);
         }
+
+        protected void btnNuevaCompra_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AgregarCompra.aspx"); 
+        }
     }
 }

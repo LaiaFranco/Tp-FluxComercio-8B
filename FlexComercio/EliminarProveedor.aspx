@@ -5,107 +5,68 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="container mt-5">
+   <div class="container-fluid mt-4" style="min-height: 100vh; background-color: #ffffff; padding: 20px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
 
-        <div class="row justify-content-center">
+            <div style="background-color: #ffffff; border-radius: 10px; padding: 30px;">
 
-            <div class="col-md-8 col-lg-6">
+                <div id="divConfirmarEliminar" runat="server" visible="true">
 
-                <div class="card shadow border-0 rounded-4">
+                    <div class="card p-4 border-0 shadow-sm">
 
-                    <div class="card-header bg-danger text-white rounded-top-4">
-                        <h3 class="mb-0">Eliminar Proveedor</h3>
-                    </div>
+                        <h3 class="text-danger mb-3">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Proveedor
+                        </h3>
 
-                    <div class="card-body p-4">
+                        <p class="fs-5">¿Estás seguro de que deseas eliminar este proveedor?</p>
 
-                        <div class="alert alert-warning">
-                            ¿Estás seguro que querés eliminar este proveedor?
-                        </div>
+                        <hr />
 
-                        <!-- CUIL -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">CUIL</label>
+                        <dl class="row mt-3">
 
-                            <asp:TextBox
-                                ID="txtCuil"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
+                            <dt class="col-sm-3 fw-bold">CUIL</dt>
+                            <dd class="col-sm-9">
+                                <asp:TextBox ID="txtCuil" runat="server" CssClass="form-control" Enabled="false" />
+                            </dd>
 
-                        <!-- Nombre -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Nombre</label>
+                            <dt class="col-sm-3 fw-bold">Nombre</dt>
+                            <dd class="col-sm-9">
+                                <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" Enabled="false" />
+                            </dd>
 
-                            <asp:TextBox
-                                ID="txtNombre"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
+                            <dt class="col-sm-3 fw-bold">Email</dt>
+                            <dd class="col-sm-9">
+                                <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" Enabled="false" />
+                            </dd>
 
-                        <!-- Email -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Email</label>
+                            <dt class="col-sm-3 fw-bold">Teléfono</dt>
+                            <dd class="col-sm-9">
+                                <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" Enabled="false" />
+                            </dd>
 
-                            <asp:TextBox
-                                ID="txtEmail"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
+                            <dt class="col-sm-3 fw-bold">Dirección</dt>
+                            <dd class="col-sm-9">
+                                <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control" Enabled="false" />
+                            </dd>
 
-                        <!-- Teléfono -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Teléfono</label>
+                            <dt class="col-sm-3 fw-bold">Estado</dt>
+                            <dd class="col-sm-9">
+                                <asp:TextBox ID="txtEstado" runat="server" CssClass="form-control" Enabled="false" />
+                            </dd>
 
-                            <asp:TextBox
-                                ID="txtTelefono"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
+                        </dl>
 
-                        <!-- Dirección -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Dirección</label>
-
-                            <asp:TextBox
-                                ID="txtDireccion"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
-
-                        <!-- Estado -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Estado</label>
-
-                            <asp:TextBox
-                                ID="txtEstado"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
-
-                        <!-- Botones -->
-                        <div class="d-flex justify-content-end">
-
-                            <asp:Button
-                                ID="btnEliminar"
-                                runat="server"
+                        <div class="d-flex gap-3 mt-4">
+                            <asp:Button ID="btnEliminar" runat="server"
                                 Text="Eliminar"
-                                CssClass="btn btn-danger rounded-pill px-4"
+                                CssClass="btn btn-danger btn-lg rounded-pill px-5"
                                 OnClick="btnEliminar_Click" />
 
-                            <asp:Button
-                                ID="btnCancelar"
-                                runat="server"
+                            <asp:Button ID="btnCancelar" runat="server"
                                 Text="Cancelar"
-                                CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
+                                CssClass="btn btn-secondary btn-lg rounded-pill px-5"
                                 OnClick="btnCancelar_Click" />
-
                         </div>
 
                     </div>
@@ -115,7 +76,7 @@
             </div>
 
         </div>
-
     </div>
+</div>
 
 </asp:Content>

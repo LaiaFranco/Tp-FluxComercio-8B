@@ -139,28 +139,31 @@
 </style>
 
     <!-- ========== MODAL DE CONFIRMACIÓN ========== -->
-    <div class="modal fade" id="modalConfirmar" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmar eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="fs-5">¿Está seguro de que desea eliminar este cliente?</p>
-                    <p class="text-muted">Esta acción no se puede deshacer.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <asp:Button ID="btnConfirmarEliminar" runat="server"
-                        Text="Aceptar"
-                        CssClass="btn btn-danger"
-                        OnClick="btnConfirmarEliminar_Click" />
-                </div>
-            </div>
-        </div>
-    </div>s
+    <div id="divConfirmarEliminar" runat="server" visible="false">
+    <div class="card p-4 border-0 shadow-sm">
+        <h3 class="text-danger mb-3">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Cliente
+        </h3>
 
+        <p class="fs-5">¿Está seguro de que desea eliminar este cliente?</p>
+        <p class="text-muted">Esta acción no se puede deshacer.</p>
+
+        <hr />
+
+        <div class="d-flex gap-3 mt-4">
+            <asp:Button ID="btnConfirmarEliminar" runat="server"
+                Text="Aceptar"
+                CssClass="btn btn-danger btn-lg rounded-pill px-5"
+                OnClick="btnConfirmarEliminar_Click" />
+
+            <button type="button"
+                class="btn btn-secondary btn-lg rounded-pill px-5"
+                onclick="history.back();">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
    
 <asp:HiddenField ID="hfClienteId" runat="server" Value="0" ClientIDMode="Static" />
 

@@ -2,89 +2,78 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-      <div class="container mt-5">
-
+     <div class="container mt-5">
     <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
 
-        <div class="col-md-8 col-lg-6">
+            <div class="card p-4 border-0 shadow-sm">
 
-            <div class="card shadow border-0 rounded-4">
+                <h3 class="text-danger mb-3">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Categoría
+                </h3>
 
-                <div class="card-header bg-danger text-white rounded-top-4">
-                    <h3 class="mb-0">Eliminar Categoria</h3>
-                </div>
+                <p class="fs-5">
+                    ¿Estás seguro de que deseas eliminar esta categoría?
+                </p>
 
-                <div class="card-body p-4">
+                <hr />
 
-                    <div class="alert alert-warning">
-                        ¿Estás seguro que querés desactivar esta categoria?
-                    </div>
+                <dl class="row mt-3">
 
-                    
-                    <!-- Nombre -->
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Nombre</label>
-
+                    <dt class="col-sm-3 fw-bold">Nombre</dt>
+                    <dd class="col-sm-9">
                         <asp:TextBox
                             ID="txtNombre"
                             runat="server"
                             CssClass="form-control"
                             Enabled="false" />
-                    </div>
+                    </dd>
 
-                    <!-- Descripción -->
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Descripción</label>
-
+                    <dt class="col-sm-3 fw-bold">Descripción</dt>
+                    <dd class="col-sm-9">
                         <asp:TextBox
                             ID="txtDescripcion"
                             runat="server"
                             CssClass="form-control"
                             TextMode="MultiLine"
-                            Rows="4"
+                            Rows="3"
                             Enabled="false" />
-                    </div>
+                    </dd>
 
-                    <!-- Estado -->
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Estado</label>
-
+                    <dt class="col-sm-3 fw-bold">Estado</dt>
+                    <dd class="col-sm-9">
                         <asp:TextBox
                             ID="txtEstado"
                             runat="server"
                             CssClass="form-control"
                             Enabled="false" />
-                    </div>
+                    </dd>
 
-                    <!-- Botones -->
-                    <div class="d-flex justify-content-end">
+                </dl>
 
-                        <asp:Button
-                            ID="btnEliminar"
-                            runat="server"
-                            Text="Eliminar"
-                            CssClass="btn btn-danger rounded-pill px-4" 
-                            OnClick="btnEliminar_Click"/>
+                <div class="d-flex gap-3 mt-4">
 
-                        <asp:Button
-                            ID="btnCancelar"
-                            runat="server"
-                            Text="Cancelar"
-                            CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
-                            PostBackUrl="~/MarcaYCategoria.aspx" 
-                            OnClick="btnCancelar_Click"
-                            />
+                    <asp:Button
+                        ID="btnEliminar"
+                        runat="server"
+                        Text="Eliminar"
+                        CssClass="btn btn-danger btn-lg rounded-pill px-5"
+                        OnClick="btnEliminar_Click" />
 
-                    </div>
+                    <asp:Button
+                        ID="btnCancelar"
+                        runat="server"
+                        Text="Cancelar"
+                        CssClass="btn btn-secondary btn-lg rounded-pill px-5"
+                        PostBackUrl="~/MarcaYCategoria.aspx"
+                        OnClick="btnCancelar_Click" />
 
                 </div>
 
             </div>
 
         </div>
-
     </div>
-
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </asp:Content>

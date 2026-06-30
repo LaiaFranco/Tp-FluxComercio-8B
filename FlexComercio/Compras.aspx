@@ -14,12 +14,14 @@
             </p>
         </div>
 
-        <button class="btn btn-dark btn-lg px-4 py-3 rounded-4">
-            <i class="bi bi-plus-lg me-2"></i>
-            Nueva Compra
-        </button>
+        <asp:Button
+        ID="btnNuevaCompra"
+        runat="server"
+        Text="Nueva Compra"
+        CssClass="btn btn-dark btn-lg px-4 py-3 rounded-4"
+        OnClick="btnNuevaCompra_Click" />
 
-    </div>
+        </div>
 
     <!-- CARD PRINCIPAL -->
     <div class="card shadow-sm border-0 rounded-4">

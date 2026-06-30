@@ -56,5 +56,13 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public List<Producto> ListarPorProveedor(int idProveedor)
+        {
+            ProductoNegocio negocio = new ProductoNegocio(); 
+            List<Producto> lista = negocio.Listar();
+
+            return lista.Where(p => p.Proveedor.Id == idProveedor).ToList();
+        }
     }
 }

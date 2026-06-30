@@ -2,89 +2,79 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-     <div class="container mt-5">
+    <div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
 
-        <div class="row justify-content-center">
+            <div class="card p-4 border-0 shadow-sm">
 
-            <div class="col-md-8 col-lg-6">
+                <h3 class="text-danger mb-3">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Marca
+                </h3>
 
-                <div class="card shadow border-0 rounded-4">
+                <p class="fs-5">
+                    ¿Estás seguro de que deseas eliminar esta marca?
+                </p>
 
-                    <div class="card-header bg-danger text-white rounded-top-4">
-                        <h3 class="mb-0">Eliminar Marca</h3>
-                    </div>
+                <hr />
 
-                    <div class="card-body p-4">
+                <dl class="row mt-3">
 
-                        <div class="alert alert-warning">
-                            ¿Estás seguro que querés desactivar esta marca?
-                        </div>
+                    <dt class="col-sm-3 fw-bold">Nombre</dt>
+                    <dd class="col-sm-9">
+                        <asp:TextBox
+                            ID="txtNombre"
+                            runat="server"
+                            CssClass="form-control"
+                            Enabled="false" />
+                    </dd>
 
-                        
-                        <!-- Nombre -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Nombre</label>
+                    <dt class="col-sm-3 fw-bold">Descripción</dt>
+                    <dd class="col-sm-9">
+                        <asp:TextBox
+                            ID="txtDescripcion"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="MultiLine"
+                            Rows="3"
+                            Enabled="false" />
+                    </dd>
 
-                            <asp:TextBox
-                                ID="txtNombre"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
+                    <dt class="col-sm-3 fw-bold">Estado</dt>
+                    <dd class="col-sm-9">
+                        <asp:TextBox
+                            ID="txtEstado"
+                            runat="server"
+                            CssClass="form-control"
+                            Enabled="false" />
+                    </dd>
 
-                        <!-- Descripción -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Descripción</label>
+                </dl>
 
-                            <asp:TextBox
-                                ID="txtDescripcion"
-                                runat="server"
-                                CssClass="form-control"
-                                TextMode="MultiLine"
-                                Rows="4"
-                                Enabled="false" />
-                        </div>
+                <div class="d-flex gap-3 mt-4">
 
-                        <!-- Estado -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Estado</label>
+                    <asp:Button
+                        ID="btnEliminar"
+                        runat="server"
+                        Text="Eliminar"
+                        CssClass="btn btn-danger btn-lg rounded-pill px-5"
+                        OnClick="btnEliminar_Click" />
 
-                            <asp:TextBox
-                                ID="txtEstado"
-                                runat="server"
-                                CssClass="form-control"
-                                Enabled="false" />
-                        </div>
-
-                        <!-- Botones -->
-                        <div class="d-flex justify-content-end">
-
-                            <asp:Button
-                                ID="btnEliminar"
-                                runat="server"
-                                Text="Eliminar"
-                                CssClass="btn btn-danger rounded-pill px-4" 
-                                OnClick="btnEliminar_Click" />
-
-                            <asp:Button
-                                ID="btnCancelar"
-                                runat="server"
-                                Text="Cancelar"
-                                CssClass="btn btn-outline-secondary rounded-pill px-4 ms-2"
-                                PostBackUrl="~/MarcaYCategoria.aspx" 
-                                OnClick="btnCancelar_Click"/>
-
-                        </div>
-
-                    </div>
+                    <asp:Button
+                        ID="btnCancelar"
+                        runat="server"
+                        Text="Cancelar"
+                        CssClass="btn btn-secondary btn-lg rounded-pill px-5"
+                        PostBackUrl="~/MarcaYCategoria.aspx"
+                        OnClick="btnCancelar_Click" />
 
                 </div>
 
             </div>
 
         </div>
-
     </div>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </asp:Content>

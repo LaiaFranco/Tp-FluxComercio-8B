@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dominio;
 using negocio;
-
+using System.Data;
 
 namespace Negocio
 {
@@ -59,10 +59,63 @@ namespace Negocio
 
         public List<Producto> ListarPorProveedor(int idProveedor)
         {
-            ProductoNegocio negocio = new ProductoNegocio(); 
+            ProductoNegocio negocio = new ProductoNegocio();
             List<Producto> lista = negocio.Listar();
 
             return lista.Where(p => p.Proveedor.Id == idProveedor).ToList();
+        }
+
+        public int Agregar(Compra compra)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                DataTable detalles = new DataTable();
+
+                detalles.Columns.Add("id_producto", typeof(int));
+                detalles.Columns.Add("cantidad", typeof(int));
+                detalles.Columns.Add("precio_unitario", typeof(decimal));
+
+                foreach (DetalleCompra detalle in compra.Detalles)
+                {
+                    detalles.Rows.Add(
+                        detalle.Producto.Id,
+                        detalle.Cantidad,
+                        Math.Round((decimal)detalle.PrecioUnitario, 2)
+                    );
+                }
+
+                datos.setearProcedimiento("storedRegistrarCompra");
+
+                datos.setearParametro("@fecha", compra.Fecha);
+                datos.setearParametro(
+                    "@id_proveedor",
+                    compra.Proveedor.Id
+                );
+                datos.setearParametro(
+                    "@id_usuario",
+                    compra.Usuario.Id
+                );
+
+                datos.setearParametroTabla(
+                    "@detalles",
+                    detalles,
+                    "dbo.TipoDetalleCompra"
+                );
+
+                object resultado = datos.ejecutarAccionScalar();
+
+                return Convert.ToInt32(resultado);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
     }
 }

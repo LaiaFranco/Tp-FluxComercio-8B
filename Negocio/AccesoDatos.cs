@@ -88,6 +88,15 @@ namespace negocio
             comando.Parameters.AddWithValue(nombre, valor);
         }
 
+        public void setearParametroTabla( string nombre, DataTable tabla, string nombreTipo)
+        {
+            SqlParameter parametro =
+            comando.Parameters.Add(nombre, SqlDbType.Structured);
+
+            parametro.TypeName = nombreTipo;
+            parametro.Value = tabla;
+        }
+
         public void cerrarConexion()
         {
             if (lector != null)

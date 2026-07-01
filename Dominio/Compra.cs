@@ -14,5 +14,6 @@ namespace Dominio
         public decimal Total { get; set; }
         public Usuario Usuario { get; set; }
         public DetalleCompra DetalleCompra { get; set; }
+        public List<DetalleCompra> Detalles { get; set; }
     }
 }

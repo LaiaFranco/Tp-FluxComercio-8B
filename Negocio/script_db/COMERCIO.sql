@@ -1688,3 +1688,287 @@ GO
 
 -- (Opcional) Ejecutar para ver la ganancia estimada (se puede comentar)
 -- EXEC storedGananciaEstimadaVentas;
+
+
+
+/* =====================================================
+   1. RESTRICCIONES DE INTEGRIDAD
+   ===================================================== */
+USE COMERCIO_DB;
+GO
+
+ALTER TABLE COMPRA_DETALLES
+ADD CONSTRAINT CK_COMPRA_DETALLES_cantidad
+CHECK (cantidad > 0);
+GO
+
+ALTER TABLE COMPRA_DETALLES
+ADD CONSTRAINT CK_COMPRA_DETALLES_precio
+CHECK (precio_unitario >= 0);
+GO
+
+ALTER TABLE COMPRA_DETALLES
+ADD CONSTRAINT CK_COMPRA_DETALLES_subtotal
+CHECK (
+    subtotal >= 0
+    AND subtotal = cantidad * precio_unitario
+);
+GO
+
+ALTER TABLE COMPRA_DETALLES
+ADD CONSTRAINT UQ_COMPRA_DETALLES_compra_producto
+UNIQUE (id_compra, id_producto);
+GO
+
+ALTER TABLE COMPRAS
+ADD CONSTRAINT CK_COMPRAS_total
+CHECK (total >= 0);
+GO
+
+ALTER TABLE PRODUCTOS
+ADD CONSTRAINT CK_PRODUCTOS_stock_actual
+CHECK (stock_actual >= 0);
+GO
+
+/* =====================================================
+   2. TIPO TABLA PARA RECIBIR TODOS LOS PRODUCTOS
+   ===================================================== */
+
+CREATE TYPE dbo.TipoDetalleCompra AS TABLE
+(
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio_unitario DECIMAL(10,2) NOT NULL,
+
+    PRIMARY KEY (id_producto)
+);
+GO
+
+/* =====================================================
+   3. TRIGGER: ACTUALIZA STOCK Y TOTAL
+   ===================================================== */
+
+CREATE TRIGGER dbo.tr_CompraDetalle_AfterInsert
+ON dbo.COMPRA_DETALLES
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Aumentar el stock agrupando las cantidades insertadas
+    UPDATE P
+    SET P.stock_actual = P.stock_actual + X.cantidad_comprada
+    FROM PRODUCTOS P
+    INNER JOIN
+    (
+        SELECT
+            id_producto,
+            SUM(cantidad) AS cantidad_comprada
+        FROM inserted
+        GROUP BY id_producto
+    ) X
+        ON X.id_producto = P.id_producto;
+
+    -- Recalcular el total de las compras afectadas
+    UPDATE C
+    SET C.total = X.total_compra
+    FROM COMPRAS C
+    INNER JOIN
+    (
+        SELECT
+            CD.id_compra,
+            SUM(CD.subtotal) AS total_compra
+        FROM COMPRA_DETALLES CD
+        WHERE CD.id_compra IN
+        (
+            SELECT DISTINCT id_compra
+            FROM inserted
+        )
+        GROUP BY CD.id_compra
+    ) X
+        ON X.id_compra = C.id_compra;
+END;
+GO
+
+/* =====================================================
+   4. PROCEDIMIENTO PARA REGISTRAR LA COMPRA COMPLETA
+   ===================================================== */
+
+CREATE PROCEDURE dbo.storedRegistrarCompra
+    @fecha DATETIME = NULL,
+    @id_proveedor INT,
+    @id_usuario INT,
+    @detalles dbo.TipoDetalleCompra READONLY
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Si no se recibió una fecha, utilizar la actual
+        IF @fecha IS NULL
+            SET @fecha = GETDATE();
+
+        -- Validar proveedor
+        IF NOT EXISTS
+        (
+            SELECT 1
+            FROM PROVEEDORES
+            WHERE id_proveedor = @id_proveedor
+              AND activo = 1
+        )
+        BEGIN
+            RAISERROR(
+                'El proveedor no existe o está inactivo.',
+                16,
+                1
+            );
+        END;
+
+        -- Validar usuario comprador
+        IF NOT EXISTS
+        (
+            SELECT 1
+            FROM USUARIOS
+            WHERE id_usuario = @id_usuario
+              AND activo = 1
+        )
+        BEGIN
+            RAISERROR(
+                'El usuario no existe o está inactivo.',
+                16,
+                1
+            );
+        END;
+
+        -- La compra debe tener productos
+        IF NOT EXISTS (SELECT 1 FROM @detalles)
+        BEGIN
+            RAISERROR(
+                'La compra debe contener al menos un producto.',
+                16,
+                1
+            );
+        END;
+
+        -- Validar cantidades y precios
+        IF EXISTS
+        (
+            SELECT 1
+            FROM @detalles
+            WHERE cantidad <= 0
+               OR precio_unitario < 0
+        )
+        BEGIN
+            RAISERROR(
+                'Las cantidades deben ser mayores a cero y los precios no pueden ser negativos.',
+                16,
+                1
+            );
+        END;
+
+        -- Validar existencia y estado de los productos
+        IF EXISTS
+        (
+            SELECT 1
+            FROM @detalles D
+            LEFT JOIN PRODUCTOS P
+                ON P.id_producto = D.id_producto
+               AND P.activo = 1
+            WHERE P.id_producto IS NULL
+        )
+        BEGIN
+            RAISERROR(
+                'Uno o más productos no existen o están inactivos.',
+                16,
+                1
+            );
+        END;
+
+        -- Validar que los productos pertenezcan al proveedor
+        IF EXISTS
+        (
+            SELECT 1
+            FROM @detalles D
+            WHERE NOT EXISTS
+            (
+                SELECT 1
+                FROM PRODUCTO_PROVEEDOR PP
+                WHERE PP.id_producto = D.id_producto
+                  AND PP.id_proveedor = @id_proveedor
+            )
+        )
+        BEGIN
+            RAISERROR(
+                'Uno o más productos no pertenecen al proveedor seleccionado.',
+                16,
+                1
+            );
+        END;
+
+        -- Crear la cabecera con total inicial cero
+        INSERT INTO COMPRAS
+        (
+            fecha,
+            id_proveedor,
+            id_usuario,
+            total
+        )
+        VALUES
+        (
+            @fecha,
+            @id_proveedor,
+            @id_usuario,
+            0
+        );
+
+        DECLARE @id_compra INT;
+        SET @id_compra = SCOPE_IDENTITY();
+
+        -- Insertar todos los detalles.
+        -- El subtotal se calcula en la base.
+        INSERT INTO COMPRA_DETALLES
+        (
+            id_compra,
+            id_producto,
+            cantidad,
+            precio_unitario,
+            subtotal
+        )
+        SELECT
+            @id_compra,
+            id_producto,
+            cantidad,
+            precio_unitario,
+            cantidad * precio_unitario
+        FROM @detalles;
+
+        /*
+          Al insertar los detalles se ejecuta el trigger:
+          1. Incrementa el stock.
+          2. Recalcula el total.
+        */
+
+        COMMIT TRANSACTION;
+
+        -- Devolver los datos de la compra registrada
+        SELECT
+            C.id_compra,
+            C.fecha,
+            C.id_proveedor,
+            C.id_usuario,
+            C.total
+        FROM COMPRAS C
+        WHERE C.id_compra = @id_compra;
+    END TRY
+
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+
+        THROW;
+    END CATCH;
+END;
+GO

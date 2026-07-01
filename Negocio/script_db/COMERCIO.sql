@@ -1590,5 +1590,32 @@ BEGIN
 END
 GO
 
-exec storedListarProductos
+USE [COMERCIO_DB]
+GO
 
+CREATE PROCEDURE [dbo].[storedGananciaEstimadaVentas]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT CAST(
+        ISNULL(
+            SUM(
+                VD.cantidad
+                * VD.precio_unitario
+                * (P.porcentaje_ganancia / 100.00)
+            ),
+            0
+        )
+        AS DECIMAL(18, 2)
+    ) AS ganancia_estimada
+    FROM VENTAS V
+    INNER JOIN VENTA_DETALLES VD
+        ON VD.id_venta = V.id_venta
+    INNER JOIN PRODUCTOS P
+        ON P.id_producto = VD.id_producto
+    WHERE V.activo = 1;
+END
+GO
+
+EXEC storedGananciaEstimadaVentas

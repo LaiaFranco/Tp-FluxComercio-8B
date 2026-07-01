@@ -27,7 +27,9 @@
                         <i class="bi bi-cart3 fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
+                    <h1 class="fw-bold">
+                    <asp:Label ID="lblVentasDelDia" runat="server" Text="$0.00"></asp:Label>
+                    </h1>
                     <p class="text-secondary mb-0">Ventas del día</p>
 
                 </div>
@@ -43,7 +45,14 @@
                         <i class="bi bi-box-seam fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
+                    <h1 class="fw-bold">
+                    <asp:Label
+                        ID="lblProductosRegistrados"
+                        runat="server"
+                        Text="0">
+                    </asp:Label>
+                    </h1>
+
                     <p class="text-secondary mb-0">Productos registrados</p>
 
                 </div>
@@ -59,7 +68,14 @@
                         <i class="bi bi-exclamation-triangle fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
+                    <h1 class="fw-bold">
+                    <asp:Label
+                        ID="lblProductosBajoStock"
+                        runat="server"
+                        Text="0">
+                    </asp:Label>
+                    </h1>
+
                     <p class="text-secondary mb-0">Productos bajo stock</p>
 
                 </div>
@@ -75,7 +91,14 @@
                         <i class="bi bi-graph-up-arrow fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
+                    <h1 class="fw-bold">
+                    <asp:Label
+                        ID="lblGananciaEstimada"
+                        runat="server"
+                        Text="$0.00">
+                    </asp:Label>
+                    </h1>
+
                     <p class="text-secondary mb-0">Ganancia estimada</p>
 
                 </div>
@@ -95,7 +118,7 @@
               
                             <!-- Nueva Venta -->
             <div class="col-lg-4">
-                <a href="Ventas.aspx" class="text-decoration-none text-dark">
+                <a href="FormularioVenta.aspx" class="text-decoration-none text-dark">
                     <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 
@@ -141,7 +164,7 @@
 
             <!-- Compras -->
             <div class="col-lg-4">
-                <a href="Compras.aspx" class="text-decoration-none text-dark">
+                <a href="AgregarCompra.aspx" class="text-decoration-none text-dark">
                     <div class="card h-100 border rounded-4 quick-access">
                         <div class="card-body p-4">
 

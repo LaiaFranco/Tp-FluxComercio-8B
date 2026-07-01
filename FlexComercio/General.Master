@@ -188,12 +188,12 @@
                
 
                    <li class="nav-item">
-                      <a id="A1" runat="server"
-                           class="nav-link px-4 py-3"
-                          href="Usuarios.aspx">
-                     <i class="bi bi-bar-chart me-2"></i>
-                              Usuarios
-                          </a>
+                        <a id="A1" runat="server"
+                            class="nav-link px-4 py-3"
+                            href="Usuarios.aspx">
+                            <i class="bi bi-person-circle me-2"></i>
+                            Usuarios
+                        </a>
                     </li>
 
             </ul>

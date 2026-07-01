@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Negocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,8 @@ namespace FlexComercio
 {
     public partial class Default : System.Web.UI.Page
     {
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+        VentasNegocio ventasNegocio = new VentasNegocio();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -53,5 +56,6 @@ namespace FlexComercio
                     CultureInfo.InvariantCulture
                 );
         }
+
     }
 }

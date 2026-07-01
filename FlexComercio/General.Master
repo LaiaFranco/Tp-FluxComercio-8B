@@ -77,6 +77,14 @@
 
         <li><hr class="dropdown-divider"></li>
 
+        <li>
+            <a class="dropdown-item" href="Backup.aspx">
+                <i class="bi bi-database-down me-2"></i>
+                BackUp
+            </a>
+        </li>
+
+         <li><hr class="dropdown-divider"></li>
         <!-- Cerrar sesión -->
         <li>
                     <a class="dropdown-item text-danger" href="Login.aspx">
@@ -84,6 +92,7 @@
                         Cerrar sesión
                     </a>
                 </li>
+
 
             </ul>
 

@@ -15,18 +15,13 @@ namespace FlexComercio
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
         private VentasNegocio VentasDatos = new VentasNegocio();
 
-        // Ahora usamos explícitamente Dominio.DetalleVenta para evitar ambigüedad
         public List<Dominio.DetalleVenta> ListaDetalles
         {
             get
             {
-                List<Dominio.DetalleVenta> lista = Session["listaDetalles"] as List<Dominio.DetalleVenta>;
-                if (lista == null)
-                {
-                    lista = new List<Dominio.DetalleVenta>();
-                    Session["listaDetalles"] = lista;
-                }
-                return lista;
+                if (Session["listaDetalles"] == null)
+                    Session["listaDetalles"] = new List<Dominio.DetalleVenta>();
+                return (List<Dominio.DetalleVenta>)Session["listaDetalles"];
             }
             set
             {
@@ -38,11 +33,17 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
+                Session.Remove("listaDetalles");
+
                 txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
                 CargarVendedor();
                 CargarClientes();
                 CargarProductos();
+                CargarEstado();
                 CargarDetallesGvProductos();
+
+              
+                ddlEstado.SelectedValue = "2";
 
                 if (Session["idVenta"] != null)
                 {
@@ -58,6 +59,16 @@ namespace FlexComercio
                     }
                 }
             }
+        }
+
+        private void CargarEstado()
+        {
+            EstadoVentasNegocio EstadoDatos = new EstadoVentasNegocio();
+            List<EstadoVentas> estados = EstadoDatos.Listar();
+            ddlEstado.DataSource = estados;
+            ddlEstado.DataTextField = "Nombre";
+            ddlEstado.DataValueField = "Id";
+            ddlEstado.DataBind();
         }
 
         private void CargarVendedor()
@@ -141,7 +152,6 @@ namespace FlexComercio
             float precioUnitario = (float)producto.Precio;
             float subtotal = cantidad * precioUnitario;
 
-            // Usar nombre completo
             Dominio.DetalleVenta detalle = new Dominio.DetalleVenta
             {
                 Producto = producto,
@@ -160,9 +170,7 @@ namespace FlexComercio
                 ListaDetalles.Add(detalle);
             }
 
-            Session["listaDetalles"] = ListaDetalles;
             CargarDetallesGvProductos();
-
             upDetalles.Update();
             upProductos.Update();
         }
@@ -175,9 +183,7 @@ namespace FlexComercio
             if (itemAEliminar != null)
             {
                 ListaDetalles.Remove(itemAEliminar);
-                Session["listaDetalles"] = ListaDetalles;
                 CargarDetallesGvProductos();
-
                 upDetalles.Update();
             }
         }
@@ -188,7 +194,6 @@ namespace FlexComercio
             if (guardadoExitoso)
             {
                 ListaDetalles.Clear();
-                Session["listaDetalles"] = ListaDetalles;
                 CargarDetallesGvProductos();
                 string script = "$('#modalProductos').modal('hide');";
                 ScriptManager.RegisterStartupScript(this, GetType(), "CerrarModal", script, true);
@@ -221,7 +226,7 @@ namespace FlexComercio
             Usuario usuario = (Usuario)Session["usuarioIngresado"];
             venta.Usuario = new Dominio.Usuario();
             venta.Usuario.Id = usuario.Id;
-            venta.Detalle = ListaDetalles;   // ahora ListaDetalles es List<Dominio.DetalleVenta>
+            venta.Detalle = ListaDetalles;
             venta.Fecha = fecha;
 
             try
@@ -266,8 +271,8 @@ namespace FlexComercio
         {
             ddlCliente.SelectedIndex = 0;
             txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            ddlEstado.SelectedValue = "3"; // Restablecer a "Listo para retirar"
             ListaDetalles.Clear();
-            Session["listaDetalles"] = ListaDetalles;
             CargarDetallesGvProductos();
             lblTotal.Text = "$0.00";
         }
@@ -286,9 +291,13 @@ namespace FlexComercio
 
             ddlCliente.SelectedValue = venta.Cliente.Id.ToString();
             txtFecha.Text = venta.Fecha.ToString("yyyy-MM-dd");
+            if (venta.Estado != null)
+            {
+                ddlEstado.SelectedValue = venta.Estado.Id.ToString();
+            }
 
             List<Dominio.DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
-            Session["listaDetalles"] = detalles;
+            ListaDetalles = detalles;
             CargarDetallesGvProductos();
             upDetalles.Update();
         }

@@ -39,8 +39,13 @@
                         venta.Usuario = new Usuario();
                         venta.Usuario.Id = (int)datos.Lector["id_usuario"];
                         venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"].ToString();
-                        
-                        ventas.Add(venta);
+
+                    //Estado
+                    venta.Estado = new EstadoVentas();
+                    venta.Estado.Id = (int)datos.Lector["id_estado_venta"];
+                    venta.Estado.Nombre = (string)datos.Lector["nombre_estado"];
+
+                    ventas.Add(venta);
                     }
                     return ventas;
                 }
@@ -193,8 +198,10 @@
                     datos.setearParametro("@id_cliente", nuevaVenta.Cliente.Id);
                     datos.setearParametro("@fecha", nuevaVenta.Fecha);
                     datos.setearParametro("@id_usuario", nuevaVenta.Usuario.Id);
+                      datos.setearParametro("@id_estado_venta", nuevaVenta.Estado.Id);
 
-                    object resultado = datos.ejecutarEscalar();
+
+                object resultado = datos.ejecutarEscalar();
                     int idVentaGenerado = resultado != null ? Convert.ToInt32(resultado) : 0;
 
                     foreach (DetalleVenta detalle in nuevaVenta.Detalle)

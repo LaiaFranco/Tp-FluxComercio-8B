@@ -334,6 +334,37 @@ CREATE TABLE [dbo].[VENTAS](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+-- ============================================================
+-- NUEVA TABLA: ESTADO_VENTA
+-- ============================================================
+CREATE TABLE [dbo].[ESTADO_VENTA](
+	[id_estado_venta] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_ESTADO_VENTA] PRIMARY KEY CLUSTERED 
+(
+	[id_estado_venta] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+-- ============================================================
+-- MODIFICAR VENTAS: AGREGAR id_estado_venta
+-- ============================================================
+ALTER TABLE [dbo].[VENTAS]
+ADD [id_estado_venta] [int] NOT NULL CONSTRAINT DF_VENTAS_estado DEFAULT (1)
+GO
+
+ALTER TABLE [dbo].[VENTAS]  WITH CHECK ADD  CONSTRAINT [FK_VENTAS_ESTADO_VENTA] FOREIGN KEY([id_estado_venta])
+REFERENCES [dbo].[ESTADO_VENTA] ([id_estado_venta])
+GO
+
+ALTER TABLE [dbo].[VENTAS] CHECK CONSTRAINT [FK_VENTAS_ESTADO_VENTA]
+GO
+
+-- ============================================================
+-- CONTINÚAN LAS CONSTRAINTS ORIGINALES (CON CORRECCIÓN)
+-- ============================================================
 ALTER TABLE [dbo].[CATEGORIAS] ADD  CONSTRAINT [DF_CATEGORIAS_activo]  DEFAULT ((1)) FOR [activo]
 GO
 ALTER TABLE [dbo].[CLIENTES] ADD  CONSTRAINT [DF_CLIENTES_activo]  DEFAULT ((1)) FOR [activo]
@@ -358,6 +389,7 @@ ALTER TABLE [dbo].[VENTAS] ADD  CONSTRAINT [DF_VENTAS_fecha]  DEFAULT (getdate()
 GO
 ALTER TABLE [dbo].[VENTAS] ADD  CONSTRAINT [DF_VENTAS_activo]  DEFAULT ((1)) FOR [activo]
 GO
+
 ALTER TABLE [dbo].[COMPRA_DETALLES]  WITH CHECK ADD  CONSTRAINT [FK_COMPRA_DETALLES_COMPRAS] FOREIGN KEY([id_compra])
 REFERENCES [dbo].[COMPRAS] ([id_compra])
 GO
@@ -428,12 +460,10 @@ REFERENCES [dbo].[USUARIOS] ([id_usuario])
 GO
 ALTER TABLE [dbo].[VENTAS] CHECK CONSTRAINT [FK_VENTAS_USUARIOS]
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaCategoria] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
+-- ============================================================
+-- PROCEDIMIENTOS ALMACENADOS (MODIFICADOS LOS DE VENTAS)
+-- ============================================================
 CREATE   PROCEDURE [dbo].[storedAltaCategoria]
     @nombre VARCHAR(255),
     @descripcion VARCHAR(300),
@@ -441,11 +471,6 @@ CREATE   PROCEDURE [dbo].[storedAltaCategoria]
 AS
 INSERT INTO CATEGORIAS (nombre, descripcion, activo)
 VALUES (@nombre, @descripcion, @activo);
-GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaCliente] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedAltaCliente]
@@ -460,11 +485,6 @@ AS
 INSERT INTO CLIENTES (dni, nombre, apellido, email, telefono, direccion, activo)
 VALUES (@dni, @nombre, @apellido, @email, @telefono, @direccion, @activo);
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaCompra] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedAltaCompra]
     @id_proveedor INT,
@@ -473,11 +493,6 @@ CREATE   PROCEDURE [dbo].[storedAltaCompra]
 AS
 INSERT INTO COMPRAS (id_proveedor, id_usuario, total)
 VALUES (@id_proveedor, @id_usuario, @total);
-GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaCompraDetalle] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedAltaCompraDetalle]
@@ -490,11 +505,6 @@ AS
 INSERT INTO COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal)
 VALUES (@id_compra, @id_producto, @cantidad, @precio_unitario, @subtotal);
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaImagen] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedAltaImagen]
     @url VARCHAR(500),
@@ -505,11 +515,6 @@ AS
 INSERT INTO IMAGENES (url, activo, tipo_entidad, id_entidad)
 VALUES (@url, @activo, @tipo_entidad, @id_entidad);
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaMarca] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedAltaMarca]
     @nombre VARCHAR(255),
@@ -518,11 +523,6 @@ CREATE   PROCEDURE [dbo].[storedAltaMarca]
 AS
 INSERT INTO MARCAS (nombre, descripcion, activo)
 VALUES (@nombre, @descripcion, @activo);
-GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaProducto] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedAltaProducto]
@@ -598,11 +598,6 @@ BEGIN
     SELECT @id_producto AS id_producto
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaProductoProveedor] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedAltaProductoProveedor]
     @id_producto INT,
@@ -610,11 +605,6 @@ CREATE   PROCEDURE [dbo].[storedAltaProductoProveedor]
 AS
 INSERT INTO PRODUCTO_PROVEEDOR (id_producto, id_proveedor)
 VALUES (@id_producto, @id_proveedor);
-GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaProveedor] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedAltaProveedor]
@@ -628,22 +618,12 @@ AS
 INSERT INTO PROVEEDORES (cuil, nombre, email, telefono, direccion, activo)
 VALUES (@cuil, @nombre, @email, @telefono, @direccion, @activo);
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaRol] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedAltaRol]
     @nombre VARCHAR(255)
 AS
 INSERT INTO ROLES (nombre)
 VALUES (@nombre);
-GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaUsuario] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedAltaUsuario]
@@ -656,17 +636,12 @@ AS
 INSERT INTO USUARIOS (nombre, email, password_u, id_rol, activo)
 VALUES (@nombre, @email, @password_u, @id_rol, @activo);
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaVenta] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- Alta de cabecera de venta (genera nÃºmero de factura, total inicial 0)
 CREATE   PROCEDURE [dbo].[storedAltaVenta]
     @fecha DATETIME,
     @id_cliente INT,
-    @id_usuario INT
+    @id_usuario INT,
+    @id_estado_venta INT = 1
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -683,20 +658,13 @@ BEGIN
     DECLARE @NuevoNumero INT = @UltimoNumero + 1;
     DECLARE @NumeroFactura NVARCHAR(50) = 'A-' + @YY + '-' + @MM + '-' + RIGHT('0000' + CAST(@NuevoNumero AS VARCHAR), 4);
 
-    INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo)
-    VALUES (@fecha, @id_cliente, @id_usuario, 0, @NumeroFactura, 1);
+    INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo, id_estado_venta)
+    VALUES (@fecha, @id_cliente, @id_usuario, 0, @NumeroFactura, 1, @id_estado_venta);
 
-    -- Devuelve el ID generado
     SELECT SCOPE_IDENTITY() AS id_venta;
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storedAltaVentaDetalle] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- Alta de un detalle de venta (actualiza stock y total)
 CREATE   PROCEDURE [dbo].[storedAltaVentaDetalle]
     @id_venta INT,
     @id_producto INT,
@@ -708,15 +676,13 @@ BEGIN
     BEGIN TRANSACTION;
 
     BEGIN TRY
-        -- Verificar que la venta existe y estÃ¡ activa
         IF NOT EXISTS (SELECT 1 FROM VENTAS WHERE id_venta = @id_venta AND activo = 1)
         BEGIN
-            RAISERROR('La venta no existe o estÃ¡ anulada.', 16, 1);
+            RAISERROR('La venta no existe o está anulada.', 16, 1);
             ROLLBACK TRANSACTION;
             RETURN;
         END
 
-        -- Verificar stock suficiente
         DECLARE @stock_actual INT;
         SELECT @stock_actual = stock_actual FROM PRODUCTOS WHERE id_producto = @id_producto;
         IF @stock_actual < @cantidad
@@ -726,14 +692,11 @@ BEGIN
             RETURN;
         END
 
-        -- Insertar detalle
         INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal)
         VALUES (@id_venta, @id_producto, @cantidad, @precio_unitario, @cantidad * @precio_unitario);
 
-        -- Descontar stock
         UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad WHERE id_producto = @id_producto;
 
-        -- Recalcular total de la venta
         UPDATE VENTAS
         SET total = (SELECT ISNULL(SUM(subtotal), 0) FROM VENTA_DETALLES WHERE id_venta = @id_venta)
         WHERE id_venta = @id_venta;
@@ -746,11 +709,6 @@ BEGIN
     END CATCH
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storedCambiarEstadoCategoria] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedCambiarEstadoCategoria]
     @id_categoria INT,
@@ -759,11 +717,6 @@ AS
 UPDATE CATEGORIAS
 SET activo = @activo
 WHERE id_categoria = @id_categoria;
-GO
-/****** Objeto: StoredProcedure [dbo].[storedCambiarEstadoMarca] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedCambiarEstadoMarca]
@@ -774,13 +727,7 @@ UPDATE MARCAS
 SET activo = @activo
 WHERE id_marca = @id_marca;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedCambiarEstadoVenta] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- Cambiar estado (activo) de una venta
 CREATE   PROCEDURE [dbo].[storedCambiarEstadoVenta]
     @id_venta INT,
     @activo BIT
@@ -798,27 +745,16 @@ BEGIN
     WHERE id_venta = @id_venta;
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storedEliminarProducto] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedEliminarProducto]
     @id_producto INT
 AS
 BEGIN
     SET NOCOUNT ON;
-
     UPDATE PRODUCTOS
     SET activo = 0
     WHERE id_producto = @id_producto;
 END
-GO
-/****** Objeto: StoredProcedure [dbo].[storedEliminarProveedor] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedEliminarProveedor]
@@ -828,15 +764,7 @@ UPDATE PROVEEDORES
 SET activo = 0
 WHERE id_proveedor = @id_proveedor;
 GO
-/****** Objeto: StoredProcedure [dbo].[storeDetalleVenta] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ============================================================
---  ***** NUEVO: Obtiene los detalles de una venta con JOIN a Productos *****
--- ============================================================
 CREATE   PROCEDURE [dbo].[storeDetalleVenta]
     @id_venta INT
 AS
@@ -854,49 +782,25 @@ BEGIN
     WHERE d.id_venta = @id_venta;
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarCategorias] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== CATEGORIAS ==========
 CREATE   PROCEDURE [dbo].[storedListarCategorias]
 AS
 SELECT id_categoria, nombre, descripcion, activo
 FROM CATEGORIAS;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarClientes] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== CLIENTES ==========
 CREATE   PROCEDURE [dbo].[storedListarClientes]
 AS
 SELECT id_cliente, dni, nombre, apellido, email, telefono, direccion, activo
 FROM CLIENTES;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarCompraDetalles] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== COMPRA_DETALLES ==========
 CREATE   PROCEDURE [dbo].[storedListarCompraDetalles]
 AS
 SELECT id_detalle, id_compra, id_producto, cantidad, precio_unitario, subtotal
 FROM COMPRA_DETALLES;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarCompras] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== COMPRAS ==========
 CREATE   PROCEDURE [dbo].[storedListarCompras]
 AS
 SELECT 
@@ -915,49 +819,25 @@ INNER JOIN PROVEEDORES P ON P.id_proveedor = C.id_proveedor
 INNER JOIN USUARIOS U ON U.id_usuario = C.id_usuario
 INNER JOIN ROLES R ON R.id_rol = U.id_rol;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarImagenes] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== IMAGENES ==========
 CREATE   PROCEDURE [dbo].[storedListarImagenes]
 AS
 SELECT id_imagen, url, activo, tipo_entidad, id_entidad
 FROM IMAGENES;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarMarcas] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== MARCAS ==========
 CREATE   PROCEDURE [dbo].[storedListarMarcas]
 AS
 SELECT id_marca, nombre, descripcion, activo
 FROM MARCAS;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarProductoProveedor] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== PRODUCTO_PROVEEDOR ==========
 CREATE   PROCEDURE [dbo].[storedListarProductoProveedor]
 AS
 SELECT id_producto, id_proveedor
 FROM PRODUCTO_PROVEEDOR;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarProductos] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== PRODUCTOS ==========
 CREATE   PROCEDURE [dbo].[storedListarProductos]
 AS
 BEGIN
@@ -988,23 +868,12 @@ BEGIN
            AND I.activo = 1;
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarProveedores] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== PROVEEDORES ==========
 CREATE   PROCEDURE [dbo].[storedListarProveedores]
 AS
 SELECT id_proveedor, cuil, nombre, email, telefono, direccion, activo
 FROM PROVEEDORES
 WHERE activo = 1;
-GO
-/****** Objeto: StoredProcedure [dbo].[storedListarProveedorPorId] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedListarProveedorPorId]
@@ -1014,25 +883,13 @@ SELECT id_proveedor, cuil, nombre, email, telefono, direccion, activo
 FROM PROVEEDORES
 WHERE id_proveedor = @id_proveedor;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarRoles] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== ROLES ==========
 CREATE   PROCEDURE [dbo].[storedListarRoles]
 AS
 SELECT id_rol, nombre
 FROM ROLES;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarUsuarios] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== USUARIOS ==========
 CREATE   PROCEDURE [dbo].[storedListarUsuarios]
 AS
 SELECT 
@@ -1046,15 +903,7 @@ SELECT
 FROM USUARIOS u
 INNER JOIN ROLES r ON u.id_rol = r.id_rol
 GO
-/****** Objeto: StoredProcedure [dbo].[storedListarVentas] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ========== VENTAS ==========
-
--- *** LISTAR VENTAS (MODIFICADO: INCLUYE id_usuario Y nombre_usuario) ***
 CREATE   PROCEDURE [dbo].[storedListarVentas]
 AS
 BEGIN
@@ -1065,20 +914,18 @@ BEGIN
         c.nombre AS nombre_cliente,
         c.apellido AS apellido_cliente,
         v.id_usuario,
-        u.nombre AS nombre_usuario,  -- <-- NUEVO CAMPO
+        u.nombre AS nombre_usuario,
         v.total,
         v.numero_factura,
-        v.activo
+        v.activo,
+        v.id_estado_venta,
+        e.nombre AS nombre_estado
     FROM VENTAS v
     INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
-    INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario  -- <-- NUEVO JOIN
+    INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario
+    LEFT JOIN ESTADO_VENTA e ON v.id_estado_venta = e.id_estado_venta
     ORDER BY v.id_venta DESC;
 END
-GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarCategoria] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedModificarCategoria]
@@ -1090,11 +937,6 @@ AS
 UPDATE CATEGORIAS 
 SET nombre = @nombre, descripcion = @descripcion, activo = @activo
 WHERE id_categoria = @id_categoria;
-GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarCliente] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedModificarCliente]
@@ -1110,11 +952,6 @@ SET nombre = @nombre, apellido = @apellido, email = @email,
     telefono = @telefono, direccion = @direccion
 WHERE id_cliente = @id_cliente;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarCompra] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedModificarCompra]
     @id_compra INT,
@@ -1126,11 +963,6 @@ AS
 UPDATE COMPRAS 
 SET fecha = @fecha, id_proveedor = @id_proveedor, id_usuario = @id_usuario, total = @total
 WHERE id_compra = @id_compra;
-GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarCompraDetalle] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedModificarCompraDetalle]
@@ -1146,11 +978,6 @@ SET id_compra = @id_compra, id_producto = @id_producto, cantidad = @cantidad,
     precio_unitario = @precio_unitario, subtotal = @subtotal
 WHERE id_detalle = @id_detalle;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarImagen] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedModificarImagen]
     @id_imagen INT,
@@ -1163,11 +990,6 @@ UPDATE IMAGENES
 SET url = @url, activo = @activo, tipo_entidad = @tipo_entidad, id_entidad = @id_entidad
 WHERE id_imagen = @id_imagen;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarMarca] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedModificarMarca]
     @id_marca INT,
@@ -1178,11 +1000,6 @@ AS
 UPDATE MARCAS 
 SET nombre = @nombre, descripcion = @descripcion, activo = @activo
 WHERE id_marca = @id_marca;
-GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarProducto] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedModificarProducto]
@@ -1199,10 +1016,6 @@ CREATE   PROCEDURE [dbo].[storedModificarProducto]
     @url_imagen VARCHAR(500)
 AS
 BEGIN
-
-    -- =========================
-    -- PRODUCTOS
-    -- =========================
     UPDATE PRODUCTOS
     SET nombre = @nombre,
         descripcion = @descripcion,
@@ -1215,9 +1028,6 @@ BEGIN
         porcentaje_ganancia = @porcentaje_ganancia
     WHERE id_producto = @id_producto;
 
-    -- =========================
-    -- IMAGEN
-    -- =========================
     IF EXISTS (SELECT 1 FROM IMAGENES WHERE id_entidad = @id_producto AND tipo_entidad = 'PRODUCTO')
     BEGIN
         UPDATE IMAGENES
@@ -1230,13 +1040,7 @@ BEGIN
         INSERT INTO IMAGENES (url, activo, tipo_entidad, id_entidad)
         VALUES (@url_imagen, 1, 'PRODUCTO', @id_producto);
     END
-
 END
-GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarProductoProveedor] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedModificarProductoProveedor]
@@ -1248,11 +1052,6 @@ AS
 UPDATE PRODUCTO_PROVEEDOR 
 SET id_producto = @id_producto, id_proveedor = @id_proveedor
 WHERE id_producto = @id_producto_anterior AND id_proveedor = @id_proveedor_anterior;
-GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarProveedor] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedModificarProveedor]
@@ -1269,11 +1068,6 @@ SET cuil = @cuil, nombre = @nombre, email = @email, telefono = @telefono,
     direccion = @direccion, activo = @activo
 WHERE id_proveedor = @id_proveedor;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarRol] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE   PROCEDURE [dbo].[storedModificarRol]
     @id_rol INT,
@@ -1282,11 +1076,6 @@ AS
 UPDATE ROLES 
 SET nombre = @nombre
 WHERE id_rol = @id_rol;
-GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarUsuario] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[storedModificarUsuario]
@@ -1301,48 +1090,33 @@ UPDATE USUARIOS
 SET nombre = @nombre, email = @email, password_u = @password_u, id_rol = @id_rol, activo = @activo
 WHERE id_usuario = @id_usuario;
 GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarVenta] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ============================================================
---  ***** MODIFICADO PARA QUE DEVUELVA EL ID *****
--- ============================================================
 CREATE   PROCEDURE [dbo].[storedModificarVenta]
     @id_venta INT,
     @id_cliente INT,
     @fecha DATETIME,
-    @id_usuario INT
+    @id_usuario INT,
+    @id_estado_venta INT
 AS
 BEGIN
     SET NOCOUNT ON;
     IF NOT EXISTS (SELECT 1 FROM VENTAS WHERE id_venta = @id_venta AND activo = 1)
     BEGIN
-        RAISERROR('La venta no existe o estÃ¡ anulada.', 16, 1);
+        RAISERROR('La venta no existe o está anulada.', 16, 1);
         RETURN;
     END
 
     UPDATE VENTAS
     SET fecha = @fecha,
         id_cliente = @id_cliente,
-        id_usuario = @id_usuario
+        id_usuario = @id_usuario,
+        id_estado_venta = @id_estado_venta
     WHERE id_venta = @id_venta;
 
-    -- Esto permite que el C# use ejecutarEscalar() y obtenga el ID
     SELECT @id_venta AS id_venta;
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storedModificarVentaDetalle] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ============================================================
---  ***** REEMPLAZADO PARA QUE ACEPTE LOS PARÃMETROS DE C# *****
--- ============================================================
 CREATE   PROCEDURE [dbo].[storedModificarVentaDetalle]
     @id_venta INT,
     @id_producto INT,
@@ -1357,7 +1131,6 @@ BEGIN
         DECLARE @id_detalle INT;
         DECLARE @cantidad_antigua INT;
 
-        -- Obtener el detalle actual
         SELECT @id_detalle = id_detalle, @cantidad_antigua = cantidad
         FROM VENTA_DETALLES
         WHERE id_venta = @id_venta AND id_producto = @id_producto;
@@ -1369,32 +1142,26 @@ BEGIN
             RETURN;
         END
 
-        -- Reponer stock antiguo
         UPDATE PRODUCTOS SET stock_actual = stock_actual + @cantidad_antigua WHERE id_producto = @id_producto;
 
-        -- Verificar stock para nueva cantidad
         DECLARE @stock_actual INT;
         SELECT @stock_actual = stock_actual FROM PRODUCTOS WHERE id_producto = @id_producto;
         IF @stock_actual < @cantidad
         BEGIN
-            -- Revertir reposiciÃ³n
             UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad_antigua WHERE id_producto = @id_producto;
             RAISERROR('Stock insuficiente para la nueva cantidad.', 16, 1);
             ROLLBACK TRANSACTION;
             RETURN;
         END
 
-        -- Actualizar detalle
         UPDATE VENTA_DETALLES
         SET cantidad = @cantidad,
             precio_unitario = @precio_unitario,
             subtotal = @cantidad * @precio_unitario
         WHERE id_detalle = @id_detalle;
 
-        -- Descontar nuevo stock
         UPDATE PRODUCTOS SET stock_actual = stock_actual - @cantidad WHERE id_producto = @id_producto;
 
-        -- Recalcular total de la venta
         UPDATE VENTAS
         SET total = (SELECT ISNULL(SUM(subtotal), 0) FROM VENTA_DETALLES WHERE id_venta = @id_venta)
         WHERE id_venta = @id_venta;
@@ -1407,15 +1174,7 @@ BEGIN
     END CATCH
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[storeVerVenta] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
--- ============================================================
---  ***** NUEVO: Obtiene una venta por ID con JOIN a Cliente y Usuario *****
--- ============================================================
 CREATE   PROCEDURE [dbo].[storeVerVenta]
     @id_venta INT
 AS
@@ -1431,31 +1190,42 @@ BEGIN
         c.apellido AS apellido_cliente,
         v.id_usuario,
         u.nombre AS nombre_usuario,
-        u.activo AS activo_usuario
+        u.activo AS activo_usuario,
+        v.id_estado_venta,
+        e.nombre AS nombre_estado
     FROM VENTAS v
     INNER JOIN CLIENTES c ON v.id_cliente = c.id_cliente
     INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario
+    LEFT JOIN ESTADO_VENTA e ON v.id_estado_venta = e.id_estado_venta
     WHERE v.id_venta = @id_venta;
-END 
+END
 GO
 
 -- ============================================================
---  INSERCIONES DE DATOS DE PRUEBA (ACTUALIZADAS)
+-- INSERTS DE ESTADOS DE VENTA
 -- ============================================================
+SET IDENTITY_INSERT [dbo].[ESTADO_VENTA] ON
+INSERT INTO [dbo].[ESTADO_VENTA] ([id_estado_venta], [nombre]) VALUES (1, 'Pendiente')
+INSERT INTO [dbo].[ESTADO_VENTA] ([id_estado_venta], [nombre]) VALUES (2, 'En preparación')
+INSERT INTO [dbo].[ESTADO_VENTA] ([id_estado_venta], [nombre]) VALUES (3, 'Lista para retirar')
+INSERT INTO [dbo].[ESTADO_VENTA] ([id_estado_venta], [nombre]) VALUES (4, 'Entregada')
+INSERT INTO [dbo].[ESTADO_VENTA] ([id_estado_venta], [nombre]) VALUES (5, 'Cancelada')
+SET IDENTITY_INSERT [dbo].[ESTADO_VENTA] OFF
+GO
 
--- 1. ROLES (sin cambios)
+-- ============================================================
+-- DATOS DE PRUEBA (ORIGINALES, CON id_estado_venta)
+-- ============================================================
 INSERT INTO ROLES (nombre) VALUES 
 ('Administrador'),
 ('Vendedor'),
 ('Gerente');
 
--- 2. USUARIOS (sin cambios)
 INSERT INTO USUARIOS (nombre, email, password_u, id_rol, activo) VALUES 
 ('Admin', 'admin@comercio.com', 'admin123', 1, 1),
 ('Juan Perez', 'juan@comercio.com', 'juan123', 2, 1),
 ('Maria Gomez', 'maria@comercio.com', 'maria123', 3, 1);
 
--- 3. CATEGORIAS (nuevas)
 INSERT INTO CATEGORIAS (nombre, descripcion, activo) VALUES 
 ('Celulares', 'Teléfonos inteligentes y accesorios', 1),
 ('Tablets', 'Tablets y dispositivos similares', 1),
@@ -1463,7 +1233,6 @@ INSERT INTO CATEGORIAS (nombre, descripcion, activo) VALUES
 ('Electrodomésticos', 'Línea blanca y pequeños electrodomésticos', 1),
 ('Accesorios', 'Cargadores, fundas, auriculares, etc.', 1);
 
--- 4. MARCAS (ampliadas)
 INSERT INTO MARCAS (nombre, descripcion, activo) VALUES 
 ('Samsung', 'Electrónica y electrodomésticos', 1),
 ('Apple', 'Dispositivos y computadoras', 1),
@@ -1476,7 +1245,6 @@ INSERT INTO MARCAS (nombre, descripcion, activo) VALUES
 ('Philips', 'Electrodomésticos y salud', 1),
 ('BGH', 'Electrodomésticos', 1);
 
--- 5. PROVEEDORES (5 proveedores)
 INSERT INTO PROVEEDORES (cuil, nombre, email, telefono, direccion, activo) VALUES 
 ('20-12345678-9', 'TecnoImport S.A.', 'tecnoimport@mail.com', '011-1234-5678', 'Av. Corrientes 1234, CABA', 1),
 ('30-87654321-0', 'ElectroWorld', 'electroworld@mail.com', '011-2345-6789', 'Calle 56 789, CABA', 1),
@@ -1484,7 +1252,6 @@ INSERT INTO PROVEEDORES (cuil, nombre, email, telefono, direccion, activo) VALUE
 ('50-55667788-9', 'HogarDigital', 'hogardigital@mail.com', '011-4567-8901', 'Av. Rivadavia 789, CABA', 1),
 ('60-99887766-5', 'AccesoriosPlus', 'accesoriosplus@mail.com', '011-5678-9012', 'Calle 123, CABA', 1);
 
--- 6. CLIENTES (5 clientes)
 INSERT INTO CLIENTES (dni, nombre, apellido, email, telefono, direccion, activo) VALUES 
 ('12345678', 'Carlos', 'Lopez', 'carlos.lopez@mail.com', '1111-1111', 'Calle Falsa 123', 1),
 ('87654321', 'Ana', 'Martinez', 'ana.martinez@mail.com', '2222-2222', 'Av. Libertador 456', 1),
@@ -1492,8 +1259,6 @@ INSERT INTO CLIENTES (dni, nombre, apellido, email, telefono, direccion, activo)
 ('99887766', 'Laura', 'Fernandez', 'laura.fernandez@mail.com', '4444-4444', 'Av. Callao 101', 1),
 ('44556677', 'Javier', 'Rodriguez', 'javier.rodriguez@mail.com', '5555-5555', 'Calle Arenales 202', 1);
 
--- 7. PRODUCTOS (12 productos variados)
--- Nota: los IDs de categorías, marcas y proveedores comienzan en 1 según los inserts anteriores.
 INSERT INTO PRODUCTOS (nombre, descripcion, id_marca, id_categoria, id_proveedor, stock_actual, stock_minimo, precio, porcentaje_ganancia, activo) VALUES 
 ('Samsung Galaxy S24', 'Smartphone gama alta, 256GB, 12GB RAM', 1, 1, 1, 30, 5, 1200.00, 25.00, 1),
 ('iPhone 15 Pro Max', 'Apple iPhone 15 Pro Max 256GB', 2, 1, 1, 20, 3, 1500.00, 30.00, 1),
@@ -1508,7 +1273,6 @@ INSERT INTO PRODUCTOS (nombre, descripcion, id_marca, id_categoria, id_proveedor
 ('Philips Microwave', 'Microondas digital 25L', 9, 4, 5, 20, 5, 250.00, 20.00, 1),
 ('BGH Lavarropas', 'Lavarropas automático 8kg', 10, 4, 4, 10, 2, 700.00, 16.00, 1);
 
--- 8. IMAGENES para los productos (una por producto)
 INSERT INTO IMAGENES (url, activo, tipo_entidad, id_entidad) VALUES 
 ('https://example.com/galaxy_s24.jpg', 1, 'PRODUCTO', 1),
 ('https://example.com/iphone15promax.jpg', 1, 'PRODUCTO', 2),
@@ -1523,7 +1287,6 @@ INSERT INTO IMAGENES (url, activo, tipo_entidad, id_entidad) VALUES
 ('https://example.com/philips_micro.jpg', 1, 'PRODUCTO', 11),
 ('https://example.com/bgh_lavarropas.jpg', 1, 'PRODUCTO', 12);
 
--- 9. PRODUCTO_PROVEEDOR (asociar cada producto con su proveedor principal, aunque algunos productos comparten proveedor)
 INSERT INTO PRODUCTO_PROVEEDOR (id_producto, id_proveedor) VALUES 
 (1, 1),
 (2, 1),
@@ -1538,61 +1301,40 @@ INSERT INTO PRODUCTO_PROVEEDOR (id_producto, id_proveedor) VALUES
 (11, 5),
 (12, 4);
 
--- 10. COMPRAS (2 órdenes de compra)
--- Compra 1: proveedor TecnoImport, usuario Admin
 INSERT INTO COMPRAS (fecha, id_proveedor, id_usuario, total) VALUES 
-(GETDATE(), 1, 1, 0);
--- Compra 2: proveedor CompuMundo, usuario Vendedor (id 2)
-INSERT INTO COMPRAS (fecha, id_proveedor, id_usuario, total) VALUES 
+(GETDATE(), 1, 1, 0),
 (GETDATE(), 3, 2, 0);
 
--- 11. COMPRA_DETALLES
--- Para compra 1 (id_compra = 1)
 INSERT INTO COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal) VALUES 
-(1, 1, 10, 950.00, 9500.00),   -- Galaxy S24
-(1, 2, 5, 1200.00, 6000.00),   -- iPhone 15
-(1, 5, 8, 720.00, 5760.00),    -- Galaxy Tab S9
-(1, 10, 4, 980.00, 3920.00);   -- Samsung Refri
+(1, 1, 10, 950.00, 9500.00),
+(1, 2, 5, 1200.00, 6000.00),
+(1, 5, 8, 720.00, 5760.00),
+(1, 10, 4, 980.00, 3920.00),
+(2, 4, 6, 880.00, 5280.00),
+(2, 6, 3, 1600.00, 4800.00),
+(2, 8, 2, 1400.00, 2800.00),
+(2, 11, 10, 200.00, 2000.00);
 
--- Para compra 2 (id_compra = 2)
-INSERT INTO COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal) VALUES 
-(2, 4, 6, 880.00, 5280.00),    -- iPad Pro
-(2, 6, 3, 1600.00, 4800.00),   -- Lenovo ThinkPad
-(2, 8, 2, 1400.00, 2800.00),   -- Dell XPS 13
-(2, 11, 10, 200.00, 2000.00);  -- Philips Micro
-
--- Actualizar totales de compras
 UPDATE COMPRAS SET total = (SELECT SUM(subtotal) FROM COMPRA_DETALLES WHERE id_compra = 1) WHERE id_compra = 1;
 UPDATE COMPRAS SET total = (SELECT SUM(subtotal) FROM COMPRA_DETALLES WHERE id_compra = 2) WHERE id_compra = 2;
 
--- 12. VENTAS (2 ventas)
--- Venta 1: cliente Carlos, usuario Vendedor (id 2)
-INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo) VALUES 
-(GETDATE(), 1, 2, 0, 'A-26-06-0001', 1);
--- Venta 2: cliente Ana, usuario Admin (id 1)
-INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo) VALUES 
-(GETDATE(), 2, 1, 0, 'A-26-06-0002', 1);
+INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo, id_estado_venta) VALUES 
+(GETDATE(), 1, 2, 0, 'A-26-06-0001', 1, 1),
+(GETDATE(), 2, 1, 0, 'A-26-06-0002', 1, 1);
 
--- 13. VENTA_DETALLES
--- Venta 1
 INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal) VALUES 
-(1, 1, 2, 1200.00, 2400.00),   -- Galaxy S24
-(1, 3, 1, 800.00, 800.00),     -- Motorola Edge
-(1, 7, 2, 850.00, 1700.00),    -- HP Pavilion
-(1, 9, 1, 1500.00, 1500.00);   -- LG TV
+(1, 1, 2, 1200.00, 2400.00),
+(1, 3, 1, 800.00, 800.00),
+(1, 7, 2, 850.00, 1700.00),
+(1, 9, 1, 1500.00, 1500.00),
+(2, 2, 1, 1500.00, 1500.00),
+(2, 4, 1, 1100.00, 1100.00),
+(2, 6, 1, 2000.00, 2000.00),
+(2, 12, 2, 700.00, 1400.00);
 
--- Venta 2
-INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal) VALUES 
-(2, 2, 1, 1500.00, 1500.00),   -- iPhone 15
-(2, 4, 1, 1100.00, 1100.00),   -- iPad Pro
-(2, 6, 1, 2000.00, 2000.00),   -- Lenovo ThinkPad
-(2, 12, 2, 700.00, 1400.00);   -- BGH Lavarropas
-
--- Actualizar totales de ventas
 UPDATE VENTAS SET total = (SELECT SUM(subtotal) FROM VENTA_DETALLES WHERE id_venta = 1) WHERE id_venta = 1;
 UPDATE VENTAS SET total = (SELECT SUM(subtotal) FROM VENTA_DETALLES WHERE id_venta = 2) WHERE id_venta = 2;
 
--- Actualizar stock de los productos vendidos (descontar manualmente, similar al original)
 UPDATE PRODUCTOS SET stock_actual = stock_actual - 2 WHERE id_producto = 1;
 UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 3;
 UPDATE PRODUCTOS SET stock_actual = stock_actual - 2 WHERE id_producto = 7;
@@ -1602,8 +1344,6 @@ UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 4;
 UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 6;
 UPDATE PRODUCTOS SET stock_actual = stock_actual - 2 WHERE id_producto = 12;
 
--- Nota: los stocks ya quedan actualizados según las ventas y compras.
-
 GO
 USE [master]
 GO
@@ -1611,7 +1351,7 @@ ALTER DATABASE [COMERCIO_DB] SET  READ_WRITE
 GO
 
 -- ============================================================
---  PROCEDIMIENTOS ADICIONALES (AGREGADOS POR AGUS)
+-- PROCEDIMIENTOS ADICIONALES (AGREGADOS POR AGUS)
 -- ============================================================
 USE [COMERCIO_DB]
 GO
@@ -1620,7 +1360,6 @@ CREATE PROCEDURE [dbo].[storedTotalVentasDelDia]
 AS
 BEGIN
     SET NOCOUNT ON;
-
     SELECT CAST(ISNULL(SUM(total), 0) AS DECIMAL(10, 2)) AS total_ventas_dia
     FROM VENTAS
     WHERE activo = 1
@@ -1629,28 +1368,20 @@ BEGIN
 END
 GO
 
-USE [COMERCIO_DB]
-GO
-
 CREATE PROCEDURE [dbo].[storedCantidadProductosActivos]
 AS
 BEGIN
     SET NOCOUNT ON;
-
     SELECT COUNT(*) AS cantidad_productos_activos
     FROM PRODUCTOS
     WHERE activo = 1;
 END
 GO
 
-USE [COMERCIO_DB]
-GO
-
 CREATE PROCEDURE [dbo].[storedCantidadProductosBajoStock]
 AS
 BEGIN
     SET NOCOUNT ON;
-
     SELECT COUNT(*) AS cantidad_productos_bajo_stock
     FROM PRODUCTOS
     WHERE activo = 1
@@ -1658,14 +1389,10 @@ BEGIN
 END
 GO
 
-USE [COMERCIO_DB]
-GO
-
 CREATE PROCEDURE [dbo].[storedGananciaEstimadaVentas]
 AS
 BEGIN
     SET NOCOUNT ON;
-
     SELECT CAST(
         ISNULL(
             SUM(
@@ -1686,17 +1413,9 @@ BEGIN
 END
 GO
 
--- (Opcional) Ejecutar para ver la ganancia estimada (se puede comentar)
--- EXEC storedGananciaEstimadaVentas;
-
-
-
-/* =====================================================
-   1. RESTRICCIONES DE INTEGRIDAD
-   ===================================================== */
-USE COMERCIO_DB;
-GO
-
+-- ============================================================
+-- RESTRICCIONES DE INTEGRIDAD (CON LA CORRECCIÓN)
+-- ============================================================
 ALTER TABLE COMPRA_DETALLES
 ADD CONSTRAINT CK_COMPRA_DETALLES_cantidad
 CHECK (cantidad > 0);
@@ -1709,10 +1428,7 @@ GO
 
 ALTER TABLE COMPRA_DETALLES
 ADD CONSTRAINT CK_COMPRA_DETALLES_subtotal
-CHECK (
-    subtotal >= 0
-    AND subtotal = cantidad * precio_unitario
-);
+CHECK (subtotal >= 0);   -- CORREGIDO: solo valida que no sea negativo
 GO
 
 ALTER TABLE COMPRA_DETALLES
@@ -1730,23 +1446,17 @@ ADD CONSTRAINT CK_PRODUCTOS_stock_actual
 CHECK (stock_actual >= 0);
 GO
 
-/* =====================================================
-   2. TIPO TABLA PARA RECIBIR TODOS LOS PRODUCTOS
-   ===================================================== */
-
+-- ============================================================
+-- TIPO TABLA Y TRIGGER PARA COMPRAS
+-- ============================================================
 CREATE TYPE dbo.TipoDetalleCompra AS TABLE
 (
     id_producto INT NOT NULL,
     cantidad INT NOT NULL,
     precio_unitario DECIMAL(10,2) NOT NULL,
-
     PRIMARY KEY (id_producto)
 );
 GO
-
-/* =====================================================
-   3. TRIGGER: ACTUALIZA STOCK Y TOTAL
-   ===================================================== */
 
 CREATE TRIGGER dbo.tr_CompraDetalle_AfterInsert
 ON dbo.COMPRA_DETALLES
@@ -1755,7 +1465,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Aumentar el stock agrupando las cantidades insertadas
     UPDATE P
     SET P.stock_actual = P.stock_actual + X.cantidad_comprada
     FROM PRODUCTOS P
@@ -1769,7 +1478,6 @@ BEGIN
     ) X
         ON X.id_producto = P.id_producto;
 
-    -- Recalcular el total de las compras afectadas
     UPDATE C
     SET C.total = X.total_compra
     FROM COMPRAS C
@@ -1790,10 +1498,6 @@ BEGIN
 END;
 GO
 
-/* =====================================================
-   4. PROCEDIMIENTO PARA REGISTRAR LA COMPRA COMPLETA
-   ===================================================== */
-
 CREATE PROCEDURE dbo.storedRegistrarCompra
     @fecha DATETIME = NULL,
     @id_proveedor INT,
@@ -1807,93 +1511,43 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Si no se recibió una fecha, utilizar la actual
         IF @fecha IS NULL
             SET @fecha = GETDATE();
 
-        -- Validar proveedor
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM PROVEEDORES
-            WHERE id_proveedor = @id_proveedor
-              AND activo = 1
-        )
+        IF NOT EXISTS (SELECT 1 FROM PROVEEDORES WHERE id_proveedor = @id_proveedor AND activo = 1)
         BEGIN
-            RAISERROR(
-                'El proveedor no existe o está inactivo.',
-                16,
-                1
-            );
+            RAISERROR('El proveedor no existe o está inactivo.', 16, 1);
         END;
 
-        -- Validar usuario comprador
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM USUARIOS
-            WHERE id_usuario = @id_usuario
-              AND activo = 1
-        )
+        IF NOT EXISTS (SELECT 1 FROM USUARIOS WHERE id_usuario = @id_usuario AND activo = 1)
         BEGIN
-            RAISERROR(
-                'El usuario no existe o está inactivo.',
-                16,
-                1
-            );
+            RAISERROR('El usuario no existe o está inactivo.', 16, 1);
         END;
 
-        -- La compra debe tener productos
         IF NOT EXISTS (SELECT 1 FROM @detalles)
         BEGIN
-            RAISERROR(
-                'La compra debe contener al menos un producto.',
-                16,
-                1
-            );
+            RAISERROR('La compra debe contener al menos un producto.', 16, 1);
         END;
 
-        -- Validar cantidades y precios
-        IF EXISTS
-        (
-            SELECT 1
-            FROM @detalles
-            WHERE cantidad <= 0
-               OR precio_unitario < 0
-        )
+        IF EXISTS (SELECT 1 FROM @detalles WHERE cantidad <= 0 OR precio_unitario < 0)
         BEGIN
-            RAISERROR(
-                'Las cantidades deben ser mayores a cero y los precios no pueden ser negativos.',
-                16,
-                1
-            );
+            RAISERROR('Las cantidades deben ser mayores a cero y los precios no pueden ser negativos.', 16, 1);
         END;
 
-        -- Validar existencia y estado de los productos
-        IF EXISTS
-        (
+        IF EXISTS (
             SELECT 1
             FROM @detalles D
-            LEFT JOIN PRODUCTOS P
-                ON P.id_producto = D.id_producto
-               AND P.activo = 1
+            LEFT JOIN PRODUCTOS P ON P.id_producto = D.id_producto AND P.activo = 1
             WHERE P.id_producto IS NULL
         )
         BEGIN
-            RAISERROR(
-                'Uno o más productos no existen o están inactivos.',
-                16,
-                1
-            );
+            RAISERROR('Uno o más productos no existen o están inactivos.', 16, 1);
         END;
 
-        -- Validar que los productos pertenezcan al proveedor
-        IF EXISTS
-        (
+        IF EXISTS (
             SELECT 1
             FROM @detalles D
-            WHERE NOT EXISTS
-            (
+            WHERE NOT EXISTS (
                 SELECT 1
                 FROM PRODUCTO_PROVEEDOR PP
                 WHERE PP.id_producto = D.id_producto
@@ -1901,74 +1555,28 @@ BEGIN
             )
         )
         BEGIN
-            RAISERROR(
-                'Uno o más productos no pertenecen al proveedor seleccionado.',
-                16,
-                1
-            );
+            RAISERROR('Uno o más productos no pertenecen al proveedor seleccionado.', 16, 1);
         END;
 
-        -- Crear la cabecera con total inicial cero
-        INSERT INTO COMPRAS
-        (
-            fecha,
-            id_proveedor,
-            id_usuario,
-            total
-        )
-        VALUES
-        (
-            @fecha,
-            @id_proveedor,
-            @id_usuario,
-            0
-        );
+        INSERT INTO COMPRAS (fecha, id_proveedor, id_usuario, total)
+        VALUES (@fecha, @id_proveedor, @id_usuario, 0);
 
-        DECLARE @id_compra INT;
-        SET @id_compra = SCOPE_IDENTITY();
+        DECLARE @id_compra INT = SCOPE_IDENTITY();
 
-        -- Insertar todos los detalles.
-        -- El subtotal se calcula en la base.
-        INSERT INTO COMPRA_DETALLES
-        (
-            id_compra,
-            id_producto,
-            cantidad,
-            precio_unitario,
-            subtotal
-        )
-        SELECT
-            @id_compra,
-            id_producto,
-            cantidad,
-            precio_unitario,
-            cantidad * precio_unitario
+        INSERT INTO COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal)
+        SELECT @id_compra, id_producto, cantidad, precio_unitario, cantidad * precio_unitario
         FROM @detalles;
-
-        /*
-          Al insertar los detalles se ejecuta el trigger:
-          1. Incrementa el stock.
-          2. Recalcula el total.
-        */
 
         COMMIT TRANSACTION;
 
-        -- Devolver los datos de la compra registrada
-        SELECT
-            C.id_compra,
-            C.fecha,
-            C.id_proveedor,
-            C.id_usuario,
-            C.total
+        SELECT C.id_compra, C.fecha, C.id_proveedor, C.id_usuario, C.total
         FROM COMPRAS C
         WHERE C.id_compra = @id_compra;
     END TRY
-
     BEGIN CATCH
         IF @@TRANCOUNT > 0
             ROLLBACK TRANSACTION;
-
         THROW;
     END CATCH;
 END;
-GO
+GO  

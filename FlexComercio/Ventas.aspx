@@ -2,6 +2,12 @@
     CodeBehind="Ventas.aspx.cs" Inherits="FlexComercio.Ventas" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .estado-pendiente { color: #dc3545; font-weight: bold; }
+        .estado-preparacion { color: #ffc107; font-weight: bold; }
+        .estado-listaretiro { color: #0d6efd; font-weight: bold; }
+        .estado-entregada { color: #198754; font-weight: bold; }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -30,7 +36,7 @@
                                     <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-3">
                                         <div class="row g-0 align-items-center">
                                             <!-- Icono -->
-                                            <div class="col-md-2 col-3 bg-light text-center p-3 d-flex align-items-center justify-content-center">
+                                            <div class="col-md-1 col-3 bg-light text-center p-3 d-flex align-items-center justify-content-center">
                                                 <i class="bi bi-receipt" style="font-size: 2.5rem;"></i>
                                             </div>
                                             <!-- Datos de la venta -->
@@ -41,18 +47,29 @@
                                                         <strong>Fecha:</strong> <%# Eval("Fecha", "{0:d}") %> &nbsp;|&nbsp;
                                                         <strong>Total:</strong> $<%# Eval("Total", "{0:N2}") %>
                                                     </p>
-                                                    <p class="card-text">
+                                                    <p class="card-text mb-1">
                                                         <strong>Cliente:</strong> 
                                                         <%# Eval("Cliente.Nombre") %> <%# Eval("Cliente.Apellido") %>
                                                     </p>
+                                                    <p class="card-text">
+                                                        <strong>Estado:</strong> 
+                                                        <asp:Label ID="lblEstado" runat="server" 
+                                                            Text='<%# Eval("Estado.Nombre") %>' 
+                                                            CssClass='<%# GetEstadoClass(Eval("Estado.Nombre").ToString()) %>' />
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <!-- Botón Ver detalle -->
-                                            <div class="col-md-4 col-12 d-flex align-items-center justify-content-end p-3">
+                                            <!-- Botones -->
+                                            <div class="col-md-5 col-12 d-flex align-items-center justify-content-end p-3 gap-2">
                                                 <asp:Button ID="btnVerDetalle" runat="server"
                                                     CssClass="btn btn-outline-primary btn-sm rounded-pill px-4"
                                                     Text=" Ver detalle"
                                                     CommandName="VerDetalle"
+                                                    CommandArgument='<%# Eval("Id") %>' />
+                                                <asp:Button ID="btnModificarEstado" runat="server"
+                                                    CssClass="btn btn-outline-secondary btn-sm rounded-pill px-4"
+                                                    Text="Modificar estado"
+                                                    CommandName="ModificarEstado"
                                                     CommandArgument='<%# Eval("Id") %>' />
                                             </div>
                                         </div>

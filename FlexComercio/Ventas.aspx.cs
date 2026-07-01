@@ -49,5 +49,24 @@ namespace FlexComercio
         {
             Response.Redirect("FormularioVenta.aspx");
         }
+
+        protected string GetEstadoClass(string estado)
+        {
+            switch (estado)
+            {
+                case "Pendiente":
+                    return "estado-pendiente";
+                case "En preparación":
+                    return "estado-preparacion";
+                case "Lista para retirar":
+                    return "estado-listaretiro";
+                case "Entregada":
+                    return "estado-entregada";
+                default:
+                    return "";
+            }
+        }
+
+
     }
 }

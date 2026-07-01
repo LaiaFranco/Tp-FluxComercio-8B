@@ -47,6 +47,7 @@
     <Compile Include="DetalleCompra.cs" />
     <Compile Include="DetalleMovimiento.cs" />
     <Compile Include="DetalleVenta.cs" />
+    <Compile Include="EstadoVentas.cs" />
     <Compile Include="Imagen.cs" />
     <Compile Include="Marca.cs" />
     <Compile Include="Producto.cs" />

@@ -24,6 +24,15 @@ namespace FlexComercio
         protected global::System.Web.UI.WebControls.Label lblMensaje;
 
         /// <summary>
+        /// Control txtFecha.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFecha;
+
+        /// <summary>
         /// Control ddlCliente.
         /// </summary>
         /// <remarks>
@@ -33,13 +42,13 @@ namespace FlexComercio
         protected global::System.Web.UI.WebControls.DropDownList ddlCliente;
 
         /// <summary>
-        /// Control txtFecha.
+        /// Control ddlEstado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFecha;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEstado;
 
         /// <summary>
         /// Control txtVendedor.

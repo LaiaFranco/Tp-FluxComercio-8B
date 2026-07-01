@@ -1440,99 +1440,167 @@ END
 GO
 
 -- ============================================================
---  INSERCIONES DE DATOS DE PRUEBA
+--  INSERCIONES DE DATOS DE PRUEBA (ACTUALIZADAS)
 -- ============================================================
 
--- 1. ROLES
+-- 1. ROLES (sin cambios)
 INSERT INTO ROLES (nombre) VALUES 
 ('Administrador'),
 ('Vendedor'),
 ('Gerente');
 
--- 2. USUARIOS
+-- 2. USUARIOS (sin cambios)
 INSERT INTO USUARIOS (nombre, email, password_u, id_rol, activo) VALUES 
 ('Admin', 'admin@comercio.com', 'admin123', 1, 1),
 ('Juan Perez', 'juan@comercio.com', 'juan123', 2, 1),
 ('Maria Gomez', 'maria@comercio.com', 'maria123', 3, 1);
 
--- 3. CATEGORIAS
+-- 3. CATEGORIAS (nuevas)
 INSERT INTO CATEGORIAS (nombre, descripcion, activo) VALUES 
-('Electrónica', 'Productos electrónicos', 1),
-('Ropa', 'Indumentaria', 1),
-('Alimentos', 'Productos alimenticios', 1);
+('Celulares', 'Teléfonos inteligentes y accesorios', 1),
+('Tablets', 'Tablets y dispositivos similares', 1),
+('Computadoras', 'Notebooks, netbooks y PC', 1),
+('Electrodomésticos', 'Línea blanca y pequeños electrodomésticos', 1),
+('Accesorios', 'Cargadores, fundas, auriculares, etc.', 1);
 
--- 4. MARCAS
+-- 4. MARCAS (ampliadas)
 INSERT INTO MARCAS (nombre, descripcion, activo) VALUES 
-('Samsung', 'Electrónica coreana', 1),
-('Nike', 'Ropa deportiva', 1),
-('Nestlé', 'Alimentos', 1);
+('Samsung', 'Electrónica y electrodomésticos', 1),
+('Apple', 'Dispositivos y computadoras', 1),
+('LG', 'Electrónica y electrodomésticos', 1),
+('Motorola', 'Teléfonos y accesorios', 1),
+('Lenovo', 'Computadoras y tablets', 1),
+('HP', 'Computadoras e impresoras', 1),
+('Dell', 'Computadoras y periféricos', 1),
+('Sony', 'Electrónica y entretenimiento', 1),
+('Philips', 'Electrodomésticos y salud', 1),
+('BGH', 'Electrodomésticos', 1);
 
--- 5. PROVEEDORES
+-- 5. PROVEEDORES (5 proveedores)
 INSERT INTO PROVEEDORES (cuil, nombre, email, telefono, direccion, activo) VALUES 
-('20-12345678-9', 'Proveedor A', 'prov_a@mail.com', '123456789', 'Calle 1', 1),
-('30-87654321-0', 'Proveedor B', 'prov_b@mail.com', '987654321', 'Calle 2', 1),
-('40-11223344-5', 'Proveedor C', 'prov_c@mail.com', '112233445', 'Calle 3', 1);
+('20-12345678-9', 'TecnoImport S.A.', 'tecnoimport@mail.com', '011-1234-5678', 'Av. Corrientes 1234, CABA', 1),
+('30-87654321-0', 'ElectroWorld', 'electroworld@mail.com', '011-2345-6789', 'Calle 56 789, CABA', 1),
+('40-11223344-5', 'CompuMundo', 'compumundo@mail.com', '011-3456-7890', 'Av. Santa Fe 456, CABA', 1),
+('50-55667788-9', 'HogarDigital', 'hogardigital@mail.com', '011-4567-8901', 'Av. Rivadavia 789, CABA', 1),
+('60-99887766-5', 'AccesoriosPlus', 'accesoriosplus@mail.com', '011-5678-9012', 'Calle 123, CABA', 1);
 
--- 6. CLIENTES
+-- 6. CLIENTES (5 clientes)
 INSERT INTO CLIENTES (dni, nombre, apellido, email, telefono, direccion, activo) VALUES 
-('12345678', 'Carlos', 'Lopez', 'carlos@mail.com', '1111111', 'Dir 1', 1),
-('87654321', 'Ana', 'Martinez', 'ana@mail.com', '2222222', 'Dir 2', 1),
-('11223344', 'Luis', 'Garcia', 'luis@mail.com', '3333333', 'Dir 3', 1);
+('12345678', 'Carlos', 'Lopez', 'carlos.lopez@mail.com', '1111-1111', 'Calle Falsa 123', 1),
+('87654321', 'Ana', 'Martinez', 'ana.martinez@mail.com', '2222-2222', 'Av. Libertador 456', 1),
+('11223344', 'Luis', 'Garcia', 'luis.garcia@mail.com', '3333-3333', 'Calle 9 de Julio 789', 1),
+('99887766', 'Laura', 'Fernandez', 'laura.fernandez@mail.com', '4444-4444', 'Av. Callao 101', 1),
+('44556677', 'Javier', 'Rodriguez', 'javier.rodriguez@mail.com', '5555-5555', 'Calle Arenales 202', 1);
 
--- 7. PRODUCTOS (dependen de marcas, categorías y proveedores)
--- Usamos los IDs obtenidos (asumimos que el identity empieza en 1)
+-- 7. PRODUCTOS (12 productos variados)
+-- Nota: los IDs de categorías, marcas y proveedores comienzan en 1 según los inserts anteriores.
 INSERT INTO PRODUCTOS (nombre, descripcion, id_marca, id_categoria, id_proveedor, stock_actual, stock_minimo, precio, porcentaje_ganancia, activo) VALUES 
-('Smartphone Galaxy', 'Smartphone de última generación', 1, 1, 1, 50, 5, 500.00, 20.00, 1),
-('Camiseta Deportiva', 'Camiseta de algodón', 2, 2, 2, 100, 10, 25.00, 30.00, 1),
-('Leche Entera', 'Leche de vaca', 3, 3, 3, 200, 20, 1.50, 15.00, 1);
+('Samsung Galaxy S24', 'Smartphone gama alta, 256GB, 12GB RAM', 1, 1, 1, 30, 5, 1200.00, 25.00, 1),
+('iPhone 15 Pro Max', 'Apple iPhone 15 Pro Max 256GB', 2, 1, 1, 20, 3, 1500.00, 30.00, 1),
+('Motorola Edge 40', 'Motorola Edge 40, 128GB, 8GB RAM', 4, 1, 2, 25, 4, 800.00, 22.00, 1),
+('iPad Pro 12.9', 'Tablet Apple con M2, 128GB', 2, 2, 3, 15, 2, 1100.00, 28.00, 1),
+('Samsung Galaxy Tab S9', 'Tablet Samsung 11", 128GB', 1, 2, 1, 18, 3, 900.00, 25.00, 1),
+('Lenovo ThinkPad X1', 'Notebook empresarial, i7, 16GB, 512GB SSD', 5, 3, 3, 10, 2, 2000.00, 20.00, 1),
+('HP Pavilion 15', 'Notebook HP, i5, 8GB, 256GB SSD', 6, 3, 4, 12, 2, 850.00, 18.00, 1),
+('Dell XPS 13', 'Notebook ultrabook, i7, 16GB, 512GB SSD', 7, 3, 4, 8, 1, 1800.00, 22.00, 1),
+('LG 55" OLED TV', 'Televisor 4K OLED, 55 pulgadas', 3, 4, 2, 6, 1, 1500.00, 15.00, 1),
+('Samsung Refrigerador', 'Refrigerador side-by-side, 600L', 1, 4, 5, 8, 2, 1200.00, 18.00, 1),
+('Philips Microwave', 'Microondas digital 25L', 9, 4, 5, 20, 5, 250.00, 20.00, 1),
+('BGH Lavarropas', 'Lavarropas automático 8kg', 10, 4, 4, 10, 2, 700.00, 16.00, 1);
 
--- 8. IMAGENES para los productos
+-- 8. IMAGENES para los productos (una por producto)
 INSERT INTO IMAGENES (url, activo, tipo_entidad, id_entidad) VALUES 
-('http://example.com/samsung.jpg', 1, 'PRODUCTO', 1),
-('http://example.com/nike.jpg', 1, 'PRODUCTO', 2),
-('http://example.com/nestle.jpg', 1, 'PRODUCTO', 3);
+('https://example.com/galaxy_s24.jpg', 1, 'PRODUCTO', 1),
+('https://example.com/iphone15promax.jpg', 1, 'PRODUCTO', 2),
+('https://example.com/motorola_edge40.jpg', 1, 'PRODUCTO', 3),
+('https://example.com/ipad_pro.jpg', 1, 'PRODUCTO', 4),
+('https://example.com/galaxy_tab_s9.jpg', 1, 'PRODUCTO', 5),
+('https://example.com/thinkpad_x1.jpg', 1, 'PRODUCTO', 6),
+('https://example.com/hp_pavilion15.jpg', 1, 'PRODUCTO', 7),
+('https://example.com/dell_xps13.jpg', 1, 'PRODUCTO', 8),
+('https://example.com/lg_oled_tv.jpg', 1, 'PRODUCTO', 9),
+('https://example.com/samsung_refri.jpg', 1, 'PRODUCTO', 10),
+('https://example.com/philips_micro.jpg', 1, 'PRODUCTO', 11),
+('https://example.com/bgh_lavarropas.jpg', 1, 'PRODUCTO', 12);
 
--- 9. PRODUCTO_PROVEEDOR (asociar cada producto con su proveedor principal)
+-- 9. PRODUCTO_PROVEEDOR (asociar cada producto con su proveedor principal, aunque algunos productos comparten proveedor)
 INSERT INTO PRODUCTO_PROVEEDOR (id_producto, id_proveedor) VALUES 
 (1, 1),
-(2, 2),
-(3, 3);
+(2, 1),
+(3, 2),
+(4, 3),
+(5, 1),
+(6, 3),
+(7, 4),
+(8, 4),
+(9, 2),
+(10, 5),
+(11, 5),
+(12, 4);
 
--- 10. COMPRAS (una compra de ejemplo)
--- Fecha actual, proveedor 1, usuario 1 (Admin), total 0 inicialmente
+-- 10. COMPRAS (2 órdenes de compra)
+-- Compra 1: proveedor TecnoImport, usuario Admin
 INSERT INTO COMPRAS (fecha, id_proveedor, id_usuario, total) VALUES 
 (GETDATE(), 1, 1, 0);
+-- Compra 2: proveedor CompuMundo, usuario Vendedor (id 2)
+INSERT INTO COMPRAS (fecha, id_proveedor, id_usuario, total) VALUES 
+(GETDATE(), 3, 2, 0);
 
--- 11. COMPRA_DETALLES para la compra anterior
--- Suponemos que la compra insertada tiene id_compra = 1
--- Detalle 1: producto 1 (Smartphone), cantidad 10, precio 450.00 (precio de compra)
+-- 11. COMPRA_DETALLES
+-- Para compra 1 (id_compra = 1)
 INSERT INTO COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal) VALUES 
-(1, 1, 10, 450.00, 4500.00),
-(1, 2, 20, 20.00, 400.00),
-(1, 3, 50, 1.20, 60.00);
+(1, 1, 10, 950.00, 9500.00),   -- Galaxy S24
+(1, 2, 5, 1200.00, 6000.00),   -- iPhone 15
+(1, 5, 8, 720.00, 5760.00),    -- Galaxy Tab S9
+(1, 10, 4, 980.00, 3920.00);   -- Samsung Refri
 
--- Actualizar el total de la compra sumando los subtotales
+-- Para compra 2 (id_compra = 2)
+INSERT INTO COMPRA_DETALLES (id_compra, id_producto, cantidad, precio_unitario, subtotal) VALUES 
+(2, 4, 6, 880.00, 5280.00),    -- iPad Pro
+(2, 6, 3, 1600.00, 4800.00),   -- Lenovo ThinkPad
+(2, 8, 2, 1400.00, 2800.00),   -- Dell XPS 13
+(2, 11, 10, 200.00, 2000.00);  -- Philips Micro
+
+-- Actualizar totales de compras
 UPDATE COMPRAS SET total = (SELECT SUM(subtotal) FROM COMPRA_DETALLES WHERE id_compra = 1) WHERE id_compra = 1;
+UPDATE COMPRAS SET total = (SELECT SUM(subtotal) FROM COMPRA_DETALLES WHERE id_compra = 2) WHERE id_compra = 2;
 
--- 12. VENTAS (una venta de ejemplo)
--- Cliente 1, usuario 2 (Vendedor), fecha actual, total 0 inicial
+-- 12. VENTAS (2 ventas)
+-- Venta 1: cliente Carlos, usuario Vendedor (id 2)
 INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo) VALUES 
-(GETDATE(), 1, 2, 0, 'A-24-07-0001', 1);
+(GETDATE(), 1, 2, 0, 'A-26-06-0001', 1);
+-- Venta 2: cliente Ana, usuario Admin (id 1)
+INSERT INTO VENTAS (fecha, id_cliente, id_usuario, total, numero_factura, activo) VALUES 
+(GETDATE(), 2, 1, 0, 'A-26-06-0002', 1);
 
--- 13. VENTA_DETALLES para la venta anterior
--- Suponemos id_venta = 1
--- Detalle 1: producto 1, cantidad 2, precio 500.00
+-- 13. VENTA_DETALLES
+-- Venta 1
 INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal) VALUES 
-(1, 1, 2, 500.00, 1000.00),
-(1, 2, 3, 25.00, 75.00);
+(1, 1, 2, 1200.00, 2400.00),   -- Galaxy S24
+(1, 3, 1, 800.00, 800.00),     -- Motorola Edge
+(1, 7, 2, 850.00, 1700.00),    -- HP Pavilion
+(1, 9, 1, 1500.00, 1500.00);   -- LG TV
 
--- Actualizar el total de la venta
+-- Venta 2
+INSERT INTO VENTA_DETALLES (id_venta, id_producto, cantidad, precio_unitario, subtotal) VALUES 
+(2, 2, 1, 1500.00, 1500.00),   -- iPhone 15
+(2, 4, 1, 1100.00, 1100.00),   -- iPad Pro
+(2, 6, 1, 2000.00, 2000.00),   -- Lenovo ThinkPad
+(2, 12, 2, 700.00, 1400.00);   -- BGH Lavarropas
+
+-- Actualizar totales de ventas
 UPDATE VENTAS SET total = (SELECT SUM(subtotal) FROM VENTA_DETALLES WHERE id_venta = 1) WHERE id_venta = 1;
+UPDATE VENTAS SET total = (SELECT SUM(subtotal) FROM VENTA_DETALLES WHERE id_venta = 2) WHERE id_venta = 2;
 
--- Actualizar el stock de los productos vendidos (descontar manualmente, aunque el SP storedAltaVentaDetalle lo haría automáticamente)
--- Pero como hicimos inserción directa, ajustamos el stock manualmente para consistencia.
+-- Actualizar stock de los productos vendidos (descontar manualmente, similar al original)
 UPDATE PRODUCTOS SET stock_actual = stock_actual - 2 WHERE id_producto = 1;
-UPDATE PRODUCTOS SET stock_actual = stock_actual - 3 WHERE id_producto = 2;
+UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 3;
+UPDATE PRODUCTOS SET stock_actual = stock_actual - 2 WHERE id_producto = 7;
+UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 9;
+UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 2;
+UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 4;
+UPDATE PRODUCTOS SET stock_actual = stock_actual - 1 WHERE id_producto = 6;
+UPDATE PRODUCTOS SET stock_actual = stock_actual - 2 WHERE id_producto = 12;
 
 -- Nota: los stocks ya quedan actualizados según las ventas y compras.
 
@@ -1542,8 +1610,9 @@ GO
 ALTER DATABASE [COMERCIO_DB] SET  READ_WRITE 
 GO
 
-
---COSAS AGREGADAS POR AGUS
+-- ============================================================
+--  PROCEDIMIENTOS ADICIONALES (AGREGADOS POR AGUS)
+-- ============================================================
 USE [COMERCIO_DB]
 GO
 
@@ -1573,7 +1642,6 @@ BEGIN
     WHERE activo = 1;
 END
 GO
-
 
 USE [COMERCIO_DB]
 GO
@@ -1618,4 +1686,5 @@ BEGIN
 END
 GO
 
-EXEC storedGananciaEstimadaVentas
+-- (Opcional) Ejecutar para ver la ganancia estimada (se puede comentar)
+-- EXEC storedGananciaEstimadaVentas;

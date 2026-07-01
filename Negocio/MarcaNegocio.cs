@@ -147,5 +147,21 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public void Habilitar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE MARCAS SET Activo = 1 WHERE id_marca = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

@@ -196,20 +196,22 @@ namespace Negocio
             try
             {
 
-                string query = @"SELECT 
-                            u.id_usuario,
-                            u.nombre,
-                            u.email,
-                            u.id_rol,
-                            r.nombre AS nombre_rol,
-                            u.activo
-                            FROM USUARIOS u
-                            INNER JOIN ROLES r ON u.id_rol = r.id_rol
-                            WHERE u.email = @email AND u.password_u = @password";
+                string query = @"SELECT
+                    u.id_usuario,
+                    u.nombre,
+                    u.email,
+                    u.password_u,
+                    u.id_rol,
+                    r.nombre AS nombre_rol,
+                    u.activo
+                FROM USUARIOS u
+                INNER JOIN ROLES r ON u.id_rol = r.id_rol
+                WHERE u.email = @email
+                  AND u.password_u = @password"; ;
 
                 Datos.setearConsulta(query);
                 Datos.setearParametro("@email", email);
-                Datos.setearParametro("@password", passowrd);
+                Datos.setearParametro("@password", passowrd); 
                 Datos.ejecutarLectura(); 
 
                 if (Datos.Lector.Read())
@@ -221,6 +223,7 @@ namespace Negocio
 
                     NuevoUsuario.Rol = new Rol();
                     NuevoUsuario.Rol.Id = (int)Datos.Lector["id_rol"];
+                    NuevoUsuario.Password = Datos.Lector["password_u"].ToString();
                     NuevoUsuario.Rol.Nombre = (string)Datos.Lector["nombre_rol"];
                     NuevoUsuario.Activo = (bool)Datos.Lector["activo"];
                     NuevoUsuario.Nombre = (string)Datos.Lector["nombre"];
@@ -274,8 +277,22 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-    
-    
+
+        public void Habilitar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE USUARIOS SET Activo = 1 WHERE id_usuario = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
     }
 

@@ -235,5 +235,20 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+        public void Habilitar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE PROVEEDORES SET Activo = 1 WHERE id_proveedor = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

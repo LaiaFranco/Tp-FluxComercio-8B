@@ -167,6 +167,21 @@ namespace Negocio
                 Datos.cerrarConexion();
             }
         }
+        public void Habilitar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE CLIENTES SET Activo = 1 WHERE id_cliente = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 
 }

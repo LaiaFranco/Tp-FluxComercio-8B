@@ -37,7 +37,8 @@
                             runat="server"
                             Text="Mostrar"
                             CssClass="btn btn-dark"
-                            PostBackUrl="~/BackupClientes.aspx" />
+                            CommandArgument="clientes"
+                            OnClick="btnMostrar_Click" />
                     </div>
 
                 </div>
@@ -66,7 +67,8 @@
                             runat="server"
                             Text="Mostrar"
                             CssClass="btn btn-dark"
-                            PostBackUrl="~/BackupUsuarios.aspx" />
+                            CommandArgument="usuarios"
+                            OnClick="btnMostrar_Click" />
                     </div>
 
                 </div>
@@ -95,7 +97,8 @@
                             runat="server"
                             Text="Mostrar"
                             CssClass="btn btn-dark"
-                            PostBackUrl="~/BackupProductos.aspx" />
+                            CommandArgument="productos"
+                            OnClick="btnMostrar_Click"  />
                     </div>
 
                 </div>
@@ -124,7 +127,8 @@
                             runat="server"
                             Text="Mostrar"
                             CssClass="btn btn-dark"
-                            PostBackUrl="~/BackupProveedores.aspx" />
+                            CommandArgument="proveedores"
+                            OnClick="btnMostrar_Click"  />
                     </div>
 
                 </div>
@@ -152,7 +156,8 @@
                             runat="server"
                             Text="Mostrar"
                             CssClass="btn btn-dark"
-                            PostBackUrl="~/BackupDetalle.aspx?modulo=marcas" />
+                            CommandArgument="marcas"
+                            OnClick="btnMostrar_Click"  />
                     </div>
 
                 </div>
@@ -180,7 +185,8 @@
                             runat="server"
                             Text="Mostrar"
                             CssClass="btn btn-dark"
-                            PostBackUrl="~/BackupDetalle.aspx?modulo=categorias" />
+                            CommandArgument="categorias"
+                            OnClick="btnMostrar_Click"  />
                     </div>
 
                 </div>
@@ -192,4 +198,57 @@
     </div>
 
 </div>
+
+    <<div class="modal fade" id="modalPassword" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-lock-fill me-2"></i>
+                    Confirmar acceso
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <p>Ingrese su contraseña para acceder al módulo.</p>
+
+                <asp:TextBox
+                    ID="txtPassword"
+                    runat="server"
+                    CssClass="form-control"
+                    TextMode="Password" />
+
+                <asp:Label
+                    ID="lblError"
+                    runat="server"
+                    CssClass="text-danger mt-2 d-block"
+                    Visible="false" />
+
+            </div>
+
+            <div class="modal-footer">
+
+                <asp:Button
+                    ID="btnConfirmar"
+                    runat="server"
+                    Text="Aceptar"
+                    CssClass="btn btn-success"
+                    OnClick="btnConfirmar_Click" />
+
+                <button type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </asp:Content>

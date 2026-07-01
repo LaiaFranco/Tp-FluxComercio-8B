@@ -151,5 +151,21 @@ namespace Negocio
             }
         }
 
+        public void Habilitar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE CATEGORIAS SET Activo = 1 WHERE id_categoria = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

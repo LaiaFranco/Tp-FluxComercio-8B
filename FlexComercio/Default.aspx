@@ -27,8 +27,12 @@
                         <i class="bi bi-cart3 fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
-                    <p class="text-secondary mb-0">Ventas del día</p>
+                    <div class="text-center">
+                        <h5 class="text-muted mb-1">Ventas del dia</h5>
+                        <h1 class="fw-bold mb-0">
+                            <asp:Label ID="lblVentasDia" runat="server" Text="$0,00" />
+                        </h1>
+                    </div>
 
                 </div>
             </div>
@@ -43,8 +47,12 @@
                         <i class="bi bi-box-seam fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
-                    <p class="text-secondary mb-0">Productos registrados</p>
+                     <div class="text-center">
+                         <h5 class="text-muted mb-1">Productos</h5>
+                         <h1 class="fw-bold mb-0">
+                             <asp:Label ID="lblProductos" runat="server" Text="$0,00" />
+                         </h1>
+                     </div>
 
                 </div>
             </div>
@@ -59,8 +67,12 @@
                         <i class="bi bi-exclamation-triangle fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
-                    <p class="text-secondary mb-0">Productos bajo stock</p>
+                    <div class="text-center">
+                        <h5 class="text-muted mb-1">Stock bajo</h5>
+                        <h1 class="fw-bold mb-0">
+                            <asp:Label ID="lblStockBajo" runat="server" Text="$0,00" />
+                        </h1>
+                    </div>
 
                 </div>
             </div>
@@ -75,8 +87,12 @@
                         <i class="bi bi-graph-up-arrow fs-2 text-dark"></i>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
-                    <p class="text-secondary mb-0">Ganancia estimada</p>
+                    <div class="text-center">
+                        <h5 class="text-muted mb-1">Ganancia</h5>
+                        <h1 class="fw-bold mb-0">
+                            <asp:Label ID="lblGanancia" runat="server" Text="$0,00" />
+                        </h1>
+                    </div>
 
                 </div>
             </div>

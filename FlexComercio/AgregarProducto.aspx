@@ -84,8 +84,11 @@
                             Stock Actual
                         </label>
 
-                        <asp:TextBox ID="txtStockActual" runat="server" CssClass="form-control"
+                        <asp:TextBox ID="txtStockActual"
+                            runat="server"
+                            CssClass="form-control"
                             TextMode="Number"
+                            min="0"
                             style="border-color: #dcdcdc; border-width: 2px;" />
                     </div>
 
@@ -94,8 +97,11 @@
                             Stock Mínimo
                         </label>
 
-                        <asp:TextBox ID="txtStockMinimo" runat="server" CssClass="form-control"
+                        <asp:TextBox ID="txtStockMinimo"
+                            runat="server"
+                            CssClass="form-control"
                             TextMode="Number"
+                            min="0"
                             style="border-color: #dcdcdc; border-width: 2px;" />
                     </div>
 
@@ -109,9 +115,12 @@
                             Precio <span class="text-danger">*</span>
                         </label>
 
-                        <asp:TextBox ID="txtPrecio" runat="server" CssClass="form-control"
+                        <asp:TextBox
+                            ID="txtPrecio"
+                            runat="server"
+                            CssClass="form-control"
                             TextMode="Number"
-                            style="border-color: #dcdcdc; border-width: 2px;" />
+                            min="0" />
 
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
                             ControlToValidate="txtPrecio"
@@ -124,9 +133,12 @@
                             % Ganancia
                         </label>
 
-                        <asp:TextBox ID="txtGanancia" runat="server" CssClass="form-control"
+                        <asp:TextBox
+                            ID="txtGanancia"
+                            runat="server"
+                            CssClass="form-control"
                             TextMode="Number"
-                            style="border-color: #dcdcdc; border-width: 2px;" />
+                            min="0" />
                     </div>
 
                 </div>

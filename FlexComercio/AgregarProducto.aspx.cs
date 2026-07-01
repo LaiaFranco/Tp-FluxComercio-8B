@@ -74,6 +74,32 @@ namespace FlexComercio
             if (!Page.IsValid)
                 return;
 
+            int stockActual = int.Parse(txtStockActual.Text);
+            int stockMinimo = int.Parse(txtStockMinimo.Text);
+            float precio = float.Parse(txtPrecio.Text);
+            float porcentajeGanancia = float.Parse(txtGanancia.Text);
+
+            if (stockActual < 0 || stockMinimo < 0 || precio < 0 || porcentajeGanancia < 0)
+            {
+                        string script = @"
+                Swal.fire({
+                    title: 'Error',
+                    text: 'El stock, el precio y el porcentaje de ganancia no pueden ser negativos.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            ";
+
+                        ClientScript.RegisterStartupScript(
+                            this.GetType(),
+                            "ValoresNegativos",
+                            script,
+                            true
+                        );
+
+                        return;
+                    }
+
             ProductoNegocio negocio = new ProductoNegocio();
             Dominio.Producto producto = new Dominio.Producto();
 
@@ -86,10 +112,10 @@ namespace FlexComercio
             
             producto.Nombre = txtNombre.Text;
             producto.Descripcion = txtDescripcion.Text;
-            producto.StockActual = int.Parse(txtStockActual.Text);
-            producto.StockMinimo = int.Parse(txtStockMinimo.Text);
-            producto.Precio = float.Parse(txtPrecio.Text);
-            producto.PorcentajeGanancia = float.Parse(txtGanancia.Text);
+            producto.StockActual = stockActual;
+            producto.StockMinimo = stockMinimo;
+            producto.Precio = precio;
+            producto.PorcentajeGanancia = porcentajeGanancia;
             producto.Activo = true;
 
             producto.Categoria = new Categoria();
@@ -103,6 +129,7 @@ namespace FlexComercio
 
             producto.Imagen = new Imagen();
             producto.Imagen.Url = txtUrlImagen.Text;
+
 
             if (Session["productoSeleccionado"] != null)
             {

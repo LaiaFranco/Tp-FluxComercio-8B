@@ -260,7 +260,7 @@
 
 
            public List<DetalleVenta> GetDetalle(int id)
-            {
+           {
 
                 AccesoDatos datos = new AccesoDatos();
                 List<DetalleVenta> ListaVentas = new List<DetalleVenta>();
@@ -300,7 +300,63 @@
                 {
                     datos.cerrarConexion();
                 }
+           }
+            public decimal ObtenerVentasDelDia()
+            {
+                AccesoDatos datos = new AccesoDatos();
+
+                try
+                {
+                    datos.setearConsulta(@"
+                SELECT ISNULL(SUM(total),0)
+                FROM VENTAS
+                WHERE CAST(fecha AS DATE) = CAST(GETDATE() AS DATE)");
+
+                    datos.ejecutarLectura();
+
+                    if (datos.Lector.Read())
+                        return (decimal)datos.Lector[0];
+
+                    return 0;
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
+
             }
-    
+
+        public decimal ObtenerGananciaDelDia()
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT ISNULL(SUM(
+                dv.cantidad *
+                (p.precio * p.porcentaje_ganancia / 100)
+            ),0)
+            FROM VENTA_DETALLES dv
+            INNER JOIN PRODUCTOS p
+                ON p.id_producto = dv.id_producto
+            INNER JOIN VENTAS v
+                ON v.id_venta = dv.id_venta
+            WHERE CAST(v.fecha AS DATE) = CAST(GETDATE() AS DATE)");
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                    return (decimal)datos.Lector[0];
+
+                return 0;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
+
+
+    }
     }

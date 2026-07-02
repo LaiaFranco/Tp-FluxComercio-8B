@@ -67,7 +67,6 @@ namespace FlexComercio
                 {
                     proveedor.Id = int.Parse(Session["idProveedorModificar"].ToString());
                     negocio.Modificar(proveedor);
-
                     Session.Remove("idProveedorModificar");
                 }
                 else

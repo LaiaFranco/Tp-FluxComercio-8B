@@ -14,6 +14,8 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
+                Session.Remove("idProveedorModificar");
+
                 ProveedorNegocio negocio = new ProveedorNegocio();
 
            
@@ -33,15 +35,15 @@ namespace FlexComercio
 
                 if (e.CommandName == "EliminarProveedor")
                 {
-                    
                     Session["idProveedorEliminar"] = id;
-                    Response.Redirect("EliminarProveedor.aspx");
+                    Response.Redirect("EliminarProveedor.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
                 else if (e.CommandName == "ModificarProveedor")
                 {
-        
                     Session["idProveedorModificar"] = id;
-                    Response.Redirect("AgregarProveedor.aspx");
+                    Response.Redirect("AgregarProveedor.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
             }
             catch (Exception ex)

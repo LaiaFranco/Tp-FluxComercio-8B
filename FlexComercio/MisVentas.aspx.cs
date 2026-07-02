@@ -41,9 +41,10 @@ namespace FlexComercio
                     v.Fecha,
                     Cliente = v.Cliente.Nombre + " " + v.Cliente.Apellido,
                     CantidadProductos = VentasDatos.GetDetalle(v.Id).Count,
+                    v.Estado,
                     v.Total
                 }).ToList();
-
+                
                 dgvVentas.DataSource = datos;
                 dgvVentas.DataBind();
             } 

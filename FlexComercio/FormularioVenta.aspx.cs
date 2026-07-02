@@ -229,7 +229,7 @@ namespace FlexComercio
             venta.Detalle = ListaDetalles;
             venta.Fecha = fecha;
             venta.Estado = new EstadoVentas();
-            venta.Estado.Id = int.Parse(ddlEstado.SelectedValue);
+            venta.Estado.Id = int.Parse(ddlEstado.SelectedValue)    ;
             try
             {
                 if (Session["idVenta"] != null)

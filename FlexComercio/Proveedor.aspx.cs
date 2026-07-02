@@ -16,47 +16,43 @@ namespace FlexComercio
             {
                 ProveedorNegocio negocio = new ProveedorNegocio();
 
-                Session.Add("listaProveedores", negocio.Listar());
+           
+                Session["listaProveedores"] = negocio.Listar();
                 dgvProveedores.DataSource = Session["listaProveedores"];
                 dgvProveedores.DataBind();
             }
         }
+
+        
         protected void dgvProveedores_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
-                int index = Convert.ToInt32(e.CommandArgument);
-                int id = Convert.ToInt32(dgvProveedores.DataKeys[index].Value);
+               
+                int id = Convert.ToInt32(e.CommandArgument);
 
                 if (e.CommandName == "EliminarProveedor")
                 {
+                    
                     Session["idProveedorEliminar"] = id;
-                    Response.Redirect("EliminarProveedor.aspx", false);
+                    Response.Redirect("EliminarProveedor.aspx");
                 }
-
-                if (e.CommandName == "ModificarProveedor")
+                else if (e.CommandName == "ModificarProveedor")
                 {
-                    Session.Add("idProveedorModificar", id);
-                    Response.Redirect("AgregarProveedor.aspx", false);
+        
+                    Session["idProveedorModificar"] = id;
+                    Response.Redirect("AgregarProveedor.aspx");
                 }
             }
             catch (Exception ex)
             {
-                Session.Add("error", ex.ToString());
+               
+                Session["error"] = ex.ToString();
                 Response.Redirect("Error.aspx");
             }
         }
 
-        protected void btnEliminar_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        protected void btnEditar_Click(object sender, EventArgs e)
-        {
-
-        }
-
+ 
         protected void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             string filtro = txtBuscar.Text.Trim();
@@ -67,6 +63,7 @@ namespace FlexComercio
 
             if (!string.IsNullOrEmpty(filtro))
             {
+         
                 lista = lista.Where(p =>
                     p.Nombre.ToUpper().Contains(filtro.ToUpper()) ||
                     p.Email.ToUpper().Contains(filtro.ToUpper()) ||
@@ -77,7 +74,5 @@ namespace FlexComercio
             dgvProveedores.DataSource = lista;
             dgvProveedores.DataBind();
         }
-
     }
-
-}
+}   

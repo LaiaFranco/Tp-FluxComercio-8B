@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-        <!-- Lista Proveedores (MISMO ESTILO CLIENTES) -->
+        <!-- Lista Proveedores -->
         <div class="container-fluid mt-4">
 
             <asp:GridView ID="dgvProveedores" runat="server"
@@ -53,12 +53,12 @@
                     <asp:TemplateField>
                         <ItemTemplate>
 
-                            <!-- CARD PROVEEDOR (IGUAL A CLIENTES) -->
+                            <!-- CARD PROVEEDOR -->
                             <div class="card rounded-4 mb-4 p-3 proveedor-card">
 
                                 <div class="row g-0 align-items-center">
 
-                                    <!-- ICONO (igual estilo cliente) -->
+                                    <!-- ICONO -->
                                     <div class="col-md-2 col-lg-1 text-center">
                                         <div class="rounded-4 p-4 d-inline-block"
                                              style="background: linear-gradient(135deg, #fff3cd, #ffe8a1);">
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- DATOS (MISMO FORMATO CLIENTES) -->
+                                    <!-- DATOS -->
                                     <div class="col-md-7 col-lg-8">
 
                                         <h3 class="fw-bold mb-1 text-dark">
@@ -107,7 +107,7 @@
 
                                     </div>
 
-                                    <!-- BOTONES (IGUAL CLIENTES) -->
+                                    <!-- BOTONES -->
                                     <div class="col-md-3 col-lg-3 text-end mt-3 mt-md-0">
 
                                         <div class="d-flex flex-wrap justify-content-end gap-2">
@@ -145,7 +145,6 @@
     </div>
 </div>
     <style>
-    /* Sombra más suave al hacer hover */
     .card {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -153,18 +152,15 @@
         transform: translateY(-2px);
         box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
     }
-    /* Badges con mejor legibilidad */
     .badge.bg-light {
         font-weight: 400;
         font-size: 0.95rem;
         border: 1px solid #dee2e6;
         border-radius: 0.5rem !important;
     }
-    /* Iconos dentro de badges */
     .badge i {
         font-size: 1.1rem;
     }
-    /* Botones más atractivos */
     .btn-outline-danger, .btn-outline-warning {
         border-width: 2px;
         font-weight: 600;

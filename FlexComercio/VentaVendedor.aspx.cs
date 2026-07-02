@@ -1,11 +1,11 @@
 ﻿using Dominio;
+using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Negocio;  
 
 namespace FlexComercio
 {
@@ -14,43 +14,59 @@ namespace FlexComercio
         private ClienteNegocio ClienteDatos = new ClienteNegocio();
         private ProductoNegocio ProductoDatos = new ProductoNegocio();
         private VentasNegocio VentasDatos = new VentasNegocio();
+
         public List<Dominio.DetalleVenta> ListaDetalles
         {
             get
             {
-                List<Dominio.DetalleVenta> lista = Session["listaDetalles"] as List<Dominio.DetalleVenta>;
-                if (lista == null)
-                {
-                    lista = new List<Dominio.DetalleVenta>();
-                    Session["listaDetalles"] = lista;
-                }
-                return lista;
+                if (Session["listaDetalles"] == null)
+                    Session["listaDetalles"] = new List<Dominio.DetalleVenta>();
+                return (List<Dominio.DetalleVenta>)Session["listaDetalles"];
             }
             set
             {
                 Session["listaDetalles"] = value;
             }
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                // Verificar que el usuario esté logueado
+                if (Session["usuarioIngresado"] == null)
+                {
+                    Response.Redirect("Login.aspx");
+                    return;
+                }
+
+                Session.Remove("listaDetalles");
+
+                txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                CargarVendedor();
                 CargarClientes();
                 CargarProductos();
+                CargarEstado();
                 CargarDetallesGvProductos();
 
-                Usuario usuario = new Usuario();
-                usuario = (Usuario)Session["usuarioIngresado"];
-                txtVendedor.Text = usuario.Nombre; 
+                ddlEstado.SelectedValue = "2";
 
                 if (Session["idVenta"] != null)
                 {
                     int idVenta;
                     if (int.TryParse(Session["idVenta"].ToString(), out idVenta))
                     {
+                        // Verificar que la venta pertenezca al usuario actual
+                        Venta venta = VentasDatos.VerVenta(idVenta);
+                        Usuario usuario = (Usuario)Session["usuarioIngresado"];
+                        if (venta != null && venta.Usuario.Id != usuario.Id)
+                        {
+                            MostrarMensaje("No tiene permiso para editar esta venta.", "danger");
+                            Session.Remove("idVenta");
+                            return;
+                        }
                         CargarCampos(idVenta);
                         Session.Remove("idVenta");
-
                     }
                     else
                     {
@@ -58,7 +74,29 @@ namespace FlexComercio
                     }
                 }
             }
+        }
 
+        private void CargarEstado()
+        {
+            EstadoVentasNegocio EstadoDatos = new EstadoVentasNegocio();
+            List<EstadoVentas> estados = EstadoDatos.Listar();
+            ddlEstado.DataSource = estados;
+            ddlEstado.DataTextField = "Nombre";
+            ddlEstado.DataValueField = "Id";
+            ddlEstado.DataBind();
+        }
+
+        private void CargarVendedor()
+        {
+            if (Session["usuarioIngresado"] != null)
+            {
+                Usuario usuario = (Usuario)Session["usuarioIngresado"];
+                txtVendedor.Text = $"{usuario.Nombre}";
+            }
+            else
+            {
+                txtVendedor.Text = "No autenticado";
+            }
         }
 
         private void CargarClientes()
@@ -91,6 +129,66 @@ namespace FlexComercio
             lblTotal.Text = $"Total: {total:C2}";
         }
 
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            lblErrorStock.Visible = false;
+
+            Button btn = (Button)sender;
+            int id = Convert.ToInt32(btn.CommandArgument);
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            TextBox txtCantidad = (TextBox)row.FindControl("txtCantidad");
+            int cantidad = Convert.ToInt32(txtCantidad.Text);
+
+            if (cantidad <= 0) cantidad = 1;
+
+            List<Dominio.Producto> productos = Session["Productos"] as List<Dominio.Producto>;
+            if (productos == null)
+            {
+                productos = ProductoDatos.Listar();
+                Session["Productos"] = productos;
+            }
+
+            Dominio.Producto producto = productos.FirstOrDefault(p => p.Id == id);
+            if (producto == null) return;
+
+            int stockDisponible = producto.StockActual;
+            var existente = ListaDetalles.FirstOrDefault(d => d.Producto.Id == id);
+            int cantidadActualEnDetalle = existente != null ? existente.Cantidad : 0;
+            int cantidadTotalSolicitada = cantidadActualEnDetalle + cantidad;
+
+            if (cantidadTotalSolicitada > stockDisponible)
+            {
+                lblErrorStock.Text = $"Stock insuficiente. Solo hay {stockDisponible} unidad(es) disponible(s).";
+                lblErrorStock.Visible = true;
+                upProductos.Update();
+                return;
+            }
+
+            float precioUnitario = (float)producto.Precio;
+            float subtotal = cantidad * precioUnitario;
+
+            Dominio.DetalleVenta detalle = new Dominio.DetalleVenta
+            {
+                Producto = producto,
+                Cantidad = cantidad,
+                PrecioUnitario = precioUnitario,
+                Subtotal = subtotal
+            };
+
+            if (existente != null)
+            {
+                existente.Cantidad += cantidad;
+                existente.Subtotal = existente.Cantidad * existente.PrecioUnitario;
+            }
+            else
+            {
+                ListaDetalles.Add(detalle);
+            }
+
+            CargarDetallesGvProductos();
+            upDetalles.Update();
+            upProductos.Update();
+        }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
@@ -100,14 +198,21 @@ namespace FlexComercio
             if (itemAEliminar != null)
             {
                 ListaDetalles.Remove(itemAEliminar);
-                Session["listaDetalles"] = ListaDetalles;
                 CargarDetallesGvProductos();
+                upDetalles.Update();
             }
         }
 
-        protected void btnLimpiar_Click(object sender, EventArgs e)
+        protected void btnGuardarModal_Click(object sender, EventArgs e)
         {
-
+            bool guardadoExitoso = false;
+            if (guardadoExitoso)
+            {
+                ListaDetalles.Clear();
+                CargarDetallesGvProductos();
+                string script = "$('#modalProductos').modal('hide');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "CerrarModal", script, true);
+            }
         }
 
         protected void btnRegistrar_Click(object sender, EventArgs e)
@@ -137,14 +242,21 @@ namespace FlexComercio
             venta.Usuario = new Dominio.Usuario();
             venta.Usuario.Id = usuario.Id;
             venta.Detalle = ListaDetalles;
-            venta.Fecha = fecha.Date + DateTime.Now.TimeOfDay;
-
+            venta.Fecha = fecha;
+            venta.Estado = new EstadoVentas();
+            venta.Estado.Id = int.Parse(ddlEstado.SelectedValue);
             try
             {
-                // Verificar si hay un ID en sesión (modo edición)
                 if (Session["idVenta"] != null)
                 {
                     venta.Id = Convert.ToInt32(Session["idVenta"]);
+                    // Verificar que la venta pertenezca al usuario actual (seguridad)
+                    Venta ventaExistente = VentasDatos.VerVenta(venta.Id);
+                    if (ventaExistente == null || ventaExistente.Usuario.Id != usuario.Id)
+                    {
+                        MostrarMensaje("No tiene permiso para modificar esta venta.", "danger");
+                        return;
+                    }
                     VentasDatos.Modificar(venta);
                     Session.Remove("idVenta");
                     MostrarMensaje("Venta actualizada con éxito.", "success");
@@ -152,63 +264,34 @@ namespace FlexComercio
                 else
                 {
                     VentasDatos.Agregar(venta);
-                    MostrarMensaje("Venta registrada con éxito.", "success");
+
+                    string script = @"
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: 'Venta realizada correctamente',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        }).then(() => {
+                            window.location = 'MisVentas.aspx'
+                        });
+                        ";
+
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        GetType(),
+                        "SweetAlertVenta",
+                        script,
+                        true
+                    );
                 }
 
+                CargarProductos();
                 LimpiarFormulario();
             }
             catch (Exception ex)
             {
                 MostrarMensaje("Error al procesar la venta: " + ex.Message, "danger");
             }
-        }
-
-        protected void btnAgregar_Click(object sender, EventArgs e)
-        {
-            Button btn = (Button)sender;
-            int id = Convert.ToInt32(btn.CommandArgument);
-            GridViewRow row = (GridViewRow)btn.NamingContainer;
-            TextBox txtCantidad = (TextBox)row.FindControl("txtCantidad");
-            int cantidad = Convert.ToInt32(txtCantidad.Text);
-            if (cantidad <= 0) cantidad = 1;
-
-            List<Dominio.Producto> productos = Session["Productos"] as List<Dominio.Producto>;
-            if (productos == null)
-            {
-                productos = ProductoDatos.Listar();
-                Session["Productos"] = productos;
-            }
-
-            Dominio.Producto producto = productos.FirstOrDefault(p => p.Id == id);
-            producto.Id = id;
-            if (producto == null) return;
-
-            float precioUnitario = (float)producto.Precio;
-            float subtotal = cantidad * precioUnitario;
-
-            Dominio.DetalleVenta detalle = new Dominio.DetalleVenta
-            {
-
-                Producto = producto,
-                Cantidad = cantidad,
-                PrecioUnitario = precioUnitario,
-                Subtotal = subtotal
-            };
-
-            var existente = ListaDetalles.FirstOrDefault(d => d.Producto.Id == id);
-            if (existente != null)
-            {
-                existente.Cantidad += cantidad;
-                existente.Subtotal = existente.Cantidad * existente.PrecioUnitario;
-            }
-            else
-            {
-                ListaDetalles.Add(detalle);
-            }
-
-            Session["listaDetalles"] = ListaDetalles;
-            CargarDetallesGvProductos();
-
         }
 
         private void MostrarMensaje(string texto, string tipo)
@@ -229,31 +312,50 @@ namespace FlexComercio
         {
             ddlCliente.SelectedIndex = 0;
             txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
-            txtNumFactura.Text = "";
+            ddlEstado.SelectedValue = "3";
             ListaDetalles.Clear();
-            Session["listaDetalles"] = ListaDetalles;
             CargarDetallesGvProductos();
             lblTotal.Text = "$0.00";
         }
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
+            MostrarMensaje("", "");
+            upDetalles.Update();
+        }
+
         private void CargarCampos(int idVenta)
         {
             Venta venta = VentasDatos.VerVenta(idVenta);
-
             if (venta == null) return;
 
-            // Cargar cliente
             ddlCliente.SelectedValue = venta.Cliente.Id.ToString();
-
-            // Cargar fecha
             txtFecha.Text = venta.Fecha.ToString("yyyy-MM-dd");
+            if (venta.Estado != null)
+            {
+                ddlEstado.SelectedValue = venta.Estado.Id.ToString();
+            }
 
-            // Cargar detalles en la sesión
-            List<Dominio.DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
-            Session["listaDetalles"] = detalles;
+            List<Dominio.DetalleVenta> detalles = VentasDatos.VerDetallesPorVenta(idVenta);
+            ListaDetalles = detalles;
             CargarDetallesGvProductos();
+            upDetalles.Update();
+        }
 
-            // Cambiar el texto del botón (opcional, si tienes un botón guardar)
-            // btnRegistrar.Text = "Actualizar Venta";
+        protected void txtBuscarProducto_TextChanged(object sender, EventArgs e)
+        {
+            List<Dominio.Producto> productos = ProductoDatos.Listar().Where(c => c.Activo && c.StockActual > 0).ToList();
+            string filtro = txtBuscarProducto.Text.Trim();
+            List<Dominio.Producto> filtrados = productos;
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                filtrados = productos.Where(p => p.Nombre.ToLower().Contains(filtro.ToLower())).ToList();
+            }
+
+            gvProductos.DataSource = filtrados;
+            gvProductos.DataBind();
         }
     }
 }

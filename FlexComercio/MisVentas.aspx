@@ -133,6 +133,9 @@
                         DataField="Total"
                         DataFormatString="{0:C}" />
 
+
+                   <asp:BoundField HeaderText="ESTADO" DataField="Estado.Nombre" />
+
                     <asp:TemplateField HeaderText="FACTURA">
                         <ItemTemplate>
                             <asp:LinkButton ID="btnVerFactura"

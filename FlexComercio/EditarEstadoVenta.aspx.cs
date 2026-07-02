@@ -2,7 +2,7 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Negocio;
-using Dominio; // Asumiendo que Dominio contiene las entidades
+using Dominio;
 
 namespace FlexComercio
 {
@@ -16,11 +16,17 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
-                
+                Usuario usuario = Session["usuarioIngresado"] as Usuario;
+                if (usuario == null)
+                {
+                    Response.Redirect("Login.aspx");
+                    return;
+                }
+
                 if (Session["idVenta"] != null)
                 {
                     idVenta = Convert.ToInt32(Session["idVenta"]);
-                    Session.Remove("idVenta"); 
+                    Session.Remove("idVenta");
                     CargarDatos(idVenta);
                     CargarEstados();
                 }
@@ -74,6 +80,23 @@ namespace FlexComercio
             }
         }
 
+        private void RedirigirSegunRol()
+        {
+            Usuario usuario = Session["usuarioIngresado"] as Usuario;
+            if (usuario != null && usuario.Rol != null)
+            {
+                string nombreRol = usuario.Rol.Nombre.ToLower();
+           
+                if (nombreRol.Contains("admin"))
+                {
+                    Response.Redirect("Ventas.aspx");
+                    return;
+                }
+            }
+  
+            Response.Redirect("MisVentas.aspx");
+        }
+
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             if (ViewState["IdVenta"] == null)
@@ -89,8 +112,7 @@ namespace FlexComercio
             {
                 VentaDatos.EditarEstado(id, nuevoEstadoId);
                 MostrarMensaje("Estado actualizado correctamente.", "success");
-          
-                Response.Redirect("Ventas.aspx");
+                RedirigirSegunRol();
             }
             catch (Exception ex)
             {
@@ -100,7 +122,7 @@ namespace FlexComercio
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Ventas.aspx");
+            RedirigirSegunRol();
         }
 
         private void MostrarMensaje(string texto, string tipo)

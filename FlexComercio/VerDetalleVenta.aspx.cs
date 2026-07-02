@@ -15,42 +15,60 @@ namespace FlexComercio
         {
             if (!IsPostBack)
             {
-                
-                int? idVenta = Session["idVenta"] as int?;
-                if (idVenta == null)
+                Usuario usuario = Session["usuarioIngresado"] as Usuario;
+                if (usuario == null)
                 {
-                    Response.Redirect("Ventas.aspx");
+                    Response.Redirect("Login.aspx");
                     return;
                 }
 
-            
+                int? idVenta = Session["idVenta"] as int?;
+                if (idVenta == null)
+                {
+                    RedirigirSegunRol();
+                    return;
+                }
+
                 CargarDatosVenta(idVenta.Value);
             }
         }
 
         private void CargarDatosVenta(int idVenta)
         {
-           
-            Venta venta = VentasDatos.VerVenta(idVenta);  
+            Venta venta = VentasDatos.VerVenta(idVenta);
             if (venta != null)
             {
                 lblCliente.Text = venta.Cliente.Nombre ?? "Sin cliente";
                 lblFecha.Text = venta.Fecha.ToString("dd/MM/yyyy HH:mm");
-                lblVendedor.Text = venta.Cliente.Nombre ?? "Sin vendedor";
+                lblVendedor.Text = venta.Usuario.Nombre ?? "Sin vendedor";
                 lblTotalDetalle.Text = venta.Total.ToString("C2");
 
-                DatosVenta = venta;   
+                DatosVenta = venta;
             }
 
-      
-            List<Dominio.DetalleVenta> detalles = VentasDatos.VerDetallesPorVenta(idVenta); 
+            List<Dominio.DetalleVenta> detalles = VentasDatos.VerDetallesPorVenta(idVenta);
             gvDetalleProductos.DataSource = detalles;
             gvDetalleProductos.DataBind();
         }
 
+        private void RedirigirSegunRol()
+        {
+            Usuario usuario = Session["usuarioIngresado"] as Usuario;
+            if (usuario != null && usuario.Rol != null)
+            {
+                string nombreRol = usuario.Rol.Nombre.ToLower();
+                if (nombreRol.Contains("admin"))
+                {
+                    Response.Redirect("Ventas.aspx");
+                    return;
+                }
+            }
+            Response.Redirect("MisVentas.aspx");
+        }
+
         protected void btnVolver_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Ventas.aspx");
+            RedirigirSegunRol();
         }
     }
 }

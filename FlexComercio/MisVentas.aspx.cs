@@ -57,7 +57,21 @@ namespace FlexComercio
 
         protected void btnVerFactura_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            int idVenta = Convert.ToInt32(btn.CommandArgument);
 
+            Session["idVenta"] = idVenta;
+            Response.Redirect("VerDetalleVenta.aspx");
+        }
+
+        protected void btnEditarEstado_Click(object sender, EventArgs e)
+        {
+
+            Button btn = (Button)sender;
+            int idVenta = Convert.ToInt32(btn.CommandArgument);
+
+            Session["idVenta"] = idVenta;
+            Response.Redirect("EditarEstadoVenta.aspx");
         }
     }
 }

@@ -106,7 +106,8 @@
                 CssClass="table align-middle mb-0"
                 AutoGenerateColumns="false"
                 BorderStyle="None"
-                GridLines="None">
+                GridLines="None"
+               >   
 
                <Columns>
 
@@ -133,21 +134,33 @@
                         DataField="Total"
                         DataFormatString="{0:C}" />
 
-
                    <asp:BoundField HeaderText="ESTADO" DataField="Estado.Nombre" />
+
+                   
+                    <asp:TemplateField HeaderText="ACCIONES">
+                        <ItemTemplate>
+                            <asp:Button ID="btnEditarEstado"
+                                runat="server"
+                                Text="Editar estado"
+                                CommandName="EditarEstado"
+                                CommandArgument='<%# Eval("Id") %>'
+                                CssClass="btn btn-sm btn-outline-primary"  OnClick="btnEditarEstado_Click" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
 
                     <asp:TemplateField HeaderText="FACTURA">
                         <ItemTemplate>
-                            <asp:LinkButton ID="btnVerFactura"
+                            <asp:Button ID="btnVerFactura"
                                 runat="server"
-                                CssClass="text-decoration-none fw-semibold"
+                                 Text="Ver detalle"
+                                CssClass="btn btn-outline-primary btn-sm rounded-pill px-4"
                                 CommandArgument='<%# Eval("Id") %>'
                                 OnClick="btnVerFactura_Click">
 
-                                <i class="bi bi-printer me-1"></i>
-                                Ver
+                     
+                                
 
-                            </asp:LinkButton>
+                            </asp:Button>
                         </ItemTemplate>
                     </asp:TemplateField>
 

@@ -241,7 +241,25 @@ namespace FlexComercio
                 else
                 {
                     VentasDatos.Agregar(venta);
-                    MostrarMensaje("Venta registrada con éxito.", "success");
+
+                    string script = @"
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: 'Venta realizada correctamente',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        }).then(() => {
+                            window.location = 'Ventas.aspx';
+                        });
+                        ";
+
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        GetType(),
+                        "SweetAlertVenta",
+                        script,
+                        true
+                    );
                 }
 
                 CargarProductos();

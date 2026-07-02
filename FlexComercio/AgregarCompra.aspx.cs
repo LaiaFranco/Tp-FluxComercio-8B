@@ -504,10 +504,22 @@ namespace FlexComercio
                 CargarDetalles();
                 CargarProductos();
 
-                MostrarMensaje(
-                    "Compra N° "
-                    + idCompra
-                    + " registrada correctamente."
+                string script = @"
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'Compra agregada correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location = 'Compras.aspx';
+                    });
+                    ";
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "SweetAlertCompra",
+                    script,
+                    true
                 );
             }
             catch (Exception ex)

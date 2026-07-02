@@ -142,11 +142,7 @@
                                     Cotizaciones
                                 </a>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="Estados.aspx">
-                                    Estados
-                                </a>
-                            </li>
+                            
                         </ul>
 
                     </div>

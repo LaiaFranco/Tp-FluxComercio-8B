@@ -184,8 +184,13 @@ namespace FlexComercio
                     }
 
                     usuarioNegocio.Modificar(usuario);
-                    MostrarMensaje("Usuario actualizado correctamente.", "success");
-                    Response.Redirect("Usuarios.aspx");
+                    
+                    MostrarSweetAlert(
+                        "Éxito",
+                        "Usuario modificado correctamente.",
+                        "success",
+                        true
+                    );
                 }
                 else
                 {
@@ -196,8 +201,13 @@ namespace FlexComercio
                     }
                     usuario.Password = password;
                     usuarioNegocio.Agregar(usuario);
-                    MostrarMensaje("Usuario creado exitosamente.", "success");
-                    LimpiarCampos();
+
+                    MostrarSweetAlert(
+                        "Éxito",
+                        "Usuario agregado correctamente.",
+                        "success",
+                        true
+                    );
                 }
             }
             catch (Exception ex)
@@ -215,7 +225,13 @@ namespace FlexComercio
             {
                 int id = (int)ViewState["UsuarioIdBorrar"];
                 usuarioNegocio.Eliminar(id);
-                Response.Redirect("Usuarios.aspx");
+
+                MostrarSweetAlert(
+                    "Éxito",
+                    "Usuario eliminado correctamente.",
+                    "success",
+                    true
+                );
             }
         }
 
@@ -253,6 +269,40 @@ namespace FlexComercio
             ViewState["UsuarioId"] = null;
             btnGuardar.Text = "Guardar usuario";
             lblTitulo.Text = "Nuevo Usuario";
+        }
+
+        private void MostrarSweetAlert(string titulo, string mensaje, string icono, bool redirigir = false)
+        {
+            string script;
+
+            if (redirigir)
+            {
+                script = $@"
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{icono}',
+                confirmButtonText: 'Aceptar'
+            }}).then(() => {{
+                window.location = 'Usuarios.aspx';
+            }});";
+            }
+            else
+            {
+                script = $@"
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{icono}',
+                confirmButtonText: 'Aceptar'
+            }});";
+            }
+
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                Guid.NewGuid().ToString(),
+                script,
+                true);
         }
     }
 }

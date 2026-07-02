@@ -66,12 +66,24 @@ namespace FlexComercio
                 if (Session["idProveedorModificar"] != null)
                 {
                     proveedor.Id = int.Parse(Session["idProveedorModificar"].ToString());
+
                     negocio.Modificar(proveedor);
+
                     Session.Remove("idProveedorModificar");
+
+                    MostrarSweetAlert(
+                        "Éxito",
+                        "Proveedor modificado correctamente.",
+                        "success");
                 }
                 else
                 {
                     negocio.Agregar(proveedor);
+
+                    MostrarSweetAlert(
+                        "Éxito",
+                        "Proveedor agregado correctamente.",
+                        "success");
                 }
 
                 Response.Redirect("Proveedor.aspx", false);
@@ -87,6 +99,25 @@ namespace FlexComercio
         {
             Session.Remove("idProveedorModificar");
             Response.Redirect("Proveedor.aspx");
+        }
+
+        private void MostrarSweetAlert(string titulo, string mensaje, string icono)
+        {
+            string script = $@"
+        Swal.fire({{
+            title: '{titulo}',
+            text: '{mensaje}',
+            icon: '{icono}',
+            confirmButtonText: 'Aceptar'
+        }}).then(() => {{
+            window.location = 'Proveedor.aspx';
+        }});";
+
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                Guid.NewGuid().ToString(),
+                script,
+                true);
         }
     }
 }

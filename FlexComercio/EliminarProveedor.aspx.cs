@@ -59,7 +59,10 @@ namespace FlexComercio
 
                 Session.Remove("idProveedorEliminar");
 
-                Response.Redirect("Proveedor.aspx", false);
+                MostrarSweetAlert(
+                    "Éxito",
+                    "Proveedor eliminado correctamente.",
+                    "success");
             }
             catch (Exception ex)
             {
@@ -72,6 +75,25 @@ namespace FlexComercio
         {
             Session.Remove("idProveedorEliminar");
             Response.Redirect("Proveedor.aspx", false);
+        }
+
+        private void MostrarSweetAlert(string titulo, string mensaje, string icono)
+        {
+            string script = $@"
+        Swal.fire({{
+            title: '{titulo}',
+            text: '{mensaje}',
+            icon: '{icono}',
+            confirmButtonText: 'Aceptar'
+        }}).then(() => {{
+            window.location = 'Proveedor.aspx';
+        }});";
+
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                Guid.NewGuid().ToString(),
+                script,
+                true);
         }
     }
 }

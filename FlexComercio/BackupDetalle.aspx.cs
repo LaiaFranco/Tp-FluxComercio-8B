@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -25,35 +26,47 @@ namespace FlexComercio
                 int id = Convert.ToInt32(e.CommandArgument);
 
                 string modulo = Request.QueryString["modulo"];
+                string mensaje = "";
 
                 switch (modulo)
                 {
                     case "usuarios":
                         new UsuarioNegocio().Habilitar(id);
+                        mensaje = "Usuario restaurado correctamente.";
                         break;
 
                     case "clientes":
                         new ClienteNegocio().Habilitar(id);
+                        mensaje = "Cliente restaurado correctamente.";
                         break;
 
                     case "productos":
                         new ProductoNegocio().Habilitar(id);
+                        mensaje = "Producto restaurado correctamente.";
                         break;
 
                     case "proveedores":
                         new ProveedorNegocio().Habilitar(id);
+                        mensaje = "Proveedor restaurado correctamente.";
                         break;
 
                     case "marcas":
                         new MarcaNegocio().Habilitar(id);
+                        mensaje = "Marca restaurada correctamente.";
                         break;
 
                     case "categorias":
                         new CategoriaNegocio().Habilitar(id);
+                        mensaje = "Categoría restaurada correctamente.";
                         break;
                 }
 
                 CargarModulo();
+
+                MostrarSweetAlert(
+                    "Éxito",
+                    mensaje,
+                    "success");
             }
         }
         private void CargarModulo()
@@ -125,6 +138,23 @@ namespace FlexComercio
             }
 
            
+        }
+
+        private void MostrarSweetAlert(string titulo, string mensaje, string icono)
+        {
+            string script = $@"
+        Swal.fire({{
+            title: '{titulo}',
+            text: '{mensaje}',
+            icon: '{icono}',
+            confirmButtonText: 'Aceptar'
+        }});";
+
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                Guid.NewGuid().ToString(),
+                script,
+                true);
         }
     }
     

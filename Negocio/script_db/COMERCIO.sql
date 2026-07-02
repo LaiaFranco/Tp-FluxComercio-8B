@@ -871,8 +871,7 @@ GO
 CREATE   PROCEDURE [dbo].[storedListarProveedores]
 AS
 SELECT id_proveedor, cuil, nombre, email, telefono, direccion, activo
-FROM PROVEEDORES
-WHERE activo = 1;
+FROM PROVEEDORES;
 GO
 
 CREATE   PROCEDURE [dbo].[storedListarProveedorPorId]

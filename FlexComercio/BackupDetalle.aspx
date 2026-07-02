@@ -159,7 +159,7 @@
 
                                 <p><strong>Precio:</strong> $ <%# Eval("Precio") %></p>
 
-                                <p><strong>Stock:</strong> <%# Eval("Stock") %></p>
+                                <p><strong>Stock:</strong> <%# Eval("StockActual") %></p>
 
                             </div>
 

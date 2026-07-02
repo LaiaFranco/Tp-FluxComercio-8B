@@ -26,6 +26,24 @@
 
         <div class="card shadow-sm border-0 rounded-4">
 
+            <!-- Buscador -->
+            <div class="card-header bg-white border-bottom p-4">
+                <div class="input-group">
+
+                    <span class="input-group-text bg-white border-end-0 rounded-start-4">
+                        <i class="bi bi-search text-secondary fs-4"></i>
+                    </span>
+
+                    <asp:TextBox ID="txtBuscar"
+                        runat="server"
+                        CssClass="form-control border-start-0 rounded-end-4 py-3"
+                        placeholder="Buscar usuario por Nombre, Email o rol"
+                        AutoPostBack="true"
+                        OnTextChanged="txtBuscar_TextChanged" />
+
+                </div>
+            </div>
+
             <div class="container-fluid mt-4">
 
                 <asp:GridView ID="gvUsuarios"

@@ -177,35 +177,63 @@
     </div>
 
 </div>
-    <style>
-    /* Sombra más suave al hacer hover */
-    .card {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
-    }
-    /* Badges con mejor legibilidad */
-    .badge.bg-light {
-        font-weight: 400;
-        font-size: 0.95rem;
-        border: 1px solid #dee2e6;
-        border-radius: 0.5rem !important;
-    }
-    /* Iconos dentro de badges */
-    .badge i {
-        font-size: 1.1rem;
-    }
-    /* Botones más atractivos */
-    .btn-outline-danger, .btn-outline-warning {
-        border-width: 2px;
-        font-weight: 600;
-    }
-    .btn-outline-danger:hover, .btn-outline-warning:hover {
-        transform: scale(1.02);
-        transition: all 0.15s ease;
-    }
-</style>
+<style>
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+}
+
+.badge.bg-light {
+    font-weight: 400;
+    font-size: 0.95rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem !important;
+}
+
+.badge i {
+    font-size: 1.1rem;
+}
+
+.btn-outline-danger,
+.btn-outline-warning {
+    border-width: 2px;
+    font-weight: 600;
+}
+
+.btn-outline-danger:hover,
+.btn-outline-warning:hover {
+    transform: scale(1.02);
+    transition: all 0.15s ease;
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+.producto-card {
+    width: 100%;
+    overflow: hidden;
+}
+
+.producto-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.badge {
+    white-space: normal !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.col-md-7,
+.col-lg-7 {
+    min-width: 0;
+}
+</style>
 </asp:Content>

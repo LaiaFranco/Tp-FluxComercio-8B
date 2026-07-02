@@ -23,7 +23,9 @@
                         <i class="bi bi-cart3 fs-2"></i>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblVentasHoy" runat="server" Text="$0.00"></asp:Label>
+                    </h1>
                     <p class="text-secondary mb-0">Ventas del día</p>
 
                 </div>
@@ -38,7 +40,9 @@
                         <i class="bi bi-box-seam fs-2"></i>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblProductos" runat="server" Text="0"></asp:Label>
+                    </h1>
                     <p class="text-secondary mb-0">Productos registrados</p>
 
                 </div>
@@ -53,7 +57,9 @@
                         <i class="bi bi-exclamation-triangle fs-2"></i>
                     </div>
 
-                    <h1 class="fw-bold">0</h1>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblStockBajo" runat="server" Text="0"></asp:Label>
+                    </h1>
                     <p class="text-secondary mb-0">Productos bajo stock</p>
 
                 </div>
@@ -68,7 +74,9 @@
                         <i class="bi bi-graph-up-arrow fs-2"></i>
                     </div>
 
-                    <h1 class="fw-bold">$0.00</h1>
+                    <h1 class="fw-bold">
+                        <asp:Label ID="lblGanancia" runat="server" Text="$0.00"></asp:Label>
+                    </h1>
                     <p class="text-secondary mb-0">Ganancia estimada</p>
 
                 </div>

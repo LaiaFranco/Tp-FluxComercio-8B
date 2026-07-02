@@ -42,7 +42,7 @@ namespace FlexComercio
                 CargarEstado();
                 CargarDetallesGvProductos();
 
-              
+
                 ddlEstado.SelectedValue = "2";
 
                 if (Session["idVenta"] != null)
@@ -228,13 +228,14 @@ namespace FlexComercio
             venta.Usuario.Id = usuario.Id;
             venta.Detalle = ListaDetalles;
             venta.Fecha = fecha;
-
+            venta.Estado = new EstadoVentas();
+            venta.Estado.Id = int.Parse(ddlEstado.SelectedValue);
             try
             {
                 if (Session["idVenta"] != null)
                 {
                     venta.Id = Convert.ToInt32(Session["idVenta"]);
-                    VentasDatos.Modificar(venta);
+                  
                     Session.Remove("idVenta");
                     MostrarMensaje("Venta actualizada con éxito.", "success");
                 }
@@ -314,7 +315,7 @@ namespace FlexComercio
                 ddlEstado.SelectedValue = venta.Estado.Id.ToString();
             }
 
-            List<Dominio.DetalleVenta> detalles = VentasDatos.GetDetalle(idVenta);
+            List<Dominio.DetalleVenta> detalles = VentasDatos.VerDetallesPorVenta(idVenta);
             ListaDetalles = detalles;
             CargarDetallesGvProductos();
             upDetalles.Update();

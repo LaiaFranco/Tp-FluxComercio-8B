@@ -27,6 +27,32 @@ namespace FlexComercio
         {
             List<Usuario> usuariosLista = UsuarioDatos.Listar().Where(u => u.Activo).ToList();
 
+            Session["listaUsuarios"] = usuariosLista;
+            gvUsuarios.DataSource = usuariosLista;
+            gvUsuarios.DataBind();
+        }
+
+        protected void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = txtBuscar.Text.Trim().ToUpper();
+
+            List<Usuario> usuariosLista = (List<Usuario>)Session["listaUsuarios"];
+
+            if (usuariosLista == null)
+            {
+                usuariosLista = UsuarioDatos.Listar().Where(u => u.Activo).ToList();
+                Session["listaUsuarios"] = usuariosLista;
+            }
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                usuariosLista = usuariosLista.Where(u =>
+                    (u.Nombre != null && u.Nombre.ToUpper().Contains(filtro)) ||
+                    (u.Email != null && u.Email.ToUpper().Contains(filtro)) ||
+                    (u.Rol != null && u.Rol.Nombre != null && u.Rol.Nombre.ToUpper().Contains(filtro))
+                ).ToList();
+            }
+
             gvUsuarios.DataSource = usuariosLista;
             gvUsuarios.DataBind();
         }

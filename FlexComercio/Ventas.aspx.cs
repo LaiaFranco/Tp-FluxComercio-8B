@@ -43,6 +43,13 @@ namespace FlexComercio
                 Session["idVenta"] = idVenta;
                 Response.Redirect("VerDetalleVenta.aspx");
             }
+
+         if (e.CommandName == "ModificarEstado")
+            {
+                int idVenta = Convert.ToInt32(e.CommandArgument);
+                Session["idVenta"] = idVenta;
+                Response.Redirect("EditarEstadoVenta.aspx");
+            }
         }
 
         protected void btnPuntoVenta_Click(object sender, EventArgs e)
@@ -67,6 +74,6 @@ namespace FlexComercio
             }
         }
 
-
+       
     }
 }

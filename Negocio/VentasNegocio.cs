@@ -171,7 +171,12 @@
                         venta.Usuario.Nombre = (string)datos.Lector["nombre_usuario"];
                         venta.Usuario.Activo = (bool)datos.Lector["activo_usuario"];
 
-                        return venta;
+
+                    //Estado
+                    venta.Estado = new EstadoVentas();
+                    venta.Estado.Id = (int)datos.Lector["id_estado_venta"];
+                    venta.Estado.Nombre = (string)datos.Lector["nombre_estado"];
+                    return venta;
 
                     }
 
@@ -362,6 +367,31 @@
             {
                 datos.cerrarConexion();
             }
+
+        }
+
+        public void EditarEstado(int Id,int IdEstado) {
+            
+            AccesoDatos Datos = new AccesoDatos();
+
+            try
+            {
+
+                Datos.setearConsulta("UPDATE VENTAS SET id_estado_venta = @id_estado WHERE id_venta = @id");
+                Datos.setearParametro("@id_estado", IdEstado);
+                Datos.setearParametro("@id", Id);
+                Datos.ejecutarAccion();
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Datos.cerrarConexion();
+            }
+        
         }
 
 

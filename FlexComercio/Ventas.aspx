@@ -66,6 +66,7 @@
                                                     Text=" Ver detalle"
                                                     CommandName="VerDetalle"
                                                     CommandArgument='<%# Eval("Id") %>' />
+
                                                 <asp:Button ID="btnModificarEstado" runat="server"
                                                     CssClass="btn btn-outline-secondary btn-sm rounded-pill px-4"
                                                     Text="Modificar estado"

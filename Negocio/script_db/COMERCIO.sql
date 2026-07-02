@@ -311,32 +311,9 @@ CREATE TABLE [dbo].[VENTA_DETALLES](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Objeto: Table [dbo].[VENTAS] Fecha de script: 30/06/2026 06:43:44 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[VENTAS](
-	[id_venta] [int] IDENTITY(1,1) NOT NULL,
-	[fecha] [datetime] NOT NULL,
-	[id_cliente] [int] NOT NULL,
-	[id_usuario] [int] NOT NULL,
-	[total] [decimal](10, 2) NOT NULL,
-	[numero_factura] [varchar](255) NOT NULL,
-	[activo] [bit] NOT NULL,
- CONSTRAINT [PK_VENTAS] PRIMARY KEY CLUSTERED 
-(
-	[id_venta] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
- CONSTRAINT [UQ_VENTAS_numero_factura] UNIQUE NONCLUSTERED 
-(
-	[numero_factura] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
 
 -- ============================================================
--- NUEVA TABLA: ESTADO_VENTA
+-- NUEVA TABLA: ESTADO_VENTA (CREADA ANTES DE VENTAS PARA REFERENCIA)
 -- ============================================================
 CREATE TABLE [dbo].[ESTADO_VENTA](
 	[id_estado_venta] [int] IDENTITY(1,1) NOT NULL,
@@ -349,21 +326,35 @@ CREATE TABLE [dbo].[ESTADO_VENTA](
 GO
 
 -- ============================================================
--- MODIFICAR VENTAS: AGREGAR id_estado_venta
+-- TABLA VENTAS (CON id_estado_venta DESDE SU CREACIÓN)
 -- ============================================================
-ALTER TABLE [dbo].[VENTAS]
-ADD [id_estado_venta] [int] NOT NULL CONSTRAINT DF_VENTAS_estado DEFAULT (1)
+/****** Objeto: Table [dbo].[VENTAS] ******/
+SET ANSI_NULLS ON
 GO
-
-ALTER TABLE [dbo].[VENTAS]  WITH CHECK ADD  CONSTRAINT [FK_VENTAS_ESTADO_VENTA] FOREIGN KEY([id_estado_venta])
-REFERENCES [dbo].[ESTADO_VENTA] ([id_estado_venta])
+SET QUOTED_IDENTIFIER ON
 GO
-
-ALTER TABLE [dbo].[VENTAS] CHECK CONSTRAINT [FK_VENTAS_ESTADO_VENTA]
+CREATE TABLE [dbo].[VENTAS](
+	[id_venta] [int] IDENTITY(1,1) NOT NULL,
+	[fecha] [datetime] NOT NULL,
+	[id_cliente] [int] NOT NULL,
+	[id_usuario] [int] NOT NULL,
+	[total] [decimal](10, 2) NOT NULL,
+	[numero_factura] [varchar](255) NOT NULL,
+	[activo] [bit] NOT NULL,
+	[id_estado_venta] [int] NOT NULL CONSTRAINT DF_VENTAS_estado DEFAULT (1),
+ CONSTRAINT [PK_VENTAS] PRIMARY KEY CLUSTERED 
+(
+	[id_venta] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UQ_VENTAS_numero_factura] UNIQUE NONCLUSTERED 
+(
+	[numero_factura] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 -- ============================================================
--- CONTINÚAN LAS CONSTRAINTS ORIGINALES (CON CORRECCIÓN)
+-- CONTINÚAN LAS CONSTRAINTS ORIGINALES
 -- ============================================================
 ALTER TABLE [dbo].[CATEGORIAS] ADD  CONSTRAINT [DF_CATEGORIAS_activo]  DEFAULT ((1)) FOR [activo]
 GO
@@ -390,6 +381,9 @@ GO
 ALTER TABLE [dbo].[VENTAS] ADD  CONSTRAINT [DF_VENTAS_activo]  DEFAULT ((1)) FOR [activo]
 GO
 
+-- ============================================================
+-- FOREIGN KEYS (INCLUYENDO LA NUEVA FK PARA id_estado_venta)
+-- ============================================================
 ALTER TABLE [dbo].[COMPRA_DETALLES]  WITH CHECK ADD  CONSTRAINT [FK_COMPRA_DETALLES_COMPRAS] FOREIGN KEY([id_compra])
 REFERENCES [dbo].[COMPRAS] ([id_compra])
 GO
@@ -459,6 +453,11 @@ ALTER TABLE [dbo].[VENTAS]  WITH CHECK ADD  CONSTRAINT [FK_VENTAS_USUARIOS] FORE
 REFERENCES [dbo].[USUARIOS] ([id_usuario])
 GO
 ALTER TABLE [dbo].[VENTAS] CHECK CONSTRAINT [FK_VENTAS_USUARIOS]
+GO
+ALTER TABLE [dbo].[VENTAS]  WITH CHECK ADD  CONSTRAINT [FK_VENTAS_ESTADO_VENTA] FOREIGN KEY([id_estado_venta])
+REFERENCES [dbo].[ESTADO_VENTA] ([id_estado_venta])
+GO
+ALTER TABLE [dbo].[VENTAS] CHECK CONSTRAINT [FK_VENTAS_ESTADO_VENTA]
 GO
 
 -- ============================================================
@@ -1428,7 +1427,7 @@ GO
 
 ALTER TABLE COMPRA_DETALLES
 ADD CONSTRAINT CK_COMPRA_DETALLES_subtotal
-CHECK (subtotal >= 0);   -- CORREGIDO: solo valida que no sea negativo
+CHECK (subtotal >= 0);
 GO
 
 ALTER TABLE COMPRA_DETALLES
@@ -1579,4 +1578,4 @@ BEGIN
         THROW;
     END CATCH;
 END;
-GO  
+GO

@@ -19,7 +19,7 @@ namespace FlexComercio
                 ProveedorNegocio negocio = new ProveedorNegocio();
 
            
-                Session["listaProveedores"] = negocio.Listar();
+                Session["listaProveedores"] = negocio.Listar().Where(x => x.Activo);
                 dgvProveedores.DataSource = Session["listaProveedores"];
                 dgvProveedores.DataBind();
             }
